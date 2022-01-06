@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "nox",
+  "version": "${version}",
+  "name": "Nox",
+  "description": "Mob and difficulty overhaul",
+  "authors": [
+    "SciRave"
+  ],
+  "license": "MPL-2.0",
+  "icon": "assets/nox/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.scirave.nox.Nox"
+    ]
+  },
+  "mixins": [
+    "nox.mixins.json"
+  ],
+  "accessWidener": "nox.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  }
+}

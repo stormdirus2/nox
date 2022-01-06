@@ -1,0 +1,11 @@
+accessWidener	v1	named
+
+accessible   class   net/minecraft/entity/ai/goal/CrossbowAttackGoal$Stage
+
+accessible   class   net/minecraft/entity/mob/GhastEntity$ShootFireballGoal
+
+accessible   class   net/minecraft/entity/mob/BlazeEntity$ShootFireballGoal
+
+accessible   class   net/minecraft/entity/mob/DrownedEntity$TridentAttackGoal
+
+accessible   class   net/minecraft/entity/mob/SlimeEntity$SlimeMoveControl

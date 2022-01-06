@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:magma_cream",
+    "minecraft:wither_skeleton_skull",
+    "minecraft:nether_star",
+    "minecraft:ghast_tear",
+    "minecraft:blaze_rod",
+    "minecraft:blaze_powder"
+  ]
+}
