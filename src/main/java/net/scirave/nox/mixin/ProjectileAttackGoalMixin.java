@@ -41,7 +41,7 @@ public abstract class ProjectileAttackGoalMixin {
     private boolean movingLeft = false;
 
     @Inject(method = "tick", at = @At(value = "TAIL"))
-    public void nox$crossbowStrafe(CallbackInfo ci) {
+    public void nox$projectileStrafe(CallbackInfo ci) {
         if (this.target != null) {
             this.mob.lookAtEntity(target, 30.0F, 30.0F);
             boolean backward = false;

@@ -35,7 +35,7 @@ public abstract class EvokerEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         super.nox$invulnerableCheck(source, cir);
-        if (source.isProjectile() && !source.bypassesArmor()) {
+        if (source.isMagic() || (!source.bypassesArmor() && source.isProjectile())) {
             cir.setReturnValue(true);
         }
     }

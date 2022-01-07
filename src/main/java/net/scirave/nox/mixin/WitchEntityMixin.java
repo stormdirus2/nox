@@ -72,7 +72,7 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         super.nox$invulnerableCheck(source, cir);
-        if (source.isMagic() || source.isProjectile()) {
+        if (source.isMagic() || (!source.bypassesArmor() && source.isProjectile())) {
             cir.setReturnValue(true);
         }
     }
