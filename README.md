@@ -85,6 +85,7 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Do not drink when target is in close proximety (7 blocks)
 
 ### Wither Skeletons..
+* Spawn naturally (in the Nether)
 * Take reduced knockback
 * Can spawn with a bow
 * Wither Skeleton Archers: +50% damage
@@ -93,7 +94,7 @@ Minecraft mob and difficulty overhaul for Fabric.
 ### Blazes..
 * Strafe
 * Prefer a farther range
-* Spawn naturally
+* Spawn naturally (in the Nether)
 * Shoot fireballs twice as often
 * Do not shoot shielding entities (you must bait it out)
 * Set the target on fire for 4 seconds when in close proximety (2 blocks)
