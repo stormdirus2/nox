@@ -39,7 +39,7 @@ Minecraft mob and difficulty overhaul for Fabric.
 
 ### All Zombies..
 * Take reduced knockback (unless they're a baby)
-* Periodically leep at their target
+* Periodically leap at their target
 * Avoid and flee from the sun (if it affects them)
 * Can mine blocks
 
