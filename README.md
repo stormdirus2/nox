@@ -2,7 +2,7 @@
 
 Minecraft mob and difficulty overhaul for Fabric.
 
-## Changes
+## Mob Changes
 
 ### Misc..
 * Strafing is faster
@@ -58,7 +58,7 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Move during ignition
 * Breach walls
 * Continue to ignite without line of sight
-* Only continue to ignite within a 4 block radius (previously 7 blocks)
+* Only continue to ignite within a 4 block radius (originally 7 blocks)
 
 ### Endermen..
 * Can break walls
@@ -83,3 +83,9 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Are invulnerable to magic and non-armor-piercing projectile damage
 * Use better beneficial potions (stronger or longer duration)
 * Do not drink when target is in close proximety (7 blocks)
+
+### Wither Skeletons..
+* Take reduced knockback
+* Can spawn with a bow
+* Wither Skeleton Archers: +50% damage
+* Give 4 seconds of Wither to the target when in close proximety (4 blocks)
