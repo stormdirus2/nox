@@ -37,7 +37,8 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
     @Shadow
     public abstract boolean isBaby();
 
-    @Shadow protected abstract boolean burnsInDaylight();
+    @Shadow
+    protected abstract boolean burnsInDaylight();
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {

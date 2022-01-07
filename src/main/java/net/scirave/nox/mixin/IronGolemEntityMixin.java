@@ -27,11 +27,13 @@ import java.util.List;
 @Mixin(IronGolemEntity.class)
 public abstract class IronGolemEntityMixin extends GolemEntityMixin {
 
-    @Shadow public abstract boolean canTarget(EntityType<?> type);
-
-    @Shadow public abstract boolean tryAttack(Entity target);
-
     private boolean canSweepAttack = true;
+
+    @Shadow
+    public abstract boolean canTarget(EntityType<?> type);
+
+    @Shadow
+    public abstract boolean tryAttack(Entity target);
 
     @Inject(method = "tryAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/IronGolemEntity;applyDamageEffects(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"))
     public void nox$ironGolemSweepAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {

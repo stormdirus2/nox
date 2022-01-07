@@ -22,8 +22,8 @@ public abstract class SnowGolemEntityMixin extends GolemEntityMixin {
 
     @ModifyArgs(method = "initGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/goal/ProjectileAttackGoal;<init>(Lnet/minecraft/entity/ai/RangedAttackMob;DIF)V"))
     public void nox$snowGolemFasterShooting(Args args) {
-        args.set(2, ((int) args.get(2))/2);
-        args.set(3, ((float) args.get(3))*1.4F);
+        args.set(2, ((int) args.get(2)) / 2);
+        args.set(3, ((float) args.get(3)) * 1.4F);
     }
 
 }

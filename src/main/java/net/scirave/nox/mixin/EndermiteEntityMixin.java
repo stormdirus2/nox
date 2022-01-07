@@ -16,16 +16,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.EndermiteEntity;
-import net.minecraft.entity.mob.SilverfishEntity;
-import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LocalDifficulty;
@@ -41,7 +36,6 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
         this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Endermite bonus", 0.6, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
 
-
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
         if (target.world instanceof ServerWorld serverWorld) {
@@ -49,9 +43,9 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
             double e = target.getY();
             double f = target.getZ();
 
-            for(int i = 0; i < 16; ++i) {
+            for (int i = 0; i < 16; ++i) {
                 double g = target.getX() + (target.getRandom().nextDouble() - 0.5D) * 16.0D;
-                double h = MathHelper.clamp(target.getY() + (double)(target.getRandom().nextInt(16) - 8), serverWorld.getBottomY(), serverWorld.getBottomY() + serverWorld.getLogicalHeight() - 1);
+                double h = MathHelper.clamp(target.getY() + (double) (target.getRandom().nextInt(16) - 8), serverWorld.getBottomY(), serverWorld.getBottomY() + serverWorld.getLogicalHeight() - 1);
                 double j = target.getZ() + (target.getRandom().nextDouble() - 0.5D) * 16.0D;
 
                 if (target.hasVehicle()) {
@@ -66,5 +60,14 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
             }
         }
     }
+
+    @Override
+    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$invulnerableCheck(source, cir);
+        if (source.getName().equals("fall") || source.getName().equals("inWall")) {
+            cir.setReturnValue(true);
+        }
+    }
+
 
 }

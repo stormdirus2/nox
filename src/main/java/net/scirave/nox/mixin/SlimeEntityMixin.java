@@ -21,8 +21,10 @@ import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,17 +33,31 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.Random;
+
 @Mixin(SlimeEntity.class)
 public abstract class SlimeEntityMixin extends MobEntityMixin {
+
+    @Inject(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/gen/random/ChunkRandom;getSlimeRandom(IIJJ)Ljava/util/Random;"), cancellable = true)
+    private static void nox$slimeSpawnNaturally(EntityType<SlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
+        if (world.getLightLevel(pos) <= 7) {
+            cir.setReturnValue(SlimeEntity.canMobSpawn(type, world, spawnReason, pos, random));
+        }
+    }
 
     @Shadow
     public abstract int getSize();
 
-    @Inject(method = "remove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), locals = LocalCapture.CAPTURE_FAILSOFT)
+    @Inject(method = "remove", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/SlimeEntity;setSize(IZ)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
     public void nox$slimeReapplyAttributes(Entity.RemovalReason reason, CallbackInfo ci, int i, Text text, boolean bl, float f, int j, int k, int l, float g, float h, SlimeEntity slimeEntity) {
         if (this.world instanceof ServerWorld serverWorld) {
             slimeEntity.initialize(serverWorld, serverWorld.getLocalDifficulty(this.getBlockPos()), SpawnReason.REINFORCEMENT, null, null);
         }
+    }
+
+    @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/SlimeEntity;applyDamageEffects(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"))
+    public void nox$slimeOnAttack(LivingEntity victim, CallbackInfo ci) {
+        //Overridden
     }
 
     @Override
@@ -75,11 +91,6 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
         cloud.setRadiusGrowth(-cloud.getRadius() / (float) cloud.getDuration());
         cloud.addEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 1));
         this.world.spawnEntity(cloud);
-    }
-
-    @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/SlimeEntity;applyDamageEffects(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"))
-    public void nox$slimeOnAttack(LivingEntity victim, CallbackInfo ci) {
-        //Overridden
     }
 
     @Override

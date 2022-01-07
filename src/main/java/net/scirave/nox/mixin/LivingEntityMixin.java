@@ -57,7 +57,8 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
     @Shadow
     public abstract boolean canSee(Entity entity);
 
-    @Shadow public abstract boolean canTarget(LivingEntity target);
+    @Shadow
+    public abstract boolean canTarget(LivingEntity target);
 
     @Inject(method = "blockedByShield", at = @At("HEAD"), cancellable = true)
     public void nox$ghastFireballsPierce(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
