@@ -73,5 +73,13 @@ Minecraft mob and difficulty overhaul for Fabric.
 * +450% base follow range
 * Spawn naturally
 * Jump constantly
-* Invulnerable to fall and non-armor-piercing projectile damage
+* Are invulnerable to fall and non-armor-piercing projectile damage
 * Spawn a short-lived Poison II effect cloud on death, with a radius proportional to their size
+
+### Witches..
+* Spawn more frequently
+* Use lingering potions with buffed effect clouds
+* Use stronger Slowness
+* Are invulnerable to magic and non-armor-piercing projectile damage
+* Use better beneficial potions (stronger or longer duration)
+* Do not drink when target is in close proximety (7 blocks)
