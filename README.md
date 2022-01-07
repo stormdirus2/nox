@@ -91,6 +91,7 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Can spawn with a bow
 * Wither Skeleton Archers: +50% damage
 * Apply 4 seconds of Wither to the target when in close proximety (2 blocks)
+* Wither Skeleton Skulls are fire resistant
 
 ### Blazes..
 * Strafe
@@ -98,7 +99,8 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Spawn naturally (in the Nether)
 * Shoot fireballs twice as often
 * Do not shoot shielding entities (you must bait it out)
-* Set the target on fire for 4 seconds when in close proximety (2 blocks)
+* Ignite the target on fire for 4 seconds when in close proximety (2 blocks)
+* Blaze Rods are fire resistant (as well as Blaze Powder)
 
 ### Ghasts..
 * +150% base health
@@ -107,6 +109,13 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Fireballs no longer deal 1000 damage to Ghasts (:concern:)
 * Fireball cooldown is 3 times less
 * Fireballs from Ghasts bypass shields
+* Ghast Tears are fire resistent
+
+### Magma Cubes
+* Inherent changes from Slimes
+* Ignite the target on fire for 4 seconds upon successful attack
+* On death, instead of a Poison II cloud, Magma Cubes generate lava proportionate to their size
+* Magma Cream is fire resistant
 
 ### Piglins..
 * Can mine blocks (Brutes as well)
