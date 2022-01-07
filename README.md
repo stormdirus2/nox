@@ -151,6 +151,18 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Are invulnerable to fall and suffocation damage
 * Teleports the victim like a Chorus Fruit does on successful attack
 
+### Guardians..
+* Place water upon death
+
+### Drowned..
+* Have increased speed in water
+
+### Husks..
+* Apply Hunger II instead of Hunger I
+
+### Strays..
+* Apply Slowness II instead of Slowness I
+
 ## Boss Changes
 
 ## Golem Changes
