@@ -2,14 +2,41 @@
 
 Minecraft mob and difficulty overhaul for Fabric.
 
+Designed with a difficulty of Hard in mind.
+
+In beta.
+
+## Sleep Changes
+
+The size of the box used to detect nearby monsters and prevent sleep has been massively increased.
+
+It spans 101 blocks in width and length, with the center position lying straight on the bed.
+There is a minimum upper Y-limit of 20 blocks above the bed position and a minimum lower Y-limit of 20 blocks below the bed position.
+
+The upper Y-limit has to at least go *up* to sea level, and the lower Y-limit has to at least go *down* to sea level.
+
+This means that sky bases will still have to worry about mobs below them on the ground, and cave bases will have to worry about everything above them beneath the surface.
+
+The Glowing status effect is applied to monsters detected by this.
+
 ## Misc Changes
 
 ### In general..
 * Strafing is faster
 * Pouncing goes farther and faster
-* Melee Goal checks are done more often (barely noticable)
+* Melee Goal checks are done more often (barely noticeable)
 * (Almost all) Mobs can see through walls
 * Target finding is more immediate, no random delay
+
+## Block Breaking Info
+
+Mobs that can mine blocks, only can do so for wooden-level blocks.
+
+Of those blocks, blocks of non-wood material that have a hardness value equal or more than 3 cannot not be mined.
+
+3 or more hardness blocks include, but are not limited to: obsidian, endstone, deepslate, most metal or gem blocks, and their derivatives.
+
+Experimentation is encouraged.
 
 ## Monster Changes
 
@@ -47,7 +74,7 @@ Minecraft mob and difficulty overhaul for Fabric.
 ### Spiders..
 * Avoid the sun
 * Are immune to fall damage
-* Places a cobweb at the victims location upon successful attack
+* Places a cobweb at the victims' location upon successful attack
 
 ### Cave Spiders..
 * Inherent changes from Spiders
@@ -83,15 +110,15 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Use stronger Slowness
 * Are invulnerable to magic and non-armor-piercing projectile damage
 * Use better beneficial potions (stronger or longer duration)
-* Do not drink when target is in close proximety (7 blocks)
+* Do not drink when target is in close proximity (7 blocks)
 
 ### Wither Skeletons..
 * Spawn naturally (in the Nether)
 * Take reduced knockback
 * Can spawn with a bow
 * Wither Skeleton Archers: +50% damage
-* Apply 4 seconds of Wither to the target when in close proximety (2 blocks)
-* Wither Skeleton Skulls are fire resistant
+* Apply 4 seconds of Wither to the target when in close proximity (2 blocks)
+* Wither Skeleton Skulls are fire-resistant
 
 ### Blazes..
 * Strafe
@@ -99,8 +126,8 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Spawn naturally (in the Nether)
 * Shoot fireballs twice as often
 * Do not shoot shielding entities (you must bait it out)
-* Ignite the target on fire for 4 seconds when in close proximety (2 blocks)
-* Blaze Rods are fire resistant (as well as Blaze Powder)
+* Ignite the target on fire for 4 seconds when in close proximity (2 blocks)
+* Blaze Rods are fire-resistant (as well as Blaze Powder)
 
 ### Ghasts..
 * +150% base health
@@ -109,13 +136,13 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Fireballs no longer deal 1000 damage to Ghasts (:concern:)
 * Fireball cooldown is 3 times less
 * Fireballs from Ghasts bypass shields
-* Ghast Tears are fire resistent
+* Ghast Tears are fire resistant
 
 ### Magma Cubes
 * Inherent changes from Slimes
 * Ignite the target on fire for 4 seconds upon successful attack
 * On death, instead of a Poison II cloud, Magma Cubes generate lava proportionate to their size
-* Magma Cream is fire resistant
+* Magma Cream is fire-resistant
 
 ### Piglins..
 * Can mine blocks (Brutes as well)
@@ -144,7 +171,7 @@ Minecraft mob and difficulty overhaul for Fabric.
 * +100% base speed
 * Lunge at their target
 * Are invulnerable to fall, drown, and suffocation damage
-* Apply 15 seconds of Mining Fatique III upon successful attack
+* Apply 15 seconds of Mining Fatigue III upon successful attack
 
 ### Endermites..
 * +60% base speed
@@ -165,9 +192,34 @@ Minecraft mob and difficulty overhaul for Fabric.
 
 ## Boss Changes
 
+### Wither..
+* 200% base health (for a total of 600 HP)
+* Rapidly breaks blocks around it
+* Spawns 3 Wither Skeletons every 60 seconds when within a 7 block range of the target
+
+### Ender Dragon..
+* 300% base health (for a total of 600 HP)
+* Is invulnerable to explosion damage
+* End Crystals within range cannot be damaged unless they are currently connected to the Ender Dragon
+* Dragon Fireballs are faster, fast-acting, and deal double damage
+* Periodically fires Dragon Fireballs, regardless of current phase, when outside a 7 block radius
+* Dragon Fireball phase fires numerous fireballs
+* Attacks much more frequently
+* Stalls much less
+* Charges at the player much more frequently, and for longer
+* Stays in the firebreath phase for half as much time
+
 ## Golem Changes
 
 ### All Golems..
 * Projectiles phase through allies
 * +100% base health
 * +100% base follow range
+
+### Iron Golems..
+* Attack in an AoE around their target (like a sweep attack)
+
+### Snow Golems..
+* Fire snowballs twice as often
+* Snowballs deal 4 damage
+* +40% max range
