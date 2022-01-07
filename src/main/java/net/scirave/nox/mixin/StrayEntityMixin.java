@@ -26,9 +26,4 @@ public abstract class StrayEntityMixin extends AbstractSkeletonEntityMixin {
         return new StatusEffectInstance(effect.getEffectType(), effect.getDuration(), 1);
     }
 
-    @Override
-    public void nox$customSkeletonGoals() {
-        this.goalSelector.add(0, new Nox$FleeSunlightGoal((StrayEntity) (Object) this, 1.0F));
-    }
-
 }

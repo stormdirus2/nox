@@ -54,7 +54,6 @@
     "SilverfishEntityMixin",
     "SittingFlamingPhaseMixin",
     "SittingScanningPhaseMixin",
-    "SkeletonEntityMixin",
     "SlimeEntityMixin",
     "SlimeMoveControlMixin",
     "SnowballEntityMixin",
