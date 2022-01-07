@@ -2,14 +2,16 @@
 
 Minecraft mob and difficulty overhaul for Fabric.
 
-## Mob Changes
+## Misc Changes
 
-### Misc..
+### In general..
 * Strafing is faster
 * Pouncing goes farther and faster
 * Melee Goal checks are done more often (barely noticable)
 * (Almost all) Mobs can see through walls
 * Target finding is more immediate, no random delay
+
+## Monster Changes
 
 ### All monsters..
 * Do not have friendly fire 
@@ -17,11 +19,6 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Are angered when ran into (relevant to neutral monsters like Endermen)
 * +50% base health
 * +50% base follow range
-
-### All Golems..
-* Projectiles phase through allies
-* +100% base health
-* +100% base follow range
 
 ### Bow AI..
 * Prefers a farther range
@@ -109,21 +106,47 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Fireballs are twice as powerful
 * Fireballs no longer deal 1000 damage to Ghasts (:concern:)
 * Fireball cooldown is 3 times less
+* Fireballs from Ghasts bypass shields
 
 ### Piglins..
 * Can mine blocks (Brutes as well)
 * Aggro unless a Player is wearing only golden armor (you can wear just golden boots)
 
-### Pillagers
+### Pillagers..
 * Can mine blocks
 
-### Vindicators
+### Vindicators..
 * Can mine blocks
 * Take reduced knockback
 
-### Evokers
+### Evokers..
 * +50% base health
 * Are invulnerable to magic and non-armor-piercing projectile damage
 
-### Shulkers
+### Shulkers..
 * Apply 5 seconds of Blindness via their projectiles
+
+### Phantoms..
+* Phase through blocks (but do not attempt attacks through them)
+* Apply 15 seconds of Weakness upon successful attack
+* Attacks bypass shields
+
+### Silverfish..
+* +100% base speed
+* Lunge at their target
+* Are invulnerable to fall, drown, and suffocation damage
+* Apply 15 seconds of Mining Fatique III upon successful attack
+
+### Endermites..
+* +60% base speed
+* Are invulnerable to fall and suffocation damage
+* Teleports the victim like a Chorus Fruit does on successful attack
+
+## Boss Changes
+
+## Golem Changes
+
+### All Golems..
+* Projectiles phase through allies
+* +100% base health
+* +100% base follow range
