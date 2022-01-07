@@ -52,6 +52,10 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Are immune to fall damage
 * Places a cobweb at the victims location upon successful attack
 
+### Cave Spiders..
+* Inherent changes from Spiders
+* Instead of placing a cobweb, apply 10 seconds of Slowness II
+
 ### Creepers..
 * Flee blocking entities
 * Pounce at their target
@@ -99,6 +103,13 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Do not shoot shielding entities (you must bait it out)
 * Set the target on fire for 4 seconds when in close proximety (2 blocks)
 
+### Ghasts..
+* +150% base health
+* Spawn more frequently
+* Fireballs are twice as powerful
+* Fireballs no longer deal 1000 damage to Ghasts (:concern:)
+* Fireball cooldown is 3 times less
+
 ### Piglins..
 * Can mine blocks (Brutes as well)
 * Aggro unless a Player is wearing only golden armor (you can wear just golden boots)
@@ -113,3 +124,6 @@ Minecraft mob and difficulty overhaul for Fabric.
 ### Evokers
 * +50% base health
 * Are invulnerable to magic and non-armor-piercing projectile damage
+
+### Shulkers
+* Apply 5 seconds of Blindness via their projectiles
