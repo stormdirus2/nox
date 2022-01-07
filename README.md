@@ -102,3 +102,14 @@ Minecraft mob and difficulty overhaul for Fabric.
 ### Piglins..
 * Can mine blocks (Brutes as well)
 * Aggro unless a Player is wearing only golden armor (you can wear just golden boots)
+
+### Pillagers
+* Can mine blocks
+
+### Vindicators
+* Can mine blocks
+* Take reduced knockback
+
+### Evokers
+* +50% base health
+* Are invulnerable to magic and non-armor-piercing projectile damage
