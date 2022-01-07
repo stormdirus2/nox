@@ -88,4 +88,14 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Take reduced knockback
 * Can spawn with a bow
 * Wither Skeleton Archers: +50% damage
-* APply 4 seconds of Wither to the target when in close proximety (2 blocks)
+* Apply 4 seconds of Wither to the target when in close proximety (2 blocks)
+
+### Blazes..
+* Strafe
+* Prefer a farther range
+* Spawn naturally
+* Shoot fireballs twice as often
+* Do not shoot shielding entities (you must bait it out)
+* Set the target on fire for 4 seconds when in close proximety (2 blocks)
+
+###
