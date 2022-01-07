@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(SlimeEntity.SlimeMoveControl.class)
-public class SlimeMoveControlMixin {
+public abstract class SlimeMoveControlMixin extends MoveControlMixin {
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/SlimeEntity;getTicksUntilNextJump()I"))
     public int nox$slimeInstantJump(SlimeEntity slime) {

@@ -15,6 +15,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,6 +51,12 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Inject(method = "tryAttack", at = @At("RETURN"))
     public void nox$onAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {
+        if (cir.getReturnValue() && target instanceof LivingEntity living) {
+            nox$onSuccessfulAttack(living);
+        }
+    }
+
+    public void nox$onSuccessfulAttack(LivingEntity target) {
         //Overridden
     }
 
@@ -63,12 +70,6 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
         //Overridden
     }
 
-    public void nox$hostileAttributes(MobEntity mob) {
-        mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", 0.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        mob.setHealth(mob.getMaxHealth());
-        mob.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", 0.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-    }
-
     @Inject(method = "initialize", at = @At("HEAD"))
     public void nox$maybeApplyHostileAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
         if (this instanceof Monster) {
@@ -76,14 +77,32 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
         }
     }
 
+    public void nox$hostileAttributes(MobEntity mob) {
+        mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", 0.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        mob.setHealth(mob.getMaxHealth());
+        mob.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", 0.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+    }
+
+    @Override
     public void nox$onPushAway(Entity entity, CallbackInfo ci) {
-        if (this instanceof Monster && this.getTarget() == null && entity instanceof PlayerEntity player) {
+        if (this instanceof Monster && this.getTarget() == null && entity instanceof PlayerEntity player && this.canTarget(player)) {
             nox$maybeAngerOnShove(player);
         }
     }
 
     public void nox$maybeAngerOnShove(PlayerEntity player) {
         this.setTarget(player);
+    }
+
+    @Override
+    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        if (this instanceof Monster) {
+            if (source.getAttacker() instanceof MobEntity attacker && attacker instanceof Monster) {
+                if (attacker.getTarget() != null && attacker.getTarget() == this.getTarget()) {
+                    cir.setReturnValue(true);
+                }
+            }
+        }
     }
 
 }

@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EndCrystalEntity.class)
 public abstract class EndCrystalEntityMixin extends EntityMixin {
 
-    public void nox$invulnerableCheck(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
+    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         if (this.world instanceof ServerWorld serverWorld) {
             EnderDragonFight enderDragonFight = serverWorld.getEnderDragonFight();
             if (enderDragonFight != null && ((Nox$EnderDragonFightInterface) enderDragonFight).inDragonRange(this.getPos())) {

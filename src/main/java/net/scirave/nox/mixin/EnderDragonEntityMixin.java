@@ -11,12 +11,18 @@
 
 package net.scirave.nox.mixin;
 
+import net.minecraft.entity.EntityData;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.gen.feature.EndPortalFeature;
 import net.scirave.nox.util.NoxUtil;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,13 +38,14 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
     private int cooldown = 0;
 
     @ModifyArg(method = "createEnderDragonAttributes", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;add(Lnet/minecraft/entity/attribute/EntityAttribute;D)Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;", ordinal = 0))
-    private static double nox$witherMoreHealth(double original) {
+    private static double nox$enderDragonMoreHealth(double original) {
         return original * 3;
     }
 
     @Override
-    public void nox$invulnerableCheck(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
-        if (damageSource.isExplosive()) {
+    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$invulnerableCheck(source, cir);
+        if (source.isExplosive()) {
             cir.setReturnValue(true);
         }
     }
@@ -56,6 +63,16 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
             cooldown--;
         }
 
+    }
+
+    @Override
+    public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
+        //Non-applicable
+    }
+
+    @Override
+    public void nox$hostileAttributes(MobEntity mob) {
+        //Non-applicable
     }
 
 }

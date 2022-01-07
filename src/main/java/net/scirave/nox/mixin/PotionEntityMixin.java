@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(PotionEntity.class)
-public class PotionEntityMixin {
+public abstract class PotionEntityMixin extends ProjectileEntityMixin {
 
     @ModifyArg(method = "applyLingeringPotion", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/AreaEffectCloudEntity;setRadius(F)V"))
     public float nox$witchBiggerPotionRadius(float original) {
@@ -28,6 +28,5 @@ public class PotionEntityMixin {
     public int nox$witchFasterCloudWindup(int original) {
         return original / 2;
     }
-
 
 }

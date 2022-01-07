@@ -13,6 +13,8 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,16 +28,19 @@ public abstract class ProjectileEntityMixin {
 
     @Shadow
     @Nullable
-    private Entity owner;
-
-    @Shadow
-    @Nullable
     public abstract Entity getOwner();
 
     @Inject(method = "canHit", at = @At("HEAD"), cancellable = true)
     public void nox$phaseThroughBystanders(Entity entity, CallbackInfoReturnable<Boolean> cir) {
+
+        Entity owner = this.getOwner();
+
         if (owner instanceof HostileEntity mob1 && entity instanceof HostileEntity mob2) {
             if (mob1.getTarget() != null && mob1.getTarget() == mob2.getTarget()) {
+                cir.setReturnValue(false);
+            }
+        } else if (owner instanceof GolemEntity golem) {
+            if (!(entity instanceof Monster) && entity != golem.getTarget()) {
                 cir.setReturnValue(false);
             }
         }

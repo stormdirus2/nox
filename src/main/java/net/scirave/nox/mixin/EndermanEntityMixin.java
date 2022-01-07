@@ -77,10 +77,8 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
     }
 
     @Override
-    public void nox$onAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValue() && target instanceof LivingEntity living) {
-            living.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200), (EndermanEntity) (Object) this);
-        }
+    public void nox$onSuccessfulAttack(LivingEntity target) {
+        target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200), (EndermanEntity) (Object) this);
     }
 
 }

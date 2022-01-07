@@ -56,7 +56,7 @@ public abstract class EntityMixin {
     public abstract Vec3d getPos();
 
     @Inject(method = "isInvulnerableTo", at = @At("HEAD"), cancellable = true)
-    public void nox$invulnerableCheck(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
+    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         //Overridden
     }
 

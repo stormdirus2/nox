@@ -29,10 +29,8 @@ public abstract class PhantomEntityMixin extends MobEntityMixin {
     }
 
     @Override
-    public void nox$onAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValue() && target instanceof LivingEntity living) {
-            living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 300), (PhantomEntity) (Object) this);
-        }
+    public void nox$onSuccessfulAttack(LivingEntity target) {
+        target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 300), (PhantomEntity) (Object) this);
     }
 
 }

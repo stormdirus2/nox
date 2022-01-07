@@ -23,10 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class CaveSpiderEntityMixin extends SpiderEntityMixin {
 
     @Override
-    public void nox$onAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValue() && target instanceof LivingEntity living) {
-            living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 1), (CaveSpiderEntity) (Object) this);
-        }
+    public void nox$onSuccessfulAttack(LivingEntity target) {
+        target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 1), (CaveSpiderEntity) (Object) this);
     }
 
 }

@@ -36,19 +36,17 @@ public abstract class SpiderEntityMixin extends HostileEntityMixin {
     }
 
     @Override
-    public void nox$onAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValue() && target instanceof LivingEntity living) {
-            BlockPos pos = living.getBlockPos();
-            if (this.world.getBlockState(pos).getMaterial().isReplaceable()) {
-                this.world.setBlockState(pos, COBWEB);
-            }
+    public void nox$onSuccessfulAttack(LivingEntity target) {
+        BlockPos pos = target.getBlockPos();
+        if (this.world.getBlockState(pos).getMaterial().isReplaceable()) {
+            this.world.setBlockState(pos, COBWEB);
         }
     }
 
     @Override
-    public void nox$invulnerableCheck(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
-        super.nox$invulnerableCheck(damageSource, cir);
-        if (damageSource.getName().equals("fall")) {
+    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$invulnerableCheck(source, cir);
+        if (source.getName().equals("fall")) {
             cir.setReturnValue(true);
         }
     }
