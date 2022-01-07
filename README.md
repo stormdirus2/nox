@@ -88,4 +88,4 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Take reduced knockback
 * Can spawn with a bow
 * Wither Skeleton Archers: +50% damage
-* Give 4 seconds of Wither to the target when in close proximety (4 blocks)
+* APply 4 seconds of Wither to the target when in close proximety (2 blocks)
