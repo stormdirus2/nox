@@ -98,4 +98,6 @@ Minecraft mob and difficulty overhaul for Fabric.
 * Do not shoot shielding entities (you must bait it out)
 * Set the target on fire for 4 seconds when in close proximety (2 blocks)
 
-###
+### Piglins..
+* Can mine blocks (Brutes as well)
+* Aggro unless a Player is wearing only golden armor (you can wear just golden boots)
