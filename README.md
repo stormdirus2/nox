@@ -180,9 +180,11 @@ Experimentation is encouraged.
 
 ### Guardians..
 * Place water upon death
+* Spawn naturally
 
 ### Drowned..
 * Have increased speed in water
+* Spawn more often naturally
 
 ### Husks..
 * Apply Hunger II instead of Hunger I
