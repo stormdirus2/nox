@@ -89,7 +89,7 @@ Experimentation is encouraged.
 * Only continue to ignite within a 4 block radius (originally 7 blocks)
 
 ### Endermen..
-* Can break walls
+* Can break blocks
 * Apply 10 seconds of Blindness on aggro
 * Apply 10 seconds of Blindness upon successful attack
 * Teleport when damaged
