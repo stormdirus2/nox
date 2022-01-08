@@ -15,6 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.PounceAtTargetGoal;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.util.Hand;
 import net.scirave.nox.util.Nox$MiningInterface;
 import net.scirave.nox.util.Nox$PounceInterface;
 import org.spongepowered.asm.mixin.Final;
@@ -53,7 +54,10 @@ public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceInte
                 if ((this.mob.world.getTime() - this.lastUsage) >= this.cooldown) {
                     this.lastUsage = this.mob.world.getTime();
                     this.mob.getLookControl().lookAt(this.target);
-                    this.mob.swingHand(this.mob.preferredHand);
+                    Hand hand = this.mob.preferredHand;
+                    if (hand != null) {
+                        this.mob.swingHand(hand);
+                    }
                     cir.setReturnValue(true);
                     return;
                 }
