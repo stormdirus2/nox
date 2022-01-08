@@ -89,7 +89,7 @@ Experimentation is encouraged.
 * Only continue to ignite within a 4 block radius (originally 7 blocks)
 
 ### Endermen..
-* Can break walls
+* Can break blocks
 * Apply 10 seconds of Blindness on aggro
 * Apply 10 seconds of Blindness upon successful attack
 * Teleport when damaged
@@ -132,11 +132,11 @@ Experimentation is encouraged.
 ### Ghasts..
 * +150% base health
 * Spawn more frequently
-* Fireballs are twice as powerful
+* Fireballs from are twice as powerful
 * Fireballs no longer deal 1000 damage to Ghasts (:concern:)
 * Fireball cooldown is 3 times less
 * Fireballs from Ghasts bypass shields
-* Ghast Tears are fire resistant
+* Ghast Tears are fire-resistant
 
 ### Magma Cubes
 * Inherent changes from Slimes
@@ -223,5 +223,5 @@ Experimentation is encouraged.
 
 ### Snow Golems..
 * Fire snowballs twice as often
-* Snowballs deal 4 damage
+* Snowballs from Snow Golems deal 4 damage
 * +40% max range
