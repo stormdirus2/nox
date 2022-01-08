@@ -4,6 +4,11 @@
   "version": "${version}",
   "name": "Nox",
   "description": "Mob and difficulty overhaul",
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/nox-a-mob-and-difficulty-overhaul",
+    "sources": "https://github.com/stormdirus2/nox",
+    "issues": "https://github.com/stormdirus2/nox/issues"
+  },
   "authors": [
     "SciRave"
   ],
@@ -24,5 +29,12 @@
     "fabric": "*",
     "minecraft": "1.18.x",
     "java": ">=17"
+  },
+  "custom": {
+    "modupdater": {
+      "strategy": "curseforge",
+      "projectID": 565421,
+      "strict": false
+    }
   }
 }
