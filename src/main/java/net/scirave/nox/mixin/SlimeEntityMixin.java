@@ -64,7 +64,7 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
         this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", 1.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         this.setHealth(this.getMaxHealth());
-        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", 4.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", 1.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_KNOCKBACK).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", 0, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
         this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", 0.3, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
@@ -86,7 +86,7 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
         AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(this.world, this.getX(), this.getY(), this.getZ());
         cloud.setRadius(2.5F * this.getSize());
         cloud.setRadiusOnUse(-0.5F);
-        cloud.setWaitTime(7 * this.getSize());
+        cloud.setWaitTime(10 * this.getSize());
         cloud.setDuration(cloud.getDuration() * this.getSize() / 4);
         cloud.setRadiusGrowth(-cloud.getRadius() / (float) cloud.getDuration());
         cloud.addEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 1));
