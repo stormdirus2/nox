@@ -15,6 +15,9 @@ import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.projectile.DragonFireballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,6 +36,17 @@ public class NoxUtil {
 
     public static boolean isAtWoodLevel(BlockState state) {
         return !state.isToolRequired() || WOOD_PICKAXE.isSuitableFor(state) || WOOD_AXE.isSuitableFor(state) || WOOD_SHOVEL.isSuitableFor(state);
+    }
+
+    public static boolean isAnAlly(MobEntity attacker, MobEntity victim) {
+
+        boolean validTypes = (attacker instanceof Monster && victim instanceof Monster) ||
+                (attacker instanceof GolemEntity && victim instanceof GolemEntity);
+
+        LivingEntity attackerTarget = attacker.getTarget();
+        LivingEntity victimTarget = victim.getTarget();
+
+        return validTypes && attackerTarget != attacker && victimTarget != victim && victimTarget != null && attackerTarget == victimTarget;
     }
 
     public static void EnderDragonShootFireball(EnderDragonEntity dragon, LivingEntity target) {

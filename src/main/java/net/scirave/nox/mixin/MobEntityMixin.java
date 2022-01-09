@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.scirave.nox.util.NoxUtil;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -96,12 +97,9 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Override
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if (this instanceof Monster) {
-            if (source.getAttacker() instanceof MobEntity attacker && attacker instanceof Monster) {
-                if (attacker.getTarget() != null && attacker.getTarget() == this.getTarget()) {
-                    cir.setReturnValue(true);
-                }
-            }
+        Entity attacker = source.getAttacker();
+        if (attacker instanceof MobEntity mob && NoxUtil.isAnAlly(mob, (MobEntity) (Object) this)) {
+            cir.setReturnValue(true);
         }
     }
 
