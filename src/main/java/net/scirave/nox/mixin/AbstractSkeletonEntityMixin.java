@@ -25,7 +25,7 @@ public abstract class AbstractSkeletonEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "initGoals", at = @At("HEAD"))
     public void nox$skeletonGoals(CallbackInfo ci) {
-        this.goalSelector.add(0, new Nox$FleeSunlightGoal((SkeletonEntity) (Object) this, 1.0F));
+        this.goalSelector.add(0, new Nox$FleeSunlightGoal((AbstractSkeletonEntity) (Object) this, 1.0F));
         this.goalSelector.add(1, new SwimGoal((AbstractSkeletonEntity) (Object) this));
     }
 
