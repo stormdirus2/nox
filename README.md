@@ -98,7 +98,7 @@ Experimentation is encouraged.
 ### Slimes..
 * +150% base health
 * +30% base speed
-* +450% base follow range
+* +150% base follow range
 * Spawn naturally
 * Jump constantly
 * Are invulnerable to fall and non-armor-piercing projectile damage
