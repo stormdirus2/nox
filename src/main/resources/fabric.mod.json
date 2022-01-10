@@ -19,8 +19,8 @@
     "main": [
       "net.scirave.nox.Nox"
     ],
-    "modmenu": [
-      "net.scirave.nox.config.modmenu.NoxModMenuIntegration"
+    "client": [
+      "net.scirave.nox.NoxClient"
     ]
   },
   "mixins": [
@@ -31,8 +31,7 @@
     "fabricloader": ">=0.11.3",
     "fabric": "*",
     "minecraft": "1.18.x",
-    "java": ">=17",
-    "cloth-config2": ">=6.1.48"
+    "java": ">=17"
   },
   "custom": {
     "modupdater": {

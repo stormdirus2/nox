@@ -11,24 +11,47 @@
 
 package net.scirave.nox.config;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.annotation.Config;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
+import draylar.omegaconfig.api.Comment;
+import draylar.omegaconfig.api.Config;
+import net.scirave.nox.Nox;
+import org.jetbrains.annotations.Nullable;
 
-@Config(name = "nox")
-public class NoxConfig extends PartitioningSerializer.GlobalData {
+public class NoxConfig implements Config {
 
+    // Global
+    @Comment("[Global] Friendly fire enabled")
+    public boolean friendlyFire = false;
+    @Comment("[Global] Mobs see through walls")
+    public boolean mobXray = true;
+    @Comment("[Global] Baseline Monster buffs")
+    public boolean buffAllMonsters = true;
+    @Comment("[Global] Baseline Golem buffs")
+    public boolean buffAllGolems = true;
+    @Comment("[Global] (Certain) mobs can break blocks")
+    public boolean mobsBreakBlocks = true;
 
-    @ConfigEntry.Category("sleep")
-    @ConfigEntry.Gui.TransitiveObject
-    private final SleepConfig sleepCategory = new SleepConfig();
+    // Sleep
+    @Comment("[Sleep] Monsters detected glow")
+    public boolean sleepApplyGlowing = true;
+    @Comment("[Sleep] Check expands to reach sea level")
+    public boolean sleepExtendToSeaLevel = true;
+    @Comment("[Sleep] Horizontal search distance")
+    public int sleepHorizontalSearchDistance = 50;
+    @Comment("[Sleep] Minimum vertical search distance")
+    public int sleepMinVerticalSearchDistance = 20;
 
-    public static NoxConfig get() {
-        return AutoConfig.getConfigHolder(NoxConfig.class).getConfig();
+    // Mobs
+    @Comment("[Mobs] Creepers breach walls")
+    public boolean creepersBreachWalls = true;
+
+    @Override
+    public String getName() {
+        return "Nox Config";
     }
 
-    public SleepConfig getSleepConfig() {
-        return this.sleepCategory;
+    @Override
+    public @Nullable String getModid() {
+        return Nox.MOD_ID;
     }
+
 }

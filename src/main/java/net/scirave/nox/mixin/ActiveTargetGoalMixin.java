@@ -15,8 +15,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.TrackTargetGoal;
+import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.passive.GolemEntity;
+import net.scirave.nox.Nox;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,7 +49,7 @@ public abstract class ActiveTargetGoalMixin extends TrackTargetGoal {
 
     @Inject(method = "<init>(Lnet/minecraft/entity/mob/MobEntity;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V", at = @At("TAIL"))
     public void nox$seeThroughWalls(MobEntity mob, Class targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate targetPredicate, CallbackInfo ci) {
-        if (mob instanceof Monster) {
+        if (Nox.CONFIG.mobXray && (mob instanceof Monster || mob instanceof Angerable || mob instanceof GolemEntity)) {
             this.targetPredicate.ignoreVisibility();
         }
     }

@@ -11,17 +11,17 @@
 
 package net.scirave.nox;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
+import draylar.omegaconfig.OmegaConfig;
 import net.fabricmc.api.ModInitializer;
 import net.scirave.nox.config.NoxConfig;
 
 public class Nox implements ModInitializer {
 
+    public static String MOD_ID = "nox";
+    public static final NoxConfig CONFIG = OmegaConfig.register(NoxConfig.class);
+
     @Override
     public void onInitialize() {
-        AutoConfig.register(NoxConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
         // Empty...
     }
 }

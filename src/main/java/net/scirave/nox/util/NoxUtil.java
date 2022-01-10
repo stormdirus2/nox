@@ -25,6 +25,7 @@ import net.minecraft.item.Items;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import net.scirave.nox.Nox;
 
 public class NoxUtil {
 
@@ -46,7 +47,7 @@ public class NoxUtil {
         LivingEntity attackerTarget = attacker.getTarget();
         LivingEntity victimTarget = victim.getTarget();
 
-        return validTypes && attackerTarget != attacker && victimTarget != victim && victimTarget != null && attackerTarget == victimTarget;
+        return !Nox.CONFIG.friendlyFire && validTypes && attackerTarget != attacker && victimTarget != victim && victimTarget != null && attackerTarget == victimTarget;
     }
 
     public static void EnderDragonShootFireball(EnderDragonEntity dragon, LivingEntity target) {

@@ -9,15 +9,16 @@
  * -------------------------------------------------------------------
  */
 
-package net.scirave.nox.config;
+package net.scirave.nox;
 
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
+import draylar.omegaconfiggui.OmegaConfigGui;
+import net.fabricmc.api.ClientModInitializer;
 
-@Config(name = "sleep")
-public class SleepConfig implements ConfigData {
-    public boolean applyGlowing = true;
-    public boolean extendToSeaLevel = true;
-    public int horizontalSearchDistance = 50;
-    public int minVerticalSearchDistance = 20;
+public class NoxClient implements ClientModInitializer {
+
+    @Override
+    public void onInitializeClient() {
+        OmegaConfigGui.registerConfigScreen(Nox.CONFIG);
+    }
+
 }

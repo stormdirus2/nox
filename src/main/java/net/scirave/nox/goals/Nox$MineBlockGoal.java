@@ -22,6 +22,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.scirave.nox.Nox;
 import net.scirave.nox.util.Nox$MiningInterface;
 import net.scirave.nox.util.NoxUtil;
 import org.jetbrains.annotations.Nullable;
@@ -138,6 +139,8 @@ public class Nox$MineBlockGoal extends Goal {
     public boolean canStart() {
         if (shouldContinue()) {
             return true;
+        } else if (!Nox.CONFIG.mobsBreakBlocks) {
+            return false;
         }
         LivingEntity victim = this.owner.getTarget();
 

@@ -16,6 +16,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.world.GameRules;
+import net.scirave.nox.Nox;
 
 import java.util.EnumSet;
 
@@ -30,7 +31,7 @@ public class Nox$CreeperBreachGoal extends Goal {
 
     public boolean canStart() {
         LivingEntity living = this.creeper.getTarget();
-        return living != null && living.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && shouldBreach(living);
+        return Nox.CONFIG.creepersBreachWalls && living != null && living.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && shouldBreach(living);
     }
 
     private boolean shouldBreach(LivingEntity living) {

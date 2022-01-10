@@ -22,8 +22,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.scirave.nox.config.NoxConfig;
-import net.scirave.nox.config.SleepConfig;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -42,11 +41,9 @@ public abstract class ServerPlayerEntityMixin {
     public void nox$sleepNerf(BlockPos pos, CallbackInfoReturnable<Either<PlayerEntity.SleepFailureReason, Unit>> cir) {
         Vec3d vec3d = Vec3d.ofBottomCenter(pos);
         int seaLevel = this.getWorld().getSeaLevel();
-        SleepConfig sleepConfig = NoxConfig.get().getSleepConfig();
-
-        int horizontalSearchDistance = sleepConfig.horizontalSearchDistance;
-        int minVerticalSearchDistance = sleepConfig.minVerticalSearchDistance;
-        boolean extendToSeaLevel = sleepConfig.extendToSeaLevel;
+        int horizontalSearchDistance = Nox.CONFIG.sleepHorizontalSearchDistance;
+        int minVerticalSearchDistance = Nox.CONFIG.sleepMinVerticalSearchDistance;
+        boolean extendToSeaLevel = Nox.CONFIG.sleepExtendToSeaLevel;
 
         double upperY = extendToSeaLevel ? Math.max(vec3d.getY() + minVerticalSearchDistance, seaLevel) : vec3d.getY() + minVerticalSearchDistance;
         double lowerY = extendToSeaLevel ? Math.min(vec3d.getY() - minVerticalSearchDistance, seaLevel) : vec3d.getY() - minVerticalSearchDistance;
@@ -57,7 +54,7 @@ public abstract class ServerPlayerEntityMixin {
                 (hostileEntity) -> hostileEntity.isAngryAt((ServerPlayerEntity) (Object) this)
         );
         if (!list.isEmpty()) {
-            if (NoxConfig.get().getSleepConfig().applyGlowing) {
+            if (Nox.CONFIG.sleepApplyGlowing) {
                 list.forEach((hostile) -> hostile.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 60, 0, false, false)));
             }
 

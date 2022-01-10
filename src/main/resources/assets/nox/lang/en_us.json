@@ -1,7 +1,0 @@
-{
-  "text.autoconfig.nox.title": "Nox Settings",
-  "text.autoconfig.nox.option.sleepCategory.applyGlowing": "[Sleep] Monsters within check glow",
-  "text.autoconfig.nox.option.sleepCategory.extendToSeaLevel": "[Sleep] Monster check extends to sea level",
-  "text.autoconfig.nox.option.sleepCategory.horizontalSearchDistance": "[Sleep] Horizontal distance to check",
-  "text.autoconfig.nox.option.sleepCategory.minVerticalSearchDistance": "[Sleep] Minimum vertical distance to check"
-}

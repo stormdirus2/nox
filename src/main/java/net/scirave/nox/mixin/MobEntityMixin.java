@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.scirave.nox.Nox;
 import net.scirave.nox.util.NoxUtil;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -73,7 +74,7 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Inject(method = "initialize", at = @At("HEAD"))
     public void nox$maybeApplyHostileAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if (this instanceof Monster) {
+        if (this instanceof Monster && Nox.CONFIG.buffAllMonsters) {
             this.nox$hostileAttributes((MobEntity) (Object) this);
         }
     }
