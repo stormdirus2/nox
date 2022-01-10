@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.scirave.nox.config.NoxConfig;
+import net.scirave.nox.config.SleepConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,14 +42,24 @@ public abstract class ServerPlayerEntityMixin {
     public void nox$sleepNerf(BlockPos pos, CallbackInfoReturnable<Either<PlayerEntity.SleepFailureReason, Unit>> cir) {
         Vec3d vec3d = Vec3d.ofBottomCenter(pos);
         int seaLevel = this.getWorld().getSeaLevel();
-        int horizontalSearchDistance = NoxConfig.get().getSleepConfig().horizontalSearchDistance;
-        int minVerticalSearchDistance = NoxConfig.get().getSleepConfig().minVerticalSearchDistance;
-        boolean extendToSeaLevel = NoxConfig.get().getSleepConfig().extendToSeaLevel;
+        SleepConfig sleepConfig = NoxConfig.get().getSleepConfig();
 
-        List<HostileEntity> list = this.getWorld().getEntitiesByClass(HostileEntity.class, new Box(vec3d.getX() - horizontalSearchDistance, extendToSeaLevel ? Math.min(vec3d.getY() - minVerticalSearchDistance, seaLevel) : vec3d.getY() - minVerticalSearchDistance, vec3d.getZ() - horizontalSearchDistance, vec3d.getX() + horizontalSearchDistance, extendToSeaLevel ? Math.max(vec3d.getY() + minVerticalSearchDistance, seaLevel) : vec3d.getY() + minVerticalSearchDistance, vec3d.getZ() + horizontalSearchDistance), (hostileEntity) -> hostileEntity.isAngryAt((ServerPlayerEntity) (Object) this));
+        int horizontalSearchDistance = sleepConfig.horizontalSearchDistance;
+        int minVerticalSearchDistance = sleepConfig.minVerticalSearchDistance;
+        boolean extendToSeaLevel = sleepConfig.extendToSeaLevel;
+
+        double upperY = extendToSeaLevel ? Math.max(vec3d.getY() + minVerticalSearchDistance, seaLevel) : vec3d.getY() + minVerticalSearchDistance;
+        double lowerY = extendToSeaLevel ? Math.min(vec3d.getY() - minVerticalSearchDistance, seaLevel) : vec3d.getY() - minVerticalSearchDistance;
+
+        List<HostileEntity> list = this.getWorld().getEntitiesByClass(HostileEntity.class, new Box(
+                vec3d.getX() - horizontalSearchDistance, lowerY, vec3d.getZ() - horizontalSearchDistance,
+                vec3d.getX() + horizontalSearchDistance, upperY, vec3d.getZ() + horizontalSearchDistance),
+                (hostileEntity) -> hostileEntity.isAngryAt((ServerPlayerEntity) (Object) this)
+        );
         if (!list.isEmpty()) {
-            if (NoxConfig.get().getSleepConfig().applyGlowing)
+            if (NoxConfig.get().getSleepConfig().applyGlowing) {
                 list.forEach((hostile) -> hostile.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 60, 0, false, false)));
+            }
 
             cir.setReturnValue(Either.left(PlayerEntity.SleepFailureReason.NOT_SAFE));
         }
