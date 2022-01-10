@@ -9,19 +9,16 @@
  * -------------------------------------------------------------------
  */
 
-package net.scirave.nox;
+package net.scirave.nox.config.modmenu;
 
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
-import net.fabricmc.api.ModInitializer;
 import net.scirave.nox.config.NoxConfig;
 
-public class Nox implements ModInitializer {
-
+public class NoxModMenuIntegration implements ModMenuApi {
     @Override
-    public void onInitialize() {
-        AutoConfig.register(NoxConfig.class, PartitioningSerializer.wrap(GsonConfigSerializer::new));
-        // Empty...
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        return parent -> AutoConfig.getConfigScreen(NoxConfig.class, parent).get();
     }
 }
