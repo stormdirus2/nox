@@ -18,6 +18,9 @@
   "entrypoints": {
     "main": [
       "net.scirave.nox.Nox"
+    ],
+    "modmenu": [
+      "net.scirave.nox.config.modmenu.NoxModMenuIntegration"
     ]
   },
   "mixins": [
