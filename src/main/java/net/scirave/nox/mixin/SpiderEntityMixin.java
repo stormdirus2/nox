@@ -29,8 +29,8 @@ public abstract class SpiderEntityMixin extends HostileEntityMixin {
 
     private static final BlockState COBWEB = Blocks.COBWEB.getDefaultState();
 
-    @Inject(method = "initGoals", at = @At("HEAD"))
-    public void nox$spiderAvoidSunlight(CallbackInfo ci) {
+    @Override
+    public void nox$initGoals(CallbackInfo ci) {
         this.goalSelector.add(1, new AvoidSunlightGoal((SpiderEntity) (Object) this));
     }
 

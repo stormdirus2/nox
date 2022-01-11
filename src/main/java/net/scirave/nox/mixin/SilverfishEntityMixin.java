@@ -38,8 +38,8 @@ public abstract class SilverfishEntityMixin extends HostileEntityMixin {
         this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Silverfish bonus", 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
 
-    @Inject(method = "initGoals", at = @At("HEAD"))
-    public void nox$silverfishPounce(CallbackInfo ci) {
+    @Override
+    public void nox$initGoals(CallbackInfo ci) {
         this.goalSelector.add(2, new PounceAtTargetGoal((SilverfishEntity) (Object) this, 0.2F));
     }
 

@@ -25,9 +25,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(CreeperEntity.class)
 public abstract class CreeperEntityMixin extends HostileEntityMixin {
 
-    @Inject(method = "initGoals", at = @At("TAIL"))
-    public void nox$creeperFleeBlocking(CallbackInfo ci) {
-        this.goalSelector.add(2, new FleeEntityGoal((CreeperEntity) (Object) this, LivingEntity.class, 4.0F, 1.2D, 1.5D, (living) -> {
+    @Override
+    public void nox$initGoals(CallbackInfo ci) {
+        this.goalSelector.add(2, new FleeEntityGoal((CreeperEntity) (Object) this, LivingEntity.class,
+                4.0F, 1.2D, 1.5D, (living) -> {
             if (living instanceof LivingEntity livingEntity) {
                 return livingEntity.isBlocking() && livingEntity.blockedByShield(EntityDamageSource.explosion((CreeperEntity) (Object) this));
             }

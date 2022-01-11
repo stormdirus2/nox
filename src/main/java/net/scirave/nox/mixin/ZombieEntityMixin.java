@@ -47,8 +47,8 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
         }
     }
 
-    @Inject(method = "initGoals", at = @At("HEAD"))
-    public void nox$universalZombieGoals(CallbackInfo ci) {
+    @Override
+    public void nox$initGoals(CallbackInfo ci) {
         if (this.burnsInDaylight()) {
             nox$zombieHideFromSun();
         }
