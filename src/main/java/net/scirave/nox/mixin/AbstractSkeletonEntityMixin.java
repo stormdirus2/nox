@@ -13,6 +13,7 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
+import net.scirave.nox.Nox;
 import net.scirave.nox.goals.Nox$FleeSunlightGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -23,7 +24,9 @@ public abstract class AbstractSkeletonEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$initGoals(CallbackInfo ci) {
         this.goalSelector.add(0, new Nox$FleeSunlightGoal((AbstractSkeletonEntity) (Object) this, 1.0F));
-        this.goalSelector.add(1, new SwimGoal((AbstractSkeletonEntity) (Object) this));
+
+        if (Nox.CONFIG.skeletonsCanSwim)
+            this.goalSelector.add(1, new SwimGoal((AbstractSkeletonEntity) (Object) this));
     }
 
 }

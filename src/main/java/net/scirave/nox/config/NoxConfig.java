@@ -63,6 +63,8 @@ public class NoxConfig implements Config {
     public int blazeIgnitionRadius = 2;
     @Comment("[Mobs] Creepers breach walls")
     public boolean creepersBreachWalls = true;
+    @Comment("[Mobs] Skeletons can swim")
+    public boolean skeletonsCanSwim = true;
     @Comment("[Mobs] Spider attacks place webs")
     public boolean spiderAttacksPlaceWebs = true;
 
