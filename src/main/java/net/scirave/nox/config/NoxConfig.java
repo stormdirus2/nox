@@ -57,16 +57,20 @@ public class NoxConfig implements Config {
     public int sleepMinVerticalSearchDistance = 20;
 
     // Mobs
-    @Comment("[Mobs] Blazes ignite nearby targets")
-    public boolean blazesIgniteNearbyTargets = true;
-    @Comment("[Mobs] Blaze ignition radius")
-    public int blazeIgnitionRadius = 2;
     @Comment("[Mobs] Creepers breach walls")
     public boolean creepersBreachWalls = true;
     @Comment("[Mobs] Skeletons can swim")
     public boolean skeletonsCanSwim = true;
     @Comment("[Mobs] Spider attacks place webs")
     public boolean spiderAttacksPlaceWebs = true;
+
+    // Blaze
+    @Comment("[Blaze] Fireball recharge speed multiplier")
+    public int blazeFireballRechargeSpeedMultiplier = 2;
+    @Comment("[Blaze] Ignite nearby targets")
+    public boolean blazesIgniteNearbyTargets = true;
+    @Comment("[Blaze] Ignition radius")
+    public int blazeIgnitionRadius = 2;
 
     @Override
     public String getName() {

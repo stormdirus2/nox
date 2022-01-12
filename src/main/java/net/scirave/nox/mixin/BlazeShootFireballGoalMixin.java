@@ -15,6 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.BlazeEntity;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,7 +43,8 @@ public abstract class BlazeShootFireballGoalMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void nox$blazeLessFireballCooldown(CallbackInfo ci) {
-        this.fireballCooldown--;
+        if (Nox.CONFIG.blazeFireballRechargeSpeedMultiplier > 1)
+            this.fireballCooldown -= (Nox.CONFIG.blazeFireballRechargeSpeedMultiplier - 1);
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/BlazeEntity;getX()D", ordinal = 0), cancellable = true)
