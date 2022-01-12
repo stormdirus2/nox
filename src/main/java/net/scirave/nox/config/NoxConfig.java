@@ -49,7 +49,7 @@ public class NoxConfig implements Config {
     // Sleep
     @Comment("[Sleep] Monsters detected glow")
     public boolean sleepApplyGlowing = true;
-    @Comment("[Sleep] Check expands to reach sea level")
+    @Comment("[Sleep] Check extends to reach sea level")
     public boolean sleepExtendToSeaLevel = true;
     @Comment("[Sleep] Horizontal search distance")
     public int sleepHorizontalSearchDistance = 50;
