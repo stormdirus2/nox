@@ -23,7 +23,7 @@ public abstract class BlazeEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
-        if (Nox.CONFIG.blazesIgniteNearbyTargets) {
+        if (Nox.CONFIG.blazeIgnitionRadius > 0) {
             LivingEntity target = this.getTarget();
             if (target != null && target.squaredDistanceTo((BlazeEntity) (Object) this) <= MathHelper.square(Nox.CONFIG.blazeIgnitionRadius)) {
                 target.setOnFireFor(4);

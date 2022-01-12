@@ -71,9 +71,7 @@ public class NoxConfig implements Config {
     // Blaze
     @Comment("[Blaze] Fireball recharge speed multiplier")
     public int blazeFireballRechargeSpeedMultiplier = 2;
-    @Comment("[Blaze] Ignite nearby targets")
-    public boolean blazesIgniteNearbyTargets = true;
-    @Comment("[Blaze] Ignition radius")
+    @Comment("[Blaze] Ignite targets within X blocks")
     public int blazeIgnitionRadius = 2;
 
     @Override
