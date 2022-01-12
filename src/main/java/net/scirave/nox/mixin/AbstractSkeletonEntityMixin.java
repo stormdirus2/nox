@@ -13,11 +13,8 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
-import net.minecraft.entity.mob.SkeletonEntity;
 import net.scirave.nox.goals.Nox$FleeSunlightGoal;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractSkeletonEntity.class)
