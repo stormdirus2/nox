@@ -57,6 +57,8 @@ public class NoxConfig implements Config {
     // Mobs
     @Comment("[Mobs] Creepers breach walls")
     public boolean creepersBreachWalls = true;
+    @Comment("[Mobs] Spider attacks place webs")
+    public boolean spidersPlaceWebs = true;
 
     @Override
     public String getName() {
