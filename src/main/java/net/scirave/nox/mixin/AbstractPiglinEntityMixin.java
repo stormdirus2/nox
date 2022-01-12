@@ -12,6 +12,7 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.mob.AbstractPiglinEntity;
+import net.scirave.nox.Nox;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,7 +22,8 @@ public abstract class AbstractPiglinEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$initGoals(CallbackInfo ci) {
-        this.goalSelector.add(1, new Nox$MineBlockGoal((AbstractPiglinEntity) (Object) this));
+        if (Nox.CONFIG.piglinsBreakBlocks)
+            this.goalSelector.add(1, new Nox$MineBlockGoal((AbstractPiglinEntity) (Object) this));
     }
 
 }

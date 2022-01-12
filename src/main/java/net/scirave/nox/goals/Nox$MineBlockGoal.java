@@ -29,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class Nox$MineBlockGoal extends Goal {
 
-
     protected final MobEntity owner;
     private LivingEntity target;
     private BlockPos posToMine;
@@ -48,7 +47,7 @@ public class Nox$MineBlockGoal extends Goal {
     }
 
     public static boolean canMine(BlockState block) {
-        if (block.getBlock().getHardness() >= 3.0F && block.getMaterial() != Material.WOOD) {
+        if (block.getBlock().getHardness() >= Nox.CONFIG.maxBlockHardnessMineableByMobs && block.getMaterial() != Material.WOOD) {
             return false;
         }
         return NoxUtil.isAtWoodLevel(block);
@@ -139,8 +138,6 @@ public class Nox$MineBlockGoal extends Goal {
     public boolean canStart() {
         if (shouldContinue()) {
             return true;
-        } else if (!Nox.CONFIG.mobsBreakBlocks) {
-            return false;
         }
         LivingEntity victim = this.owner.getTarget();
 

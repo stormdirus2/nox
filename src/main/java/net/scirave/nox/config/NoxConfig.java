@@ -27,8 +27,22 @@ public class NoxConfig implements Config {
     public boolean buffAllMonsters = true;
     @Comment("[Global] Baseline Golem buffs")
     public boolean buffAllGolems = true;
-    @Comment("[Global] (Certain) mobs can break blocks")
-    public boolean mobsBreakBlocks = true;
+
+    // Block Breaking
+    @Comment("[Block Breaking] Max block hardness mineable")
+    public float maxBlockHardnessMineableByMobs = 3.0F;
+    @Comment("[Block Breaking] Endermen can break blocks")
+    public boolean endermenBreakBlocks = true;
+    @Comment("[Block Breaking] Piglins can break blocks")
+    public boolean piglinsBreakBlocks = true;
+    @Comment("[Block Breaking] Pillagers can break blocks")
+    public boolean pillagersBreakBlocks = true;
+    @Comment("[Block Breaking] Vindicators can break blocks")
+    public boolean vindicatorsBreakBlocks = true;
+    @Comment("[Block Breaking] Wither Skeletons can break blocks")
+    public boolean witherSkeletonsBreakBlocks = true;
+    @Comment("[Block Breaking] Zombies can break blocks")
+    public boolean zombiesBreakBlocks = true;
 
     // Sleep
     @Comment("[Sleep] Monsters detected glow")

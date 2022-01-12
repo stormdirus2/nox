@@ -21,6 +21,7 @@ import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.scirave.nox.Nox;
 import net.scirave.nox.goals.Nox$FleeSunlightGoal;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import net.scirave.nox.util.Nox$PounceInterface;
@@ -52,7 +53,9 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
         if (this.burnsInDaylight()) {
             nox$zombieHideFromSun();
         }
-        this.goalSelector.add(0, new Nox$MineBlockGoal((ZombieEntity) (Object) this));
+        if (Nox.CONFIG.zombiesBreakBlocks)
+            this.goalSelector.add(0, new Nox$MineBlockGoal((ZombieEntity) (Object) this));
+
         PounceAtTargetGoal goal = new PounceAtTargetGoal((ZombieEntity) (Object) this, 0.25F);
         ((Nox$PounceInterface) goal).setCooldown(30L);
         this.goalSelector.add(1, goal);

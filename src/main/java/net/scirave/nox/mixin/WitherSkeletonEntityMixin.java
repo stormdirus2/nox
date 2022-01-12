@@ -25,6 +25,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.scirave.nox.Nox;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,7 +53,8 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
     @Override
     public void nox$initGoals(CallbackInfo ci) {
         super.nox$initGoals(ci); // Inherit AbstractSkeletonEntityMixin goals
-        this.goalSelector.add(4, new Nox$MineBlockGoal((WitherSkeletonEntity) (Object) this));
+        if (Nox.CONFIG.witherSkeletonsBreakBlocks)
+            this.goalSelector.add(4, new Nox$MineBlockGoal((WitherSkeletonEntity) (Object) this));
     }
 
     @Override

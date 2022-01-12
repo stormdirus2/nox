@@ -17,6 +17,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.scirave.nox.Nox;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -66,7 +67,8 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$initGoals(CallbackInfo ci) {
-        this.goalSelector.add(1, new Nox$MineBlockGoal((EndermanEntity) (Object) this));
+        if (Nox.CONFIG.endermenBreakBlocks)
+            this.goalSelector.add(1, new Nox$MineBlockGoal((EndermanEntity) (Object) this));
     }
 
     @Override
