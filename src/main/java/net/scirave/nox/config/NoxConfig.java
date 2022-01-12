@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public class NoxConfig implements Config {
 
     // Global
-    @Comment("[Global] Friendly fire enabled")
+    @Comment("[Global] Enable mob friendly fire")
     public boolean friendlyFire = false;
     @Comment("[Global] Mobs see through walls")
     public boolean mobXray = true;
