@@ -27,6 +27,8 @@ public class NoxConfig implements Config {
     public boolean buffAllMonsters = true;
     @Comment("[Global] Baseline Golem buffs")
     public boolean buffAllGolems = true;
+    @Comment("[Global] Contact provokes Monsters")
+    public boolean contactProvokesMonsters = true;
 
     // Block Breaking
     @Comment("[Block Breaking] Max block hardness mineable")

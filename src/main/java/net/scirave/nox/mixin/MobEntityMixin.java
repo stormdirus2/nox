@@ -87,7 +87,8 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Override
     public void nox$onPushAway(Entity entity, CallbackInfo ci) {
-        if (this instanceof Monster && this.getTarget() == null && entity instanceof PlayerEntity player && this.canTarget(player)) {
+        if (Nox.CONFIG.contactProvokesMonsters && this instanceof Monster && this.getTarget() == null
+                && entity instanceof PlayerEntity player && this.canTarget(player)) {
             nox$maybeAngerOnShove(player);
         }
     }
