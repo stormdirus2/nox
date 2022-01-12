@@ -74,15 +74,18 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Inject(method = "initialize", at = @At("HEAD"))
     public void nox$maybeApplyHostileAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if (this instanceof Monster && Nox.CONFIG.buffAllMonsters) {
+        if (this instanceof Monster) {
             this.nox$hostileAttributes((MobEntity) (Object) this);
         }
     }
 
     public void nox$hostileAttributes(MobEntity mob) {
-        mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", 0.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        mob.setHealth(mob.getMaxHealth());
-        mob.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", 0.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (Nox.CONFIG.monsterBaseHealthMultiplier > 1) {
+            mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", Nox.CONFIG.monsterBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+            mob.setHealth(mob.getMaxHealth());
+        }
+        if (Nox.CONFIG.monsterFollowRangeMultiplier >= 0)
+            mob.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", Nox.CONFIG.monsterFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
 
     @Override

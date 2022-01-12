@@ -23,10 +23,14 @@ public class NoxConfig implements Config {
     public boolean friendlyFire = false;
     @Comment("[Global] Mobs see through walls")
     public boolean mobXray = true;
-    @Comment("[Global] Baseline Monster buffs")
-    public boolean buffAllMonsters = true;
-    @Comment("[Global] Baseline Golem buffs")
-    public boolean buffAllGolems = true;
+    @Comment("[Global] Monster base health multiplier")
+    public double monsterBaseHealthMultiplier = 1.5;
+    @Comment("[Global] Monster follow range multiplier")
+    public double monsterFollowRangeMultiplier = 1.5;
+    @Comment("[Global] Golem base health multiplier")
+    public double golemBaseHealthMultiplier = 2.0;
+    @Comment("[Global] Golem follow range multiplier")
+    public double golemFollowRangeMultiplier = 2.0;
     @Comment("[Global] Contact provokes Monsters")
     public boolean contactProvokesMonsters = true;
 
