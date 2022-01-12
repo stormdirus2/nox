@@ -55,10 +55,14 @@ public class NoxConfig implements Config {
     public int sleepMinVerticalSearchDistance = 20;
 
     // Mobs
+    @Comment("[Mobs] Blazes ignite nearby targets")
+    public boolean blazesIgniteNearbyTargets = true;
+    @Comment("[Mobs] Blaze ignition radius")
+    public int blazeIgnitionRadius = 2;
     @Comment("[Mobs] Creepers breach walls")
     public boolean creepersBreachWalls = true;
     @Comment("[Mobs] Spider attacks place webs")
-    public boolean spidersPlaceWebs = true;
+    public boolean spiderAttacksPlaceWebs = true;
 
     @Override
     public String getName() {

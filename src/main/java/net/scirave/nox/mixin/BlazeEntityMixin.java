@@ -13,6 +13,8 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.BlazeEntity;
+import net.minecraft.util.math.MathHelper;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -21,9 +23,11 @@ public abstract class BlazeEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
-        LivingEntity target = this.getTarget();
-        if (target != null && target.squaredDistanceTo((BlazeEntity) (Object) this) <= 4) {
-            target.setOnFireFor(4);
+        if (Nox.CONFIG.blazesIgniteNearbyTargets) {
+            LivingEntity target = this.getTarget();
+            if (target != null && target.squaredDistanceTo((BlazeEntity) (Object) this) <= MathHelper.square(Nox.CONFIG.blazeIgnitionRadius)) {
+                target.setOnFireFor(4);
+            }
         }
     }
 
