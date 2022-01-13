@@ -41,8 +41,9 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if (!this.isBaby()) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addPersistentModifier(new EntityAttributeModifier("Nox: Zombie bonus", 0.3, EntityAttributeModifier.Operation.ADDITION));
+        if (Nox.CONFIG.zombieKnockbackResistanceMultiplier > 1 && (Nox.CONFIG.babyZombiesGetKnockbackResistance || !this.isBaby())) {
+            this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)
+                    .addPersistentModifier(new EntityAttributeModifier("Nox: Zombie bonus", Nox.CONFIG.zombieKnockbackResistanceMultiplier - 1, EntityAttributeModifier.Operation.ADDITION));
         }
     }
 
@@ -54,9 +55,11 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
         if (Nox.CONFIG.zombiesBreakBlocks)
             this.goalSelector.add(0, new Nox$MineBlockGoal((ZombieEntity) (Object) this));
 
-        PounceAtTargetGoal goal = new PounceAtTargetGoal((ZombieEntity) (Object) this, 0.25F);
-        ((Nox$PounceInterface) goal).setCooldown(30L);
-        this.goalSelector.add(1, goal);
+        if (Nox.CONFIG.zombiesPounceAtTarget) {
+            PounceAtTargetGoal goal = new PounceAtTargetGoal((ZombieEntity) (Object) this, 0.25F);
+            ((Nox$PounceInterface) goal).nox$setPounceCooldown(Nox.CONFIG.zombiePounceCooldown);
+            this.goalSelector.add(1, goal);
+        }
     }
 
     public void nox$zombieHideFromSun() {

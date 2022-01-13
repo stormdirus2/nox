@@ -15,6 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.CaveSpiderEntity;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(CaveSpiderEntity.class)
@@ -23,7 +24,8 @@ public abstract class CaveSpiderEntityMixin extends SpiderEntityMixin {
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
         super.nox$onSuccessfulAttack(target);
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 1), (CaveSpiderEntity) (Object) this);
+        if (Nox.CONFIG.caveSpidersApplySlowness)
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 2), (CaveSpiderEntity) (Object) this);
     }
 
 }

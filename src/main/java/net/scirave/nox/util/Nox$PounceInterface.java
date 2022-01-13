@@ -13,6 +13,6 @@ package net.scirave.nox.util;
 
 public interface Nox$PounceInterface {
 
-    void setCooldown(long cooldown);
+    void nox$setPounceCooldown(long pounceCooldown);
 
 }

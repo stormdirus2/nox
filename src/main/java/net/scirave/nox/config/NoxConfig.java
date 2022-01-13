@@ -65,6 +65,8 @@ public class NoxConfig implements Config {
     public boolean creepersBreachWalls = true;
     @Comment("[Mobs] Skeletons can swim")
     public boolean skeletonsCanSwim = true;
+    @Comment("[Mobs] Cave Spider attacks give Slowness II")
+    public boolean caveSpidersApplySlowness = true;
     @Comment("[Mobs] Spider attacks place webs")
     public boolean spiderAttacksPlaceWebs = true;
 
@@ -73,6 +75,16 @@ public class NoxConfig implements Config {
     public int blazeFireballRechargeSpeedMultiplier = 2;
     @Comment("[Blaze] Ignite targets within X blocks")
     public int blazeIgnitionRadius = 2;
+
+    // Zombies
+    @Comment("[Zombies] Zombies pounce at their target")
+    public boolean zombiesPounceAtTarget = true;
+    @Comment("[Zombies] Pounce cooldown (ticks)")
+    public long zombiePounceCooldown = 30;
+    @Comment("[Zombies] Knockback resistance multiplier")
+    public double zombieKnockbackResistanceMultiplier = 1.3;
+    @Comment("[Zombies] Babies get knockback resistance")
+    public boolean babyZombiesGetKnockbackResistance = false;
 
     @Override
     public String getName() {

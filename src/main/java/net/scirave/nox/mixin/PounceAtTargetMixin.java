@@ -30,8 +30,8 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 @Mixin(PounceAtTargetGoal.class)
 public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceInterface {
 
-    protected long cooldown = 10;
-    protected long lastUsage = 0;
+    protected long nox$pounceCooldown = 10; // in ticks
+    protected long nox$lastPounceUsage = 0;
     @Shadow
     private LivingEntity target;
     @Shadow
@@ -51,8 +51,8 @@ public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceInte
         if (this.target != null && this.mob.isOnGround() && !((Nox$MiningInterface) this.mob).isMining()) {
             double d = this.mob.squaredDistanceTo(this.target);
             if (!(d <= 4.0D) && !(d >= 16.0D)) {
-                if ((this.mob.world.getTime() - this.lastUsage) >= this.cooldown) {
-                    this.lastUsage = this.mob.world.getTime();
+                if ((this.mob.world.getTime() - this.nox$lastPounceUsage) >= this.nox$pounceCooldown) {
+                    this.nox$lastPounceUsage = this.mob.world.getTime();
                     this.mob.getLookControl().lookAt(this.target);
                     Hand hand = this.mob.preferredHand;
                     if (hand != null) {
@@ -69,8 +69,8 @@ public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceInte
     }
 
     @Override
-    public void setCooldown(long cooldown) {
-        this.cooldown = cooldown;
+    public void nox$setPounceCooldown(long pounceCooldown) {
+        this.nox$pounceCooldown = pounceCooldown;
     }
 
 }
