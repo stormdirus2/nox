@@ -25,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.WorldAccess;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,8 +40,8 @@ import java.util.Random;
 public abstract class SlimeEntityMixin extends MobEntityMixin {
 
     @Inject(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/gen/random/ChunkRandom;getSlimeRandom(IIJJ)Ljava/util/Random;"), cancellable = true)
-    private static void nox$slimeSpawnNaturally(EntityType<SlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
-        if (world.getLightLevel(pos) <= 7) {
+    private static void nox$slimesSpawnNaturally(EntityType<SlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
+        if (Nox.CONFIG.allowSlimesInAllChunks && world.getLightLevel(pos) <= 7) {
             cir.setReturnValue(SlimeEntity.canMobSpawn(type, world, spawnReason, pos, random));
         }
     }
@@ -62,11 +63,16 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", 1.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        this.setHealth(this.getMaxHealth());
-        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", 1.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (Nox.CONFIG.slimeBaseHealthMultiplier > 1) {
+            this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", Nox.CONFIG.slimeBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+            this.setHealth(this.getMaxHealth());
+        }
+        if (Nox.CONFIG.slimeFollowRangeMultiplier > 0)
+            this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", Nox.CONFIG.slimeFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (Nox.CONFIG.slimeMoveSpeedMultiplier > 1)
+            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", Nox.CONFIG.slimeMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+
         this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_KNOCKBACK).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", 0, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
-        this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", 0.3, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
 
     @Override
@@ -83,14 +89,16 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     }
 
     public void nox$slimeOnDeath() {
-        AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(this.world, this.getX(), this.getY(), this.getZ());
-        cloud.setRadius(2.5F * this.getSize());
-        cloud.setRadiusOnUse(-0.5F);
-        cloud.setWaitTime(10 * this.getSize());
-        cloud.setDuration(cloud.getDuration() * this.getSize() / 4);
-        cloud.setRadiusGrowth(-cloud.getRadius() / (float) cloud.getDuration());
-        cloud.addEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 1));
-        this.world.spawnEntity(cloud);
+        if (Nox.CONFIG.slimePoisonCloudOnDeath) {
+            AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(this.world, this.getX(), this.getY(), this.getZ());
+            cloud.setRadius(2.5F * this.getSize());
+            cloud.setRadiusOnUse(-0.5F);
+            cloud.setWaitTime(10 * this.getSize());
+            cloud.setDuration(cloud.getDuration() * this.getSize() / 4);
+            cloud.setRadiusGrowth(-cloud.getRadius() / (float) cloud.getDuration());
+            cloud.addEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 1));
+            this.world.spawnEntity(cloud);
+        }
     }
 
     @Override

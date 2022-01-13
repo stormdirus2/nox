@@ -34,6 +34,9 @@ public class NoxConfig implements Config {
     @Comment("[Global] Contact provokes Monsters")
     public boolean contactProvokesMonsters = true;
 
+    @Comment("[Spawning] Guardians spawn in oceans")
+    public boolean guardiansSpawnNaturally = true;
+
     // Block Breaking
     @Comment("[Block Breaking] Max block hardness mineable")
     public float maxBlockHardnessMineableByMobs = 3.0F;
@@ -83,6 +86,18 @@ public class NoxConfig implements Config {
     public boolean endermanAppliesBlindnessOnAggro = true;
     @Comment("[Enderman] Apply blindness on hit")
     public boolean endermanAppliesBlindnessOnHit = true;
+
+    // Slimes
+    @Comment("[Slimes] Remove Slime spawn restrictions")
+    public boolean allowSlimesInAllChunks = true;
+    @Comment("[Slimes] Slime base health multiplier")
+    public double slimeBaseHealthMultiplier = 2.5;
+    @Comment("[Slimes] Base follow range multiplier")
+    public double slimeFollowRangeMultiplier = 2.5;
+    @Comment("[Slimes] Base move speed multiplier")
+    public double slimeMoveSpeedMultiplier = 1.3;
+    @Comment("[Slimes] Slimes spawn poison cloud on death")
+    public boolean slimePoisonCloudOnDeath = true;
 
     // Spiders
     @Comment("[Spiders] Spider attacks place webs")
