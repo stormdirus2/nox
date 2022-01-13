@@ -16,7 +16,9 @@ import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.ai.goal.PounceAtTargetGoal;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.scirave.nox.Nox;
 import net.scirave.nox.goals.Nox$CreeperBreachGoal;
+import net.scirave.nox.util.Nox$PounceInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -32,8 +34,13 @@ public abstract class CreeperEntityMixin extends HostileEntityMixin {
             }
             return false;
         }));
-        this.goalSelector.add(3, new Nox$CreeperBreachGoal((CreeperEntity) (Object) this));
-        this.goalSelector.add(3, new PounceAtTargetGoal((CreeperEntity) (Object) this, 0.4F));
+        if (Nox.CONFIG.creepersBreachWalls)
+            this.goalSelector.add(3, new Nox$CreeperBreachGoal((CreeperEntity) (Object) this));
+        if (Nox.CONFIG.creepersPounceAtTarget) {
+            PounceAtTargetGoal goal = new PounceAtTargetGoal((CreeperEntity) (Object) this, 0.4F);
+            ((Nox$PounceInterface) goal).nox$setPounceCooldown(Math.max(Nox.CONFIG.creeperPounceCooldown, 0));
+            this.goalSelector.add(3, goal);
+        }
     }
 
 }

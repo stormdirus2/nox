@@ -61,8 +61,6 @@ public class NoxConfig implements Config {
     public int sleepMinVerticalSearchDistance = 20;
 
     // Mobs (Misc.)
-    @Comment("[Mobs] Creepers breach walls")
-    public boolean creepersBreachWalls = true;
     @Comment("[Mobs] Skeletons can swim")
     public boolean skeletonsCanSwim = true;
 
@@ -71,6 +69,20 @@ public class NoxConfig implements Config {
     public int blazeFireballRechargeSpeedMultiplier = 2;
     @Comment("[Blaze] Ignite targets within X blocks")
     public int blazeIgnitionRadius = 2;
+
+    // Creeper
+    @Comment("[Creeper] Creepers breach walls")
+    public boolean creepersBreachWalls = true;
+    @Comment("[Creeper] Creepers pounce at their target")
+    public boolean creepersPounceAtTarget = true;
+    @Comment("[Creeper] Pounce cooldown (ticks)")
+    public long creeperPounceCooldown = 10;
+
+    // Enderman
+    @Comment("[Enderman] Apply blindness when provoked")
+    public boolean endermanAppliesBlindnessOnAggro = true;
+    @Comment("[Enderman] Apply blindness on hit")
+    public boolean endermanAppliesBlindnessOnHit = true;
 
     // Spiders
     @Comment("[Spiders] Spider attacks place webs")

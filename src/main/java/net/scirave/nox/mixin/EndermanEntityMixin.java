@@ -42,7 +42,7 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "setTarget", at = @At("HEAD"))
     public void nox$endermanBlindOnProvoked(LivingEntity target, CallbackInfo ci) {
-        if (this.getTarget() != target && target != null) {
+        if (Nox.CONFIG.endermanAppliesBlindnessOnAggro && this.getTarget() != target && target != null) {
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200), (EndermanEntity) (Object) this);
         }
     }
@@ -79,7 +79,8 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200), (EndermanEntity) (Object) this);
+        if (Nox.CONFIG.endermanAppliesBlindnessOnHit)
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200), (EndermanEntity) (Object) this);
     }
 
 }

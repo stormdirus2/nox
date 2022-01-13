@@ -57,7 +57,7 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
 
         if (Nox.CONFIG.zombiesPounceAtTarget) {
             PounceAtTargetGoal goal = new PounceAtTargetGoal((ZombieEntity) (Object) this, 0.25F);
-            ((Nox$PounceInterface) goal).nox$setPounceCooldown(Nox.CONFIG.zombiePounceCooldown);
+            ((Nox$PounceInterface) goal).nox$setPounceCooldown(Math.max(Nox.CONFIG.zombiePounceCooldown, 0));
             this.goalSelector.add(1, goal);
         }
     }
