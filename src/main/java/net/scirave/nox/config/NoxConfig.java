@@ -60,21 +60,25 @@ public class NoxConfig implements Config {
     @Comment("[Sleep] Minimum vertical search distance")
     public int sleepMinVerticalSearchDistance = 20;
 
-    // Mobs
+    // Mobs (Misc.)
     @Comment("[Mobs] Creepers breach walls")
     public boolean creepersBreachWalls = true;
     @Comment("[Mobs] Skeletons can swim")
     public boolean skeletonsCanSwim = true;
-    @Comment("[Mobs] Cave Spider attacks give Slowness II")
-    public boolean caveSpidersApplySlowness = true;
-    @Comment("[Mobs] Spider attacks place webs")
-    public boolean spiderAttacksPlaceWebs = true;
 
     // Blaze
     @Comment("[Blaze] Fireball recharge speed multiplier")
     public int blazeFireballRechargeSpeedMultiplier = 2;
     @Comment("[Blaze] Ignite targets within X blocks")
     public int blazeIgnitionRadius = 2;
+
+    // Spiders
+    @Comment("[Spiders] Spider attacks place webs")
+    public boolean spiderAttacksPlaceWebs = true;
+    @Comment("[Spiders] Cave Spider attacks place webs")
+    public boolean caveSpiderAttacksPlaceWebs = false;
+    @Comment("[Spiders] Cave Spider attacks give Slowness II")
+    public boolean caveSpidersApplySlowness = true;
 
     // Zombies
     @Comment("[Zombies] Zombies pounce at their target")

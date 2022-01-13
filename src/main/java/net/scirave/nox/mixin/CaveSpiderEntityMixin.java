@@ -23,7 +23,8 @@ public abstract class CaveSpiderEntityMixin extends SpiderEntityMixin {
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        super.nox$onSuccessfulAttack(target);
+        if (Nox.CONFIG.caveSpiderAttacksPlaceWebs)
+            super.nox$onSuccessfulAttack(target);
         if (Nox.CONFIG.caveSpidersApplySlowness)
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 2), (CaveSpiderEntity) (Object) this);
     }
