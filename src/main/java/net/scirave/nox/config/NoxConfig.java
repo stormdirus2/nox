@@ -34,8 +34,8 @@ public class NoxConfig implements Config {
     @Comment("[Global] Contact provokes Monsters")
     public boolean contactProvokesMonsters = true;
 
-    @Comment("[Spawning] Guardians spawn in oceans")
-    public boolean guardiansSpawnNaturally = true;
+    @Comment("[Spawning] Guardian natural spawn weight")
+    public int guardianNaturalSpawnWeight = 10;
 
     // Block Breaking
     @Comment("[Block Breaking] Max block hardness mineable")
@@ -106,6 +106,7 @@ public class NoxConfig implements Config {
     public boolean caveSpiderAttacksPlaceWebs = false;
     @Comment("[Spiders] Cave Spider attacks give Slowness II")
     public boolean caveSpidersApplySlowness = true;
+    public boolean preventCobwebDropsNearSpiders = false;
 
     // Zombies
     @Comment("[Zombies] Zombies pounce at their target")

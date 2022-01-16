@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -59,12 +60,14 @@ public class DefaultBiomeFeaturesMixin {
 
     @Inject(method = "addOceanMobs", at = @At("TAIL"))
     private static void nox$guardianSpawns1(SpawnSettings.Builder builder, int squidWeight, int squidMaxGroupSize, int codWeight, CallbackInfo ci) {
-        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, 10, 4, 4));
+        if (Nox.CONFIG.guardianNaturalSpawnWeight > 0)
+            builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, Nox.CONFIG.guardianNaturalSpawnWeight, 4, 4));
     }
 
     @Inject(method = "addWarmOceanMobs", at = @At("TAIL"))
     private static void nox$guardianSpawns2(SpawnSettings.Builder builder, int squidWeight, int squidMinGroupSize, CallbackInfo ci) {
-        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, 10, 4, 4));
+        if (Nox.CONFIG.guardianNaturalSpawnWeight > 0)
+            builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, Nox.CONFIG.guardianNaturalSpawnWeight, 4, 4));
     }
 
 }
