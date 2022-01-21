@@ -11,8 +11,10 @@
 
 package net.scirave.nox.util;
 
-public interface Nox$PounceInterface {
+public interface Nox$PouncingEntityInterface {
 
-    void nox$setPounceCooldown(long pounceCooldown);
+    default boolean nox$isAllowedToPounce() {
+        return false;
+    }
 
 }

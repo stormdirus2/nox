@@ -22,8 +22,12 @@ public abstract class PillagerEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$initGoals(CallbackInfo ci) {
-        if (Nox.CONFIG.pillagersBreakBlocks)
-            this.goalSelector.add(4, new Nox$MineBlockGoal((PillagerEntity) (Object) this));
+        this.goalSelector.add(4, new Nox$MineBlockGoal((PillagerEntity) (Object) this));
+    }
+
+    @Override
+    public boolean nox$isAllowedToMine() {
+        return Nox.CONFIG.pillagersBreakBlocks;
     }
 
 }

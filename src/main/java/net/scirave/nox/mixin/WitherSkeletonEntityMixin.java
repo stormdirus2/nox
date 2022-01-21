@@ -51,8 +51,7 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
 
     @Inject(method = "initGoals", at = @At("TAIL"))
     public void nox$witherSkeletonInitGoals(CallbackInfo ci) {
-        if (Nox.CONFIG.witherSkeletonsBreakBlocks)
-            this.goalSelector.add(4, new Nox$MineBlockGoal((WitherSkeletonEntity) (Object) this));
+        this.goalSelector.add(4, new Nox$MineBlockGoal((WitherSkeletonEntity) (Object) this));
     }
 
     @Override
@@ -66,6 +65,11 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
         this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", 0.3, EntityAttributeModifier.Operation.ADDITION));
+    }
+
+    @Override
+    public boolean nox$isAllowedToMine() {
+        return Nox.CONFIG.witherSkeletonsBreakBlocks;
     }
 
 }

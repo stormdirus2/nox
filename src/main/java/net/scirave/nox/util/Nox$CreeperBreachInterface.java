@@ -11,14 +11,10 @@
 
 package net.scirave.nox.util;
 
-public interface Nox$MiningInterface {
+public interface Nox$CreeperBreachInterface {
 
-    default boolean nox$isAllowedToMine() {
+    default boolean nox$isAllowedToBreachWalls() {
         return false;
     }
-
-    boolean nox$isMining();
-
-    void nox$setMining(boolean bool);
 
 }

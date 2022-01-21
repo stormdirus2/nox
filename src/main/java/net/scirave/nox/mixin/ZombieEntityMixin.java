@@ -24,7 +24,8 @@ import net.minecraft.world.ServerWorldAccess;
 import net.scirave.nox.Nox;
 import net.scirave.nox.goals.Nox$FleeSunlightGoal;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
-import net.scirave.nox.util.Nox$PounceInterface;
+import net.scirave.nox.util.Nox$PounceGoalInterface;
+import net.scirave.nox.util.Nox$PouncingEntityInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ZombieEntity.class)
-public abstract class ZombieEntityMixin extends HostileEntityMixin {
+public abstract class ZombieEntityMixin extends HostileEntityMixin implements Nox$PouncingEntityInterface {
 
     @Shadow
     public abstract boolean isBaby();
@@ -55,19 +56,26 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
             nox$zombieHideFromSun();
         }
 
-        if (Nox.CONFIG.zombiesBreakBlocks)
-            this.goalSelector.add(0, new Nox$MineBlockGoal((ZombieEntity) (Object) this));
+        this.goalSelector.add(0, new Nox$MineBlockGoal((ZombieEntity) (Object) this));
 
-        if (Nox.CONFIG.zombiesPounceAtTarget) {
-            PounceAtTargetGoal goal = new PounceAtTargetGoal((ZombieEntity) (Object) this, 0.25F);
-            ((Nox$PounceInterface) goal).nox$setPounceCooldown(Math.max(Nox.CONFIG.zombiePounceCooldown, 0));
-            this.goalSelector.add(1, goal);
-        }
+        PounceAtTargetGoal goal = new PounceAtTargetGoal((ZombieEntity) (Object) this, 0.25F);
+        ((Nox$PounceGoalInterface) goal).nox$setPounceCooldown(Math.max(Nox.CONFIG.zombiePounceCooldown, 0));
+        this.goalSelector.add(1, goal);
     }
 
     public void nox$zombieHideFromSun() {
         this.goalSelector.add(1, new AvoidSunlightGoal((ZombieEntity) (Object) this));
         this.goalSelector.add(0, new Nox$FleeSunlightGoal((ZombieEntity) (Object) this, 1.0F));
+    }
+
+    @Override
+    public boolean nox$isAllowedToMine() {
+        return Nox.CONFIG.zombiesBreakBlocks;
+    }
+
+    @Override
+    public boolean nox$isAllowedToPounce() {
+        return Nox.CONFIG.zombiesPounceAtTarget;
     }
 
 }

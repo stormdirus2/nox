@@ -63,6 +63,7 @@
     "SpiderEntityMixin",
     "StrafePlayerPhaseMixin",
     "StrayEntityMixin",
+    "SwimGoalMixin",
     "TheNetherBiomeCreatorMixin",
     "VindicatorEntityMixin",
     "WitchEntityMixin",

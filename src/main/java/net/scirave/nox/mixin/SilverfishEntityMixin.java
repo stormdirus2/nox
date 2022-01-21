@@ -24,6 +24,7 @@ import net.minecraft.entity.mob.SilverfishEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.scirave.nox.util.Nox$PouncingEntityInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SilverfishEntity.class)
-public abstract class SilverfishEntityMixin extends HostileEntityMixin {
+public abstract class SilverfishEntityMixin extends HostileEntityMixin implements Nox$PouncingEntityInterface {
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
@@ -54,6 +55,11 @@ public abstract class SilverfishEntityMixin extends HostileEntityMixin {
         if (source.getName().equals("fall") || source.getName().equals("drown") || source.getName().equals("inWall")) {
             cir.setReturnValue(true);
         }
+    }
+
+    @Override
+    public boolean nox$isAllowedToPounce() {
+        return true;
     }
 
 }

@@ -67,8 +67,7 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "initGoals", at = @At("HEAD"))
     public void nox$endermanInitGoals(CallbackInfo ci) {
-        if (Nox.CONFIG.endermenBreakBlocks)
-            this.goalSelector.add(1, new Nox$MineBlockGoal((EndermanEntity) (Object) this));
+        this.goalSelector.add(1, new Nox$MineBlockGoal((EndermanEntity) (Object) this));
     }
 
     @Override
@@ -81,6 +80,11 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
     public void nox$onSuccessfulAttack(LivingEntity target) {
         if (Nox.CONFIG.endermanAppliesBlindnessOnHit)
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200), (EndermanEntity) (Object) this);
+    }
+
+    @Override
+    public boolean nox$isAllowedToMine() {
+        return Nox.CONFIG.endermenBreakBlocks;
     }
 
 }
