@@ -16,7 +16,6 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.world.GameRules;
-import net.scirave.nox.Nox;
 
 import java.util.EnumSet;
 

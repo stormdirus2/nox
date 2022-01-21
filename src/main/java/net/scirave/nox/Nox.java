@@ -17,7 +17,7 @@ import net.scirave.nox.config.NoxConfig;
 
 public class Nox implements ModInitializer {
 
-    public static String MOD_ID = "nox";
+    public static final String MOD_ID = "nox";
     public static final NoxConfig CONFIG = OmegaConfig.register(NoxConfig.class);
 
     @Override

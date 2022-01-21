@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
-
+// TODO: figure out a way to tweak this such that mobs don't keep pouncing back and forth through a target without ever hitting it
 @Mixin(PounceAtTargetGoal.class)
 public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceInterface {
 
@@ -44,6 +44,7 @@ public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceInte
         args.set(2, ((double) args.get(2)) * 2.5);
     }
 
+    // TODO: tweak whether mobs pounce based on y-level differential.
     @Inject(method = "canStart", at = @At("HEAD"), cancellable = true)
     public void nox$betterPounce(CallbackInfoReturnable<Boolean> cir) {
 
