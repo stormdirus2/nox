@@ -9,6 +9,7 @@
     "ActiveTargetGoalMixin",
     "BlazeEntityMixin",
     "BlazeShootFireballGoalMixin",
+    "BlockMixin",
     "BowAttackGoalMixin",
     "CaveSpiderEntityMixin",
     "ChargingPlayerPhaseMixin",
@@ -49,6 +50,7 @@
     "ProjectileAttackGoalMixin",
     "ProjectileEntityMixin",
     "ServerPlayerEntityMixin",
+    "ServerPlayerInteractionManagerMixin",
     "ShulkerBulletEntityMixin",
     "ShulkerEntityMixin",
     "SilverfishEntityMixin",
@@ -66,10 +68,9 @@
     "WitchEntityMixin",
     "WitherEntityMixin",
     "WitherSkeletonEntityMixin",
+    "WorldMixin",
     "ZombieEntityMixin",
     "ZombifiedPiglinEntityMixin"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1

@@ -15,6 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.CaveSpiderEntity;
+import net.minecraft.util.math.BlockPos;
 import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -23,8 +24,11 @@ public abstract class CaveSpiderEntityMixin extends SpiderEntityMixin {
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (Nox.CONFIG.caveSpiderAttacksPlaceWebs)
-            super.nox$onSuccessfulAttack(target);
+        if (Nox.CONFIG.caveSpiderAttacksPlaceWebs) {
+            BlockPos pos = target.getBlockPos();
+            if (this.world.getBlockState(pos).getMaterial().isReplaceable() && this.world.setBlockState(pos, nox$COBWEB))
+                this.nox$addTrackedWeb(pos, target, 0);
+        }
         if (Nox.CONFIG.caveSpidersApplySlowness)
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 2), (CaveSpiderEntity) (Object) this);
     }

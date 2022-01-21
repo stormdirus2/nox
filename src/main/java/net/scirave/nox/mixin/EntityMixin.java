@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
@@ -32,13 +33,19 @@ public abstract class EntityMixin {
     public boolean noClip;
 
     @Shadow
-    public abstract boolean isAlive();
+    public abstract BlockPos getBlockPos();
 
     @Shadow
     public abstract Box getBoundingBox();
 
     @Shadow
-    public abstract BlockPos getBlockPos();
+    public abstract Vec3d getPos();
+
+    @Shadow
+    public abstract World getWorld();
+
+    @Shadow
+    public abstract boolean isAlive();
 
     @Shadow
     public abstract double getX();
@@ -49,15 +56,16 @@ public abstract class EntityMixin {
     @Shadow
     public abstract double getZ();
 
-    @Shadow
-    public abstract World getWorld();
-
-    @Shadow
-    public abstract Vec3d getPos();
+    @Shadow public abstract double squaredDistanceTo(Vec3d vector);
 
     @Inject(method = "isInvulnerableTo", at = @At("HEAD"), cancellable = true)
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        //Overridden
+        // Overridden
+    }
+
+    @Inject(method = "setRemoved", at = @At("HEAD"))
+    protected void nox$onSetRemoved(Entity.RemovalReason reason, CallbackInfo ci) {
+        // Overridden
     }
 
 }
