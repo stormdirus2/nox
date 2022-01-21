@@ -65,8 +65,8 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
         }
     }
 
-    @Override
-    public void nox$initGoals(CallbackInfo ci) {
+    @Inject(method = "initGoals", at = @At("HEAD"))
+    public void nox$endermanInitGoals(CallbackInfo ci) {
         if (Nox.CONFIG.endermenBreakBlocks)
             this.goalSelector.add(1, new Nox$MineBlockGoal((EndermanEntity) (Object) this));
     }

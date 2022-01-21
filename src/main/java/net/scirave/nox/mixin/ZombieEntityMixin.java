@@ -27,6 +27,8 @@ import net.scirave.nox.goals.Nox$MineBlockGoal;
 import net.scirave.nox.util.Nox$PounceInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -47,11 +49,12 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
         }
     }
 
-    @Override
-    public void nox$initGoals(CallbackInfo ci) {
+    @Inject(method = "initGoals", at = @At("HEAD"))
+    public void nox$zombieInitGoals(CallbackInfo ci) {
         if (this.burnsInDaylight()) {
             nox$zombieHideFromSun();
         }
+
         if (Nox.CONFIG.zombiesBreakBlocks)
             this.goalSelector.add(0, new Nox$MineBlockGoal((ZombieEntity) (Object) this));
 

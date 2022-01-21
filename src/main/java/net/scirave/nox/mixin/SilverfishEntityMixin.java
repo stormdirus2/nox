@@ -25,6 +25,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -36,8 +38,8 @@ public abstract class SilverfishEntityMixin extends HostileEntityMixin {
         this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Silverfish bonus", 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
 
-    @Override
-    public void nox$initGoals(CallbackInfo ci) {
+    @Inject(method = "initGoals", at = @At("HEAD"))
+    public void nox$silverfishInitGoals(CallbackInfo ci) {
         this.goalSelector.add(2, new PounceAtTargetGoal((SilverfishEntity) (Object) this, 0.2F));
     }
 

@@ -49,10 +49,8 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
         return original * 1.5F;
     }
 
-
-    @Override
-    public void nox$initGoals(CallbackInfo ci) {
-        super.nox$initGoals(ci); // Inherit AbstractSkeletonEntityMixin goals
+    @Inject(method = "initGoals", at = @At("TAIL"))
+    public void nox$witherSkeletonInitGoals(CallbackInfo ci) {
         if (Nox.CONFIG.witherSkeletonsBreakBlocks)
             this.goalSelector.add(4, new Nox$MineBlockGoal((WitherSkeletonEntity) (Object) this));
     }

@@ -20,13 +20,15 @@ import net.scirave.nox.Nox;
 import net.scirave.nox.goals.Nox$CreeperBreachGoal;
 import net.scirave.nox.util.Nox$PounceInterface;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CreeperEntity.class)
 public abstract class CreeperEntityMixin extends HostileEntityMixin {
 
-    @Override
-    public void nox$initGoals(CallbackInfo ci) {
+    @Inject(method = "initGoals", at = @At("TAIL"))
+    public void nox$creeperInitGoals(CallbackInfo ci) {
         this.goalSelector.add(2, new FleeEntityGoal((CreeperEntity) (Object) this, LivingEntity.class,
                 4.0F, 1.2D, 1.5D, (living) -> {
             if (living instanceof LivingEntity livingEntity) {
