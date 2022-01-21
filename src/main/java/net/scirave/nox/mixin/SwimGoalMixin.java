@@ -24,7 +24,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SwimGoal.class)
 public abstract class SwimGoalMixin {
 
-    @Shadow @Final private MobEntity mob;
+    @Final
+    @Shadow
+    private MobEntity mob;
 
     @Inject(method = "canStart", at = @At("HEAD"), cancellable = true)
     private void nox$maybeAllowSwimming(CallbackInfoReturnable<Boolean> cir) {
