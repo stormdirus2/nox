@@ -20,7 +20,7 @@ public class NoxConfig implements Config {
 
     // Global
     @Comment("[Global] Enable mob friendly fire")
-    public boolean friendlyFire = false;
+    public boolean mobsHaveFriendlyFire = false;
     @Comment("[Global] Mobs see through walls")
     public boolean mobXray = true;
     @Comment("[Global] Monster base health multiplier")
@@ -35,7 +35,8 @@ public class NoxConfig implements Config {
     public boolean contactProvokesMonsters = true;
 
     // Spawning
-    @Comment("[Spawning] Guardian natural spawn weight")
+    @Comment("[Spawning] Guardian natural spawn weight (0 to disable)\n" +
+            "Note: does not affect Ocean Monument spawns")
     public int guardianNaturalSpawnWeight = 10;
 
     // Block Breaking
@@ -107,6 +108,8 @@ public class NoxConfig implements Config {
     public boolean caveSpiderAttacksPlaceWebs = false;
     @Comment("[Spiders] Cave Spider attacks give Slowness II")
     public boolean caveSpidersApplySlowness = true;
+    @Comment("[Spiders] Spiders are immune to fall damage")
+    public boolean spidersImmuneToFallDamage = true;
 
     // Zombies
     @Comment("[Zombies] Zombies pounce at their target")

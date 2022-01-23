@@ -193,7 +193,7 @@ public abstract class SpiderEntityMixin extends HostileEntityMixin implements No
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         super.nox$invulnerableCheck(source, cir);
         if (source.getName().equals("fall")) {
-            cir.setReturnValue(true);
+            cir.setReturnValue(Nox.CONFIG.spidersImmuneToFallDamage);
         }
     }
 
