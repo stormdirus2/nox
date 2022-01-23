@@ -77,8 +77,8 @@ Experimentation is encouraged.
 * Places a cobweb at the victims' location upon successful attack
 
 ### Cave Spiders..
-* Inherent changes from Spiders
-* Instead of placing a cobweb, apply 10 seconds of Slowness II
+* Inherit changes from Spiders
+* Instead of placing a cobweb, apply 10 seconds of Slowness III
 
 ### Creepers..
 * Flee blocking entities

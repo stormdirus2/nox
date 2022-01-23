@@ -106,7 +106,7 @@ public class NoxConfig implements Config {
     public boolean spiderAttacksPlaceWebs = true;
     @Comment("[Spiders] Cave Spider attacks place webs")
     public boolean caveSpiderAttacksPlaceWebs = false;
-    @Comment("[Spiders] Cave Spider attacks give Slowness II")
+    @Comment("[Spiders] Cave Spider attacks give Slowness III")
     public boolean caveSpidersApplySlowness = true;
     @Comment("[Spiders] Spiders are immune to fall damage")
     public boolean spidersImmuneToFallDamage = true;
