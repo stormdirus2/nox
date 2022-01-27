@@ -39,7 +39,8 @@ public abstract class MagmaCubeEntityMixin extends SlimeEntityMixin {
 
     @Override
     public void nox$slimeOnAttack(LivingEntity victim, CallbackInfo ci) {
-        victim.setOnFireFor(4);
+        if (Nox.CONFIG.magmaCubeAttacksIgniteTarget)
+            victim.setOnFireFor(4);
     }
 
     private void nox$attemptLavaFill(BlockPos pos) {

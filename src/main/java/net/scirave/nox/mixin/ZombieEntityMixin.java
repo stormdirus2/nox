@@ -44,9 +44,9 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin implements No
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if (Nox.CONFIG.zombieKnockbackResistanceModifier > 0 && (Nox.CONFIG.babyZombiesGetKnockbackResistance || !this.isBaby())) {
+        if (Nox.CONFIG.zombieKnockbackResistanceBonus > 0 && (Nox.CONFIG.babyZombiesGetKnockbackResistance || !this.isBaby())) {
             this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)
-                    .addPersistentModifier(new EntityAttributeModifier("Nox: Zombie bonus", Nox.CONFIG.zombieKnockbackResistanceModifier, EntityAttributeModifier.Operation.ADDITION));
+                    .addPersistentModifier(new EntityAttributeModifier("Nox: Zombie bonus", Nox.CONFIG.zombieKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
         }
     }
 

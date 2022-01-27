@@ -69,8 +69,8 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if (Nox.CONFIG.witherSkeletonKnockbackResistanceMultiplier > 1)
-            this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", Nox.CONFIG.witherSkeletonKnockbackResistanceMultiplier - 1, EntityAttributeModifier.Operation.ADDITION));
+        if (Nox.CONFIG.witherSkeletonKnockbackResistanceBonus > 0)
+            this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", Nox.CONFIG.witherSkeletonKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
     }
 
     @Override

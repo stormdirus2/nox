@@ -35,7 +35,8 @@ public abstract class VindicatorEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addPersistentModifier(new EntityAttributeModifier("Nox: Vindicator bonus", 0.3, EntityAttributeModifier.Operation.ADDITION));
+        if (Nox.CONFIG.vindicatorKnockbackResistanceBonus > 0)
+            this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addPersistentModifier(new EntityAttributeModifier("Nox: Vindicator bonus", Nox.CONFIG.vindicatorKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
     }
 
     @Override

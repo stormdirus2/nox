@@ -107,6 +107,29 @@ public class NoxConfig implements Config {
     @Comment("[Enderman] Teleport when hit in melee")
     public boolean endermanTeleportsFromMeleeHit = true;
 
+    // Ghasts
+    @Comment("[Ghasts] Base health multiplier")
+    public double ghastBaseHealthMultiplier = 2.5;
+    @Comment("[Ghasts] Fireball explosion strength multiplier")
+    public int ghastFireballExplosionStrengthMultiplier = 2;
+    @Comment("[Ghasts] Reflected fireballs insta-kill Ghasts")
+    public boolean ghastFireballsInstantlyKillGhasts = false;
+    public boolean ghastReducedFireballCooldown = true;
+
+    // Illagers
+    @Comment("[Illagers] Evoker base health multiplier")
+    public double evokerBaseHealthMultiplier = 1.5;
+    @Comment("[Illagers] Evokers are immune to non-armor-piercing projectiles")
+    public boolean evokersResistProjectiles = true;
+    @Comment("[Illagers] Evokers are immune to magical damage")
+    public boolean evokersImmuneToMagic = true;
+    @Comment("[Illagers] Vindicator knockback resistance bonus")
+    public double vindicatorKnockbackResistanceBonus = 0.3;
+
+    // Piglins
+    @Comment("[Piglins] Become angry if the player wears any non-gold armor")
+    public boolean piglinsRequireExclusivelyGoldArmor = true;
+
     // Slimes
     @Comment("[Slimes] Slime base health multiplier")
     public double slimeBaseHealthMultiplier = 2.5;
@@ -122,6 +145,8 @@ public class NoxConfig implements Config {
     public boolean slimesResistProjectiles = true;
     @Comment("[Slimes] Slimes spawn poison cloud on death")
     public boolean slimePoisonCloudOnDeath = true;
+    @Comment("[Slimes] Magma Cube attacks set target on fire")
+    public boolean magmaCubeAttacksIgniteTarget = true;
     @Comment("[Slimes] Magma Cubes leave Lava when killed")
     public boolean magmaCubeLeavesLavaWhenKilled = true;
     @Comment("[Slimes] Magma Cubes place Lava sources on death\n" +
@@ -154,8 +179,8 @@ public class NoxConfig implements Config {
     public boolean witherSkeletonArchersExist = true;
     @Comment("[Wither Skeletons] Bow damage multiplier")
     public float witherSkeletonArcherDamageMultiplier = 1.5F;
-    @Comment("[Wither Skeletons] Knockback resistance multiplier")
-    public double witherSkeletonKnockbackResistanceMultiplier = 1.3;
+    @Comment("[Wither Skeletons] Knockback resistance bonus")
+    public double witherSkeletonKnockbackResistanceBonus = 0.3;
     @Comment("[Wither Skeletons] Passively wither target within X blocks")
     public int witherSkeletonWitheringRadius = 2;
 
@@ -164,8 +189,8 @@ public class NoxConfig implements Config {
     public boolean zombiesPounceAtTarget = true;
     @Comment("[Zombies] Pounce cooldown (ticks)")
     public long zombiePounceCooldown = 30;
-    @Comment("[Zombies] Knockback resistance modifier (additive)")
-    public double zombieKnockbackResistanceModifier = 0.3;
+    @Comment("[Zombies] Knockback resistance bonus")
+    public double zombieKnockbackResistanceBonus = 0.3;
     @Comment("[Zombies] Babies get knockback resistance")
     public boolean babyZombiesGetKnockbackResistance = false;
 
