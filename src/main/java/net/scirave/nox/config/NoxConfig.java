@@ -27,12 +27,24 @@ public class NoxConfig implements Config {
     public double monsterBaseHealthMultiplier = 1.5;
     @Comment("[Global] Monster follow range multiplier")
     public double monsterFollowRangeMultiplier = 1.5;
-    @Comment("[Global] Golem base health multiplier")
-    public double golemBaseHealthMultiplier = 2.0;
-    @Comment("[Global] Golem follow range multiplier")
-    public double golemFollowRangeMultiplier = 2.0;
     @Comment("[Global] Contact provokes Monsters")
     public boolean contactProvokesMonsters = true;
+
+    // Block Breaking
+    @Comment("[Block Breaking] Max block hardness mineable")
+    public float maxBlockHardnessMineableByMobs = 3.0F;
+    @Comment("[Block Breaking] Endermen can break blocks")
+    public boolean endermenBreakBlocks = true;
+    @Comment("[Block Breaking] Piglins can break blocks")
+    public boolean piglinsBreakBlocks = true;
+    @Comment("[Block Breaking] Pillagers can break blocks")
+    public boolean pillagersBreakBlocks = true;
+    @Comment("[Block Breaking] Vindicators can break blocks")
+    public boolean vindicatorsBreakBlocks = true;
+    @Comment("[Block Breaking] Wither Skeletons can break blocks")
+    public boolean witherSkeletonsBreakBlocks = true;
+    @Comment("[Block Breaking] Zombies can break blocks")
+    public boolean zombiesBreakBlocks = true;
 
     // Spawning
     @Comment("[Slimes] Remove Slime spawn restrictions")
@@ -55,22 +67,6 @@ public class NoxConfig implements Config {
     @Comment("[Spawning] Wither Skeletons spawn in Soul Sand Valley/Warped Forest")
     public boolean witherSkeletonsSpawnNaturallyInNether = true;
 
-    // Block Breaking
-    @Comment("[Block Breaking] Max block hardness mineable")
-    public float maxBlockHardnessMineableByMobs = 3.0F;
-    @Comment("[Block Breaking] Endermen can break blocks")
-    public boolean endermenBreakBlocks = true;
-    @Comment("[Block Breaking] Piglins can break blocks")
-    public boolean piglinsBreakBlocks = true;
-    @Comment("[Block Breaking] Pillagers can break blocks")
-    public boolean pillagersBreakBlocks = true;
-    @Comment("[Block Breaking] Vindicators can break blocks")
-    public boolean vindicatorsBreakBlocks = true;
-    @Comment("[Block Breaking] Wither Skeletons can break blocks")
-    public boolean witherSkeletonsBreakBlocks = true;
-    @Comment("[Block Breaking] Zombies can break blocks")
-    public boolean zombiesBreakBlocks = true;
-
     // Sleep
     @Comment("[Sleep] Monsters detected glow")
     public boolean sleepApplyGlowing = true;
@@ -81,31 +77,49 @@ public class NoxConfig implements Config {
     @Comment("[Sleep] Minimum vertical search distance")
     public int sleepMinVerticalSearchDistance = 20;
 
-    // Mobs (Misc.)
-    @Comment("[Mobs] Skeletons can swim")
-    public boolean skeletonsCanSwim = true;
-
-    // Blaze
-    @Comment("[Blaze] Fireball recharge speed multiplier")
+    // Blazes
+    @Comment("[Blazes] Fireball recharge speed multiplier")
     public int blazeFireballRechargeSpeedMultiplier = 2;
-    @Comment("[Blaze] Ignite targets within X blocks")
+    @Comment("[Blazes] Ignite targets within X blocks")
     public int blazeIgnitionRadius = 2;
 
-    // Creeper
-    @Comment("[Creeper] Creepers breach walls")
+    // Creepers
+    @Comment("[Creepers] Creepers breach walls")
     public boolean creepersBreachWalls = true;
-    @Comment("[Creeper] Creepers pounce at their target")
+    @Comment("[Creepers] Creepers pounce at their target")
     public boolean creepersPounceAtTarget = true;
-    @Comment("[Creeper] Pounce cooldown (ticks)")
+    @Comment("[Creepers] Pounce cooldown (ticks)")
     public long creeperPounceCooldown = 10;
 
-    // Enderman
-    @Comment("[Enderman] Apply blindness when provoked")
+    // Ender Dragon
+    @Comment("[Ender Dragon] Base health multiplier")
+    public double enderDragonBaseHealthMultiplier = 3.0;
+    @Comment("[Ender Dragon] Fireball cooldown")
+    public int enderDragonFireballCooldown = 100;
+    @Comment("[Ender Dragon] Dragon is immune to explosion damage")
+    public boolean enderDragonIsImmuneToExplosionDamage = true;
+    @Comment("[End Crystals (in the fight vicinity) can only be damaged\n" +
+            "while connected to the Ender Dragon")
+    public boolean endCrystalsIndestructibleUnlessConnectedToDragon = true;
+    public boolean buffEnderDragonFireball = true;
+
+    // Endermen
+    @Comment("[Endermen] Apply blindness when provoked")
     public boolean endermanAppliesBlindnessOnAggro = true;
-    @Comment("[Enderman] Apply blindness on hit")
+    @Comment("[Endermen] Apply blindness on hit")
     public boolean endermanAppliesBlindnessOnHit = true;
-    @Comment("[Enderman] Teleport when hit in melee")
+    @Comment("[Endermen] Teleport when hit in melee")
     public boolean endermanTeleportsFromMeleeHit = true;
+
+    // Endermites
+    @Comment("[Endermites] Base move speed multiplier")
+    public double endermiteMoveSpeedMultiplier = 1.6;
+    @Comment("[Endermites] Attacks cause their target to teleport")
+    public boolean endermiteAttacksMakeTargetTeleport = true;
+    @Comment("[Endermites] Endermites are immune to fall damage")
+    public boolean endermitesImmuneToFallDamage = true;
+    @Comment("[Endermites] Endermites can suffocate in blocks")
+    public boolean endermitesCanSuffocate = false;
 
     // Ghasts
     @Comment("[Ghasts] Base health multiplier")
@@ -114,7 +128,25 @@ public class NoxConfig implements Config {
     public int ghastFireballExplosionStrengthMultiplier = 2;
     @Comment("[Ghasts] Reflected fireballs insta-kill Ghasts")
     public boolean ghastFireballsInstantlyKillGhasts = false;
+    @Comment("[Ghasts] Shoot fireballs more frequently")
     public boolean ghastReducedFireballCooldown = true;
+
+    // Golems
+    @Comment("[Golems] Base health multiplier")
+    public double golemBaseHealthMultiplier = 2.0;
+    @Comment("[Golems] Base follow range multiplier")
+    public double golemFollowRangeMultiplier = 2.0;
+    @Comment("[Golems] Iron Golems make an area sweep attack")
+    public boolean ironGolemsHaveASweepAttack = true;
+    @Comment("[Golems] Snow Golem attack recharge speed multiplier")
+    public double snowGolemAttackRechargeSpeedMultiplier = 2;
+    @Comment("[Golems] Snow Golem attack range multiplier")
+    public float snowGolemAttackRangeMultiplier = 1.4F;
+
+    // Guardians
+    @Comment("[Guardians] Place water on death")
+    public boolean guardiansPlaceWaterOnDeath = true;
+    public boolean guardianDeathLeavesWaterSource = true;
 
     // Illagers
     @Comment("[Illagers] Evoker base health multiplier")
@@ -126,9 +158,46 @@ public class NoxConfig implements Config {
     @Comment("[Illagers] Vindicator knockback resistance bonus")
     public double vindicatorKnockbackResistanceBonus = 0.3;
 
+    // Phantoms
+    @Comment("[Phantoms] Phantoms phase through blocks")
+    public boolean phantomsPhaseThroughBlocks = true;
+    @Comment("[Phantoms] Attacks apply Weakness to target")
+    public boolean phantomAttacksApplyWeakness = true;
+
     // Piglins
     @Comment("[Piglins] Become angry if the player wears any non-gold armor")
     public boolean piglinsRequireExclusivelyGoldArmor = true;
+
+    // Shulkers
+    @Comment("[Shulkers] Shulker bullets cause blindness")
+    public boolean shulkerBulletsCauseBlindness = true;
+
+    // Silverfish
+    @Comment("[Silverfish] Base movement speed multiplier")
+    public double silverfishMoveSpeedMultiplier = 2.0;
+    @Comment("[Silverfish] Silverfish attacks apply Mining Fatigue")
+    public boolean silverfishAttacksGiveMiningFatigue = true;
+    @Comment("[Silverfish] Silverfish pounce at their target")
+    public boolean silverfishPounceAtTarget = true;
+    @Comment("[Silverfish] Silverfish are immune to fall damage")
+    public boolean silverfishImmuneToFallDamage = true;
+    @Comment("[Silverfish] Silverfish can drown")
+    public boolean silverfishCanDrown = false;
+    @Comment("[Silverfish] Silverfish can suffocate in blocks")
+    public boolean silverfishCanSuffocate = false;
+
+    @Comment("[Skeletons] Skeletons can swim")
+    public boolean skeletonsCanSwim = true;
+    @Comment("[Skeletons] Stray attacks apply Slowness II")
+    public boolean strayAttacksApplyStrongerSlowness = true;
+    @Comment("[Skeletons] Wither skeletons can spawn with Bows")
+    public boolean witherSkeletonArchersExist = true;
+    @Comment("[Skeletons] Wither Skeleton Bow damage multiplier")
+    public float witherSkeletonArcherDamageMultiplier = 1.5F;
+    @Comment("[Skeletons] Wither Skeleton knockback resistance bonus")
+    public double witherSkeletonKnockbackResistanceBonus = 0.3;
+    @Comment("[Skeletons] Wither Skeletons passively wither target within X blocks")
+    public int witherSkeletonWitheringRadius = 2;
 
     // Slimes
     @Comment("[Slimes] Slime base health multiplier")
@@ -175,14 +244,19 @@ public class NoxConfig implements Config {
     @Comment("[Witches] Ignore damage from non-armor-piercing projectiles")
     public boolean witchesResistProjectiles = true;
 
-    @Comment("[Wither Skeletons] Can spawn with Bows")
-    public boolean witherSkeletonArchersExist = true;
-    @Comment("[Wither Skeletons] Bow damage multiplier")
-    public float witherSkeletonArcherDamageMultiplier = 1.5F;
-    @Comment("[Wither Skeletons] Knockback resistance bonus")
-    public double witherSkeletonKnockbackResistanceBonus = 0.3;
-    @Comment("[Wither Skeletons] Passively wither target within X blocks")
-    public int witherSkeletonWitheringRadius = 2;
+    // Wither
+    @Comment("[Wither] Base health multiplier")
+    public double witherBaseHealthMultiplier = 2.0;
+    @Comment("[Wither] Base follow range multiplier")
+    public double witherFollowRangeMultiplier = 2.0;
+    @Comment("[Wither] Wither rapidly breaks blocks around itself")
+    public boolean witherRapidlyBreaksSurroundingBlocks = true;
+    @Comment("[Wither] Cooldown for Wither to summon reinforcements")
+    public int witherCallReinforcementsCooldown = 600;
+    @Comment("[Wither] Wither summons X Wither Skeletons as reinforcements")
+    public int witherReinforcementsGroupSize = 3;
+    @Comment("[Wither] Can summon reinforcements if target is within X blocks")
+    public int witherReinforcementsTriggerRadius = 7;
 
     // Zombies
     @Comment("[Zombies] Zombies pounce at their target")
@@ -193,6 +267,10 @@ public class NoxConfig implements Config {
     public double zombieKnockbackResistanceBonus = 0.3;
     @Comment("[Zombies] Babies get knockback resistance")
     public boolean babyZombiesGetKnockbackResistance = false;
+    @Comment("[Zombies] Drowned swim speed multiplier")
+    public float drownedSwimSpeedMultiplier = 10.0F;
+    @Comment("[Zombies] Husk attacks apply Hunger II")
+    public boolean huskAttacksApplyStrongerHunger = true;
 
     @Override
     public String getName() {

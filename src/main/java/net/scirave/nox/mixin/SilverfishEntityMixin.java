@@ -24,6 +24,7 @@ import net.minecraft.entity.mob.SilverfishEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.scirave.nox.Nox;
 import net.scirave.nox.util.Nox$PouncingEntityInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,7 +37,8 @@ public abstract class SilverfishEntityMixin extends HostileEntityMixin implement
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Silverfish bonus", 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (Nox.CONFIG.silverfishMoveSpeedMultiplier > 1)
+            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Silverfish bonus", Nox.CONFIG.silverfishMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
 
     @Inject(method = "initGoals", at = @At("HEAD"))
@@ -46,20 +48,24 @@ public abstract class SilverfishEntityMixin extends HostileEntityMixin implement
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 300, 2), (SilverfishEntity) (Object) this);
+        if (Nox.CONFIG.silverfishAttacksGiveMiningFatigue)
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 300, 2), (SilverfishEntity) (Object) this);
     }
 
     @Override
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         super.nox$invulnerableCheck(source, cir);
-        if (source.getName().equals("fall") || source.getName().equals("drown") || source.getName().equals("inWall")) {
+        if (source.getName().equals("fall") && Nox.CONFIG.silverfishImmuneToFallDamage)
             cir.setReturnValue(true);
-        }
+        else if (source.getName().equals("drown") && !Nox.CONFIG.silverfishCanDrown)
+            cir.setReturnValue(true);
+        else if (source.getName().equals("inWall") && !Nox.CONFIG.silverfishCanSuffocate)
+            cir.setReturnValue(true);
     }
 
     @Override
     public boolean nox$isAllowedToPounce() {
-        return true;
+        return Nox.CONFIG.silverfishPounceAtTarget;
     }
 
 }

@@ -12,6 +12,7 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.mob.DrownedEntity;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -21,7 +22,9 @@ public abstract class DrownedEntityMixin extends ZombieEntityMixin {
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/DrownedEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
     private float nox$drownedFasterSwimming(float original) {
-        return original * 10;
+        if (Nox.CONFIG.drownedSwimSpeedMultiplier > 1)
+            return original * Nox.CONFIG.drownedSwimSpeedMultiplier;
+        return original;
     }
 
 }

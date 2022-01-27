@@ -28,6 +28,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.scirave.nox.Nox;
 import net.scirave.nox.util.NoxUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -43,16 +44,20 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
     @Shadow
     private int blockBreakingCooldown;
 
-    private int summonCooldown = 600;
+    private int nox$reinforcementsCooldown = Nox.CONFIG.witherCallReinforcementsCooldown;
 
     @ModifyArg(method = "createWitherAttributes", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;add(Lnet/minecraft/entity/attribute/EntityAttribute;D)Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;", ordinal = 0))
     private static double nox$witherMoreHealth(double original) {
-        return original * 2;
+        if (Nox.CONFIG.witherBaseHealthMultiplier > 1)
+            return original * Nox.CONFIG.witherBaseHealthMultiplier;
+        return original;
     }
 
     @ModifyArg(method = "createWitherAttributes", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;add(Lnet/minecraft/entity/attribute/EntityAttribute;D)Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;", ordinal = 3))
     private static double nox$witherMoreRange(double original) {
-        return original * 2;
+        if (Nox.CONFIG.witherFollowRangeMultiplier > 1)
+            return original * Nox.CONFIG.witherFollowRangeMultiplier;
+        return original;
     }
 
     private void nox$witherBreakBlocks() {
@@ -91,23 +96,25 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "mobTick", at = @At("HEAD"))
     public void nox$witherNoVanillaBreak(CallbackInfo ci) {
-        this.blockBreakingCooldown = 20;
+        if (Nox.CONFIG.witherRapidlyBreaksSurroundingBlocks)
+            this.blockBreakingCooldown = 20;
     }
 
     @Inject(method = "mobTick", at = @At("TAIL"))
     public void nox$witherBetterBreak(CallbackInfo ci) {
-        nox$witherBreakBlocks();
+        if (Nox.CONFIG.witherRapidlyBreaksSurroundingBlocks)
+            nox$witherBreakBlocks();
     }
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
         LivingEntity target = this.getTarget();
         if (this.getWorld() instanceof ServerWorld serverWorld) {
-            if (summonCooldown > 0) {
-                summonCooldown--;
-            } else if (target != null && target.squaredDistanceTo((WitherEntity) (Object) this) <= 49) {
-                summonCooldown = 600;
-                for (int i = 0; i < 3; i++) {
+            if (nox$reinforcementsCooldown > 0) {
+                nox$reinforcementsCooldown--;
+            } else if (target != null && target.squaredDistanceTo((WitherEntity) (Object) this) <= MathHelper.square(Nox.CONFIG.witherReinforcementsTriggerRadius)) {
+                nox$reinforcementsCooldown = Nox.CONFIG.witherCallReinforcementsCooldown;
+                for (int i = 0; i < Nox.CONFIG.witherReinforcementsGroupSize; i++) {
                     WitherSkeletonEntity skeleton = EntityType.WITHER_SKELETON.create(serverWorld);
                     if (skeleton != null) {
                         skeleton.setPos(this.getX() + this.getRandom().nextInt(-2, 2), this.getY(), this.getZ() + this.getRandom().nextInt(-2, 2));
