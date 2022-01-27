@@ -150,13 +150,22 @@ public class NoxConfig implements Config {
     @Comment("[Witches] Ignore damage from non-armor-piercing projectiles")
     public boolean witchesResistProjectiles = true;
 
+    @Comment("[Wither Skeletons] Can spawn with Bows")
+    public boolean witherSkeletonArchersExist = true;
+    @Comment("[Wither Skeletons] Bow damage multiplier")
+    public float witherSkeletonArcherDamageMultiplier = 1.5F;
+    @Comment("[Wither Skeletons] Knockback resistance multiplier")
+    public double witherSkeletonKnockbackResistanceMultiplier = 1.3;
+    @Comment("[Wither Skeletons] Passively wither target within X blocks")
+    public int witherSkeletonWitheringRadius = 2;
+
     // Zombies
     @Comment("[Zombies] Zombies pounce at their target")
     public boolean zombiesPounceAtTarget = true;
     @Comment("[Zombies] Pounce cooldown (ticks)")
     public long zombiePounceCooldown = 30;
-    @Comment("[Zombies] Knockback resistance multiplier")
-    public double zombieKnockbackResistanceMultiplier = 1.3;
+    @Comment("[Zombies] Knockback resistance modifier (additive)")
+    public double zombieKnockbackResistanceModifier = 0.3;
     @Comment("[Zombies] Babies get knockback resistance")
     public boolean babyZombiesGetKnockbackResistance = false;
 

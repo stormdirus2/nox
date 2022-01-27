@@ -73,7 +73,7 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
             this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", Nox.CONFIG.slimeBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
             this.setHealth(this.getMaxHealth());
         }
-        if (Nox.CONFIG.slimeFollowRangeMultiplier > 0)
+        if (Nox.CONFIG.slimeFollowRangeMultiplier > 1)
             this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", Nox.CONFIG.slimeFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         if (Nox.CONFIG.slimeMoveSpeedMultiplier > 1)
             this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", Nox.CONFIG.slimeMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
@@ -97,7 +97,7 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
 
     public void nox$slimeOnDeath() {
         // Prevent poison cloud effect from being applied to mod-added Slimes
-        if (Nox.CONFIG.slimePoisonCloudOnDeath && this.getClass().equals(SlimeEntity.class)) {
+        if (Nox.CONFIG.slimePoisonCloudOnDeath && ((SlimeEntity) (Object) this).getClass().equals(SlimeEntity.class)) {
             AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(this.world, this.getX(), this.getY(), this.getZ());
             cloud.setRadius(2.5F * this.getSize());
             cloud.setRadiusOnUse(-0.5F);
