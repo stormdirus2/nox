@@ -26,8 +26,8 @@ public abstract class CaveSpiderEntityMixin extends SpiderEntityMixin {
     public void nox$onSuccessfulAttack(LivingEntity target) {
         if (Nox.CONFIG.caveSpiderAttacksPlaceWebs) {
             BlockPos pos = target.getBlockPos();
-            if (this.world.getBlockState(pos).getMaterial().isReplaceable() && this.world.setBlockState(pos, nox$COBWEB))
-                this.nox$addTrackedWeb(pos, target, 0);
+            if (this.world.getBlockState(pos).getMaterial().isReplaceable())
+                this.world.setBlockState(pos, Nox.NOX_COBWEB.getDefaultState());
         }
         if (Nox.CONFIG.caveSpidersApplySlowness)
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 2), (CaveSpiderEntity) (Object) this);

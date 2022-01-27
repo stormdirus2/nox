@@ -39,6 +39,9 @@ import java.util.Random;
 @Mixin(SlimeEntity.class)
 public abstract class SlimeEntityMixin extends MobEntityMixin {
 
+    @Shadow
+    public abstract int getSize();
+
     @Inject(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/gen/random/ChunkRandom;getSlimeRandom(IIJJ)Ljava/util/Random;"), cancellable = true)
     private static void nox$slimesSpawnNaturally(EntityType<SlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
         if (Nox.CONFIG.allowSlimesInAllChunks && world.getLightLevel(pos) <= 7) {
@@ -46,8 +49,11 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
         }
     }
 
-    @Shadow
-    public abstract int getSize();
+    @Inject(method = "getTicksUntilNextJump", at = @At("HEAD"), cancellable = true)
+    private void nox$makeSlimesJumpConstantly(CallbackInfoReturnable<Integer> cir) {
+        if (Nox.CONFIG.slimesJumpConstantly)
+            cir.setReturnValue(4);
+    }
 
     @Inject(method = "remove", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/SlimeEntity;setSize(IZ)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
     public void nox$slimeReapplyAttributes(Entity.RemovalReason reason, CallbackInfo ci, int i, Text text, boolean bl, float f, int j, int k, int l, float g, float h, SlimeEntity slimeEntity) {
@@ -78,9 +84,10 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     @Override
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         super.nox$invulnerableCheck(source, cir);
-        if (source.getName().equals("fall") || (source.isProjectile() && !source.bypassesArmor())) {
-            cir.setReturnValue(true);
-        }
+        if (source.getName().equals("fall"))
+            cir.setReturnValue(Nox.CONFIG.slimesImmuneToFallDamage);
+        else if (source.isProjectile() && !source.bypassesArmor())
+            cir.setReturnValue(Nox.CONFIG.slimesResistProjectiles);
     }
 
     @Override
@@ -89,7 +96,8 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     }
 
     public void nox$slimeOnDeath() {
-        if (Nox.CONFIG.slimePoisonCloudOnDeath) {
+        // Prevent poison cloud effect from being applied to mod-added Slimes
+        if (Nox.CONFIG.slimePoisonCloudOnDeath && this.getClass().equals(SlimeEntity.class)) {
             AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(this.world, this.getX(), this.getY(), this.getZ());
             cloud.setRadius(2.5F * this.getSize());
             cloud.setRadiusOnUse(-0.5F);

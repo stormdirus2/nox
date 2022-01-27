@@ -35,9 +35,25 @@ public class NoxConfig implements Config {
     public boolean contactProvokesMonsters = true;
 
     // Spawning
+    @Comment("[Slimes] Remove Slime spawn restrictions")
+    public boolean allowSlimesInAllChunks = true;
     @Comment("[Spawning] Guardian natural spawn weight (0 to disable)\n" +
             "Note: does not affect Ocean Monument spawns")
     public int guardianNaturalSpawnWeight = 10;
+    @Comment("[Spawning] More Drowned spawn in Oceans")
+    public boolean doMoreDrownedSpawns = true;
+    @Comment("[Spawning] Witches spawn more frequently")
+    public boolean doMoreWitchSpawns = true;
+    @Comment("[Spawning] Cave Spiders spawn in caves")
+    public boolean spawnCaveSpidersInCaves = true;
+    @Comment("[Spawning] Ghasts spawn more often")
+    public boolean increaseGhastSpawns = true;
+    @Comment("[Spawning] Ghasts can spawn in Crimson/Warped Forest")
+    public boolean spawnGhastsInMoreBiomes = true;
+    @Comment("[Spawning] Blazes spawn in Wastes/Deltas/Crimson Forest")
+    public boolean blazesSpawnNaturallyInNether = true;
+    @Comment("[Spawning] Wither Skeletons spawn in Soul Sand Valley/Warped Forest")
+    public boolean witherSkeletonsSpawnNaturallyInNether = true;
 
     // Block Breaking
     @Comment("[Block Breaking] Max block hardness mineable")
@@ -88,28 +104,51 @@ public class NoxConfig implements Config {
     public boolean endermanAppliesBlindnessOnAggro = true;
     @Comment("[Enderman] Apply blindness on hit")
     public boolean endermanAppliesBlindnessOnHit = true;
+    @Comment("[Enderman] Teleport when hit in melee")
+    public boolean endermanTeleportsFromMeleeHit = true;
 
     // Slimes
-    @Comment("[Slimes] Remove Slime spawn restrictions")
-    public boolean allowSlimesInAllChunks = true;
     @Comment("[Slimes] Slime base health multiplier")
     public double slimeBaseHealthMultiplier = 2.5;
     @Comment("[Slimes] Base follow range multiplier")
     public double slimeFollowRangeMultiplier = 2.5;
     @Comment("[Slimes] Base move speed multiplier")
     public double slimeMoveSpeedMultiplier = 1.3;
+    @Comment("[Slimes] Slimes jump constantly")
+    public boolean slimesJumpConstantly = true;
+    @Comment("[Slimes] Slimes are immune to fall damage")
+    public boolean slimesImmuneToFallDamage = true;
+    @Comment("[Slimes] Slimes are immune to non-armor-piercing projectiles")
+    public boolean slimesResistProjectiles = true;
     @Comment("[Slimes] Slimes spawn poison cloud on death")
     public boolean slimePoisonCloudOnDeath = true;
+    @Comment("[Slimes] Magma Cubes leave Lava when killed")
+    public boolean magmaCubeLeavesLavaWhenKilled = true;
+    @Comment("[Slimes] Magma Cubes place Lava sources on death\n" +
+            "If this is false, non-source Lava is used")
+    public boolean magmaCubeMakesLavaSourceBlocks = true;
 
     // Spiders
     @Comment("[Spiders] Spider attacks place webs")
     public boolean spiderAttacksPlaceWebs = true;
+    @Comment("[Spiders] Spiders are immune to fall damage")
+    public boolean spidersImmuneToFallDamage = true;
     @Comment("[Spiders] Cave Spider attacks place webs")
     public boolean caveSpiderAttacksPlaceWebs = false;
     @Comment("[Spiders] Cave Spider attacks give Slowness III")
     public boolean caveSpidersApplySlowness = true;
-    @Comment("[Spiders] Spiders are immune to fall damage")
-    public boolean spidersImmuneToFallDamage = true;
+
+    // Witches
+    @Comment("[Witches] Witches drink buffed potions")
+    public boolean witchesDrinkBetterPotions = true;
+    @Comment("[Witches] Prevent potion drinking if target is within 7 blocks")
+    public boolean witchesOnlyDrinkAlone = true;
+    @Comment("[Witches] Use Lingering Potions instead of Splash Potions")
+    public boolean witchesUseLingeringPotions = true;
+    @Comment("[Witches] Use buffed Slowness potions")
+    public boolean witchesUseStrongerSlowness = true;
+    @Comment("[Witches] Ignore damage from non-armor-piercing projectiles")
+    public boolean witchesResistProjectiles = true;
 
     // Zombies
     @Comment("[Zombies] Zombies pounce at their target")

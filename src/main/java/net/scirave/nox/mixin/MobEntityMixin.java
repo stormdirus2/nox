@@ -51,16 +51,6 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
     @Shadow
     public abstract void equipStack(EquipmentSlot slot, ItemStack stack);
 
-    @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-    protected void nox$readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
-        // Overridden
-    }
-
-    @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
-    protected void nox$writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
-        // Overridden
-    }
-
     @Inject(method = "tryAttack", at = @At("RETURN"))
     public void nox$onAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValue() && target instanceof LivingEntity living) {

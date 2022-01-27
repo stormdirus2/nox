@@ -56,7 +56,7 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;getAttacker()Lnet/minecraft/entity/Entity;"))
     public void nox$endermanTeleportOnDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (this.isAlive() && source.getAttacker() instanceof LivingEntity && !source.getName().equals("onFire") && !source.isMagic()) {
+        if (this.isAlive() && Nox.CONFIG.endermanTeleportsFromMeleeHit && source.getAttacker() instanceof LivingEntity && !source.getName().equals("onFire") && !source.isMagic()) {
             for (int i = 0; i < 64; ++i) {
                 if (this.teleportRandomly()) {
                     break;
