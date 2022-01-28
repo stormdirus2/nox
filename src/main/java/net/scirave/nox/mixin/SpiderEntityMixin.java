@@ -11,6 +11,7 @@
 
 package net.scirave.nox.mixin;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.AvoidSunlightGoal;
 import net.minecraft.entity.damage.DamageSource;
@@ -33,7 +34,7 @@ public abstract class SpiderEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (Nox.CONFIG.spiderAttacksPlaceWebs) {
+        if (Nox.CONFIG.spiderAttacksPlaceWebs && this.getType().getWidth() >= EntityType.CAVE_SPIDER.getWidth()) {
             BlockPos pos = target.getBlockPos();
             if (this.world.getBlockState(pos).getMaterial().isReplaceable())
                 this.world.setBlockState(pos, Nox.NOX_COBWEB.getDefaultState());

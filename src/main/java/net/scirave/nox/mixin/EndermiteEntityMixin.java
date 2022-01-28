@@ -14,6 +14,7 @@ package net.scirave.nox.mixin;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -34,8 +35,11 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if(Nox.CONFIG.endermiteMoveSpeedMultiplier > 1)
-            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Endermite bonus", Nox.CONFIG.endermiteMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if(Nox.CONFIG.endermiteMoveSpeedMultiplier > 1) {
+            EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+            if (attr != null)
+                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Endermite bonus", Nox.CONFIG.endermiteMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
 
     @Override

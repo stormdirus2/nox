@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -69,8 +70,11 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if (Nox.CONFIG.witherSkeletonKnockbackResistanceBonus > 0)
-            this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", Nox.CONFIG.witherSkeletonKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
+        if (Nox.CONFIG.witherSkeletonKnockbackResistanceBonus > 0) {
+            EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
+            if (attr != null)
+                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", Nox.CONFIG.witherSkeletonKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
+        }
     }
 
     @Override

@@ -12,6 +12,7 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -54,6 +55,9 @@ public abstract class EntityMixin {
 
     @Shadow
     public abstract double getZ();
+
+    @Shadow
+    public abstract EntityType<?> getType();
 
     @Inject(method = "isInvulnerableTo", at = @At("HEAD"), cancellable = true)
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {

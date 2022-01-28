@@ -14,6 +14,7 @@ package net.scirave.nox.mixin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -46,8 +47,11 @@ public abstract class GhastEntityMixin extends MobEntityMixin {
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
         if (Nox.CONFIG.ghastBaseHealthMultiplier > 1) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Ghast bonus", Nox.CONFIG.ghastBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-            this.setHealth(this.getMaxHealth());
+            EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+            if (attr != null) {
+                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Ghast bonus", Nox.CONFIG.ghastBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                this.setHealth(this.getMaxHealth());
+            }
         }
     }
 

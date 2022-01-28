@@ -13,6 +13,7 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -30,8 +31,11 @@ public abstract class EvokerEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
         if (Nox.CONFIG.evokerBaseHealthMultiplier > 1) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Evoker bonus", Nox.CONFIG.evokerBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-            this.setHealth(this.getMaxHealth());
+            EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+            if (attr != null) {
+                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Evoker bonus", Nox.CONFIG.evokerBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                this.setHealth(this.getMaxHealth());
+            }
         }
     }
 

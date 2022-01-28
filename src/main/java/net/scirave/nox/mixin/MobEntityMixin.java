@@ -13,6 +13,7 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.GoalSelector;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -80,12 +81,19 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
     }
 
     public void nox$hostileAttributes(MobEntity mob) {
+        EntityAttributeInstance attr;
         if (Nox.CONFIG.monsterBaseHealthMultiplier > 1) {
-            mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", Nox.CONFIG.monsterBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-            mob.setHealth(mob.getMaxHealth());
+            attr = mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+            if (attr != null) {
+                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", Nox.CONFIG.monsterBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                mob.setHealth(mob.getMaxHealth());
+            }
         }
-        if (Nox.CONFIG.monsterFollowRangeMultiplier >= 0)
-            mob.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", Nox.CONFIG.monsterFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (Nox.CONFIG.monsterFollowRangeMultiplier >= 0) {
+            attr = mob.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE);
+            if (attr != null)
+                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", Nox.CONFIG.monsterFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
 
     @Override
