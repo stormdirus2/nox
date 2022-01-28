@@ -94,6 +94,11 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
 
     }
 
+    @Inject(method = "onSummoned", at = @At("TAIL"))
+    private void nox$onSummoned(CallbackInfo ci) {
+        this.setHealth(this.getMaxHealth());
+    }
+
     @Inject(method = "mobTick", at = @At("HEAD"))
     public void nox$witherNoVanillaBreak(CallbackInfo ci) {
         if (Nox.CONFIG.witherRapidlyBreaksSurroundingBlocks)
