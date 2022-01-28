@@ -37,10 +37,6 @@ public class Nox implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        // Polymer has a bug where the first registered block doesn't have the proper visual behavior when broken on a vanilla client
-        // This is a placeholder block that should never actually be seen in gameplay unless placed via cheats
-        Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "needed_for_now_because_of_polymer_bug"),
-                new SimplePolymerBlock(AbstractBlock.Settings.of(Material.STONE), Blocks.STONE));
         Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "cobweb"), NOX_COBWEB);
         PolymerBlockUtils.registerBlockEntity(NOX_COBWEB_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE,
                 new Identifier(MOD_ID, "cobweb_block_entity"),
