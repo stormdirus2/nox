@@ -47,7 +47,7 @@ public class NoxUtil {
         LivingEntity attackerTarget = attacker.getTarget();
         LivingEntity victimTarget = victim.getTarget();
 
-        return !Nox.CONFIG.friendlyFire && validTypes && attackerTarget != attacker && victimTarget != victim && victimTarget != null && attackerTarget == victimTarget;
+        return !Nox.CONFIG.mobsHaveFriendlyFire && validTypes && attackerTarget != attacker && victimTarget != victim && victimTarget != null && attackerTarget == victimTarget;
     }
 
     public static void EnderDragonShootFireball(EnderDragonEntity dragon, LivingEntity target) {

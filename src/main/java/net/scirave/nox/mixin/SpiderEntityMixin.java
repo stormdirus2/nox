@@ -11,13 +11,13 @@
 
 package net.scirave.nox.mixin;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.AvoidSunlightGoal;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.util.math.BlockPos;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,18 +27,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SpiderEntity.class)
 public abstract class SpiderEntityMixin extends HostileEntityMixin {
 
-    private static final BlockState COBWEB = Blocks.COBWEB.getDefaultState();
-
     @Inject(method = "initGoals", at = @At("HEAD"))
-    public void nox$spiderAvoidSunlight(CallbackInfo ci) {
+    public void nox$spiderInitGoals(CallbackInfo ci) {
         this.goalSelector.add(1, new AvoidSunlightGoal((SpiderEntity) (Object) this));
     }
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        BlockPos pos = target.getBlockPos();
-        if (this.world.getBlockState(pos).getMaterial().isReplaceable()) {
-            this.world.setBlockState(pos, COBWEB);
+        if (Nox.CONFIG.spiderAttacksPlaceWebs && this.getType().getWidth() >= EntityType.CAVE_SPIDER.getWidth()) {
+            BlockPos pos = target.getBlockPos();
+            if (this.world.getBlockState(pos).getMaterial().isReplaceable())
+                this.world.setBlockState(pos, Nox.NOX_COBWEB.getDefaultState());
         }
     }
 
@@ -46,7 +45,8 @@ public abstract class SpiderEntityMixin extends HostileEntityMixin {
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         super.nox$invulnerableCheck(source, cir);
         if (source.getName().equals("fall")) {
-            cir.setReturnValue(true);
+            cir.setReturnValue(Nox.CONFIG.spidersImmuneToFallDamage);
         }
     }
+
 }

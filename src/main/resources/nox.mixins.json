@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.scirave.nox.mixin",
-  "compatibilityLevel": "JAVA_16",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AbstractPiglinEntityMixin",
     "AbstractSkeletonEntityMixin",
@@ -55,12 +55,12 @@
     "SittingFlamingPhaseMixin",
     "SittingScanningPhaseMixin",
     "SlimeEntityMixin",
-    "SlimeMoveControlMixin",
     "SnowballEntityMixin",
     "SnowGolemEntityMixin",
     "SpiderEntityMixin",
     "StrafePlayerPhaseMixin",
     "StrayEntityMixin",
+    "SwimGoalMixin",
     "TheNetherBiomeCreatorMixin",
     "VindicatorEntityMixin",
     "WitchEntityMixin",
@@ -68,8 +68,6 @@
     "WitherSkeletonEntityMixin",
     "ZombieEntityMixin",
     "ZombifiedPiglinEntityMixin"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1

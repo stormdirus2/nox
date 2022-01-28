@@ -27,14 +27,11 @@ import java.util.Random;
 public abstract class HostileEntityMixin extends MobEntityMixin {
 
     @Inject(method = "canSpawnInDark", at = @At("HEAD"), cancellable = true)
-    private static void nox$onSpawnAttempt(EntityType<? extends HostileEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
-        if (type == EntityType.CAVE_SPIDER) {
-            if (spawnReason == SpawnReason.NATURAL) {
-                if (pos.getY() >= world.getSeaLevel() || world.isSkyVisibleAllowingSea(pos)) {
-                    cir.setReturnValue(false);
-                }
-            }
-        }
+    private static void nox$onSpawnAttempt(EntityType<? extends HostileEntity> type, ServerWorldAccess world,
+                                           SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
+        if (type == EntityType.CAVE_SPIDER && spawnReason == SpawnReason.NATURAL)
+            if (pos.getY() >= world.getSeaLevel() || world.isSkyVisibleAllowingSea(pos))
+                cir.setReturnValue(false);
     }
 
 }

@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -23,8 +24,10 @@ import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.scirave.nox.Nox;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,33 +41,45 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
 
     @Inject(method = "initEquipment", at = @At("TAIL"))
     public void nox$witherSkeletonArchers(LocalDifficulty difficulty, CallbackInfo ci) {
-        if (this.getRandom().nextBoolean()) {
+        if (Nox.CONFIG.witherSkeletonArchersExist && this.getRandom().nextBoolean()) {
             this.equipStack(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         }
     }
 
     @ModifyVariable(method = "createArrowProjectile", at = @At("HEAD"), argsOnly = true)
     public float nox$witherSkeletonArcherBuff(float original) {
-        return original * 1.5F;
+        if (Nox.CONFIG.witherSkeletonArcherDamageMultiplier > 1)
+            return original * Nox.CONFIG.witherSkeletonArcherDamageMultiplier;
+        return original;
     }
 
-
     @Inject(method = "initGoals", at = @At("TAIL"))
-    public void nox$witherSkeletonBreakWalls(CallbackInfo ci) {
+    public void nox$witherSkeletonInitGoals(CallbackInfo ci) {
         this.goalSelector.add(4, new Nox$MineBlockGoal((WitherSkeletonEntity) (Object) this));
     }
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
-        LivingEntity target = this.getTarget();
-        if (target != null && !target.hasStatusEffect(StatusEffects.WITHER) && target.squaredDistanceTo((WitherSkeletonEntity) (Object) this) <= 4) {
-            target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80), (WitherSkeletonEntity) (Object) this);
+        if (Nox.CONFIG.witherSkeletonWitheringRadius > 0) {
+            LivingEntity target = this.getTarget();
+            if (target != null && !target.hasStatusEffect(StatusEffects.WITHER) && target.squaredDistanceTo((WitherSkeletonEntity) (Object) this) <= MathHelper.square(Nox.CONFIG.witherSkeletonWitheringRadius)) {
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80), (WitherSkeletonEntity) (Object) this);
+            }
         }
     }
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", 0.3, EntityAttributeModifier.Operation.ADDITION));
+        if (Nox.CONFIG.witherSkeletonKnockbackResistanceBonus > 0) {
+            EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
+            if (attr != null)
+                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", Nox.CONFIG.witherSkeletonKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    @Override
+    public boolean nox$isAllowedToMine() {
+        return Nox.CONFIG.witherSkeletonsBreakBlocks;
     }
 
 }

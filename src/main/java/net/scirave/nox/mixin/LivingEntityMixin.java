@@ -33,7 +33,7 @@ import java.util.Random;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin implements Nox$MiningInterface {
 
-    private boolean mining = false;
+    private boolean nox$mining = false;
 
     @Shadow
     public abstract boolean isBaby();
@@ -92,13 +92,13 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
     }
 
     @Override
-    public boolean isMining() {
-        return this.mining;
+    public boolean nox$isMining() {
+        return this.nox$mining;
     }
 
     @Override
-    public void setMining(boolean bool) {
-        this.mining = bool;
+    public void nox$setMining(boolean bool) {
+        this.nox$mining = bool;
     }
 
 }

@@ -16,6 +16,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.util.hit.EntityHitResult;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,7 +27,7 @@ public abstract class ShulkerBulletEntityMixin extends ProjectileEntityMixin {
 
     @Inject(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;addStatusEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;Lnet/minecraft/entity/Entity;)Z"))
     public void nox$shulkerBlind(EntityHitResult entityHitResult, CallbackInfo ci) {
-        if (entityHitResult.getEntity() instanceof LivingEntity target) {
+        if (Nox.CONFIG.shulkerBulletsCauseBlindness && entityHitResult.getEntity() instanceof LivingEntity target) {
             if (this.getOwner() instanceof ShulkerBulletEntity owner) {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 100), owner);
             }

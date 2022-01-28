@@ -14,6 +14,7 @@ package net.scirave.nox.mixin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -21,6 +22,7 @@ import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,18 +34,25 @@ public abstract class GhastEntityMixin extends MobEntityMixin {
 
     @Inject(method = "getFireballStrength", at = @At("RETURN"), cancellable = true)
     public void nox$ghastStrongerFireballs(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(cir.getReturnValue() * 2);
+        cir.setReturnValue(cir.getReturnValue() * Nox.CONFIG.ghastFireballExplosionStrengthMultiplier);
     }
 
     @Redirect(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;getAttacker()Lnet/minecraft/entity/Entity;"))
     public Entity nox$ghastNoInstantDeath(DamageSource source) {
+        if (Nox.CONFIG.ghastFireballsInstantlyKillGhasts)
+            return source.getAttacker();
         return null;
     }
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Ghast bonus", 1.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        this.setHealth(this.getMaxHealth());
+        if (Nox.CONFIG.ghastBaseHealthMultiplier > 1) {
+            EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+            if (attr != null) {
+                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Ghast bonus", Nox.CONFIG.ghastBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                this.setHealth(this.getMaxHealth());
+            }
+        }
     }
 
 

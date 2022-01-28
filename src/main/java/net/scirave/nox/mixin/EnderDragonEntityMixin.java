@@ -24,6 +24,7 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.gen.feature.EndPortalFeature;
+import net.scirave.nox.Nox;
 import net.scirave.nox.util.NoxUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,33 +35,35 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EnderDragonEntity.class)
 public abstract class EnderDragonEntityMixin extends MobEntityMixin {
 
-    private static final TargetPredicate RANGE_PREDICATE = TargetPredicate.createAttackable();
-    private int cooldown = 0;
+    private static final TargetPredicate nox$RANGE_PREDICATE = TargetPredicate.createAttackable();
+    private int nox$fireballCooldown = 0;
 
     @ModifyArg(method = "createEnderDragonAttributes", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;add(Lnet/minecraft/entity/attribute/EntityAttribute;D)Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;", ordinal = 0))
     private static double nox$enderDragonMoreHealth(double original) {
-        return original * 3;
+        if (Nox.CONFIG.enderDragonBaseHealthMultiplier > 1)
+            return original * Nox.CONFIG.enderDragonBaseHealthMultiplier;
+        return original;
     }
 
     @Override
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         super.nox$invulnerableCheck(source, cir);
-        if (source.isExplosive()) {
+        if (source.isExplosive() && Nox.CONFIG.enderDragonIsImmuneToExplosionDamage) {
             cir.setReturnValue(true);
         }
     }
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
-        if (cooldown <= 0) {
+        if (nox$fireballCooldown <= 0) {
             BlockPos blockPos = this.world.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(EndPortalFeature.ORIGIN));
-            PlayerEntity player = this.world.getClosestPlayer(RANGE_PREDICATE, (EnderDragonEntity) (Object) this, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            PlayerEntity player = this.world.getClosestPlayer(nox$RANGE_PREDICATE, (EnderDragonEntity) (Object) this, blockPos.getX(), blockPos.getY(), blockPos.getZ());
             if (player != null && player.squaredDistanceTo((EnderDragonEntity) (Object) this) >= 49.0D && this.canSee(player)) {
-                cooldown = 100;
+                nox$fireballCooldown = Nox.CONFIG.enderDragonFireballCooldown;
                 NoxUtil.EnderDragonShootFireball((EnderDragonEntity) (Object) this, player);
             }
         } else {
-            cooldown--;
+            nox$fireballCooldown--;
         }
 
     }

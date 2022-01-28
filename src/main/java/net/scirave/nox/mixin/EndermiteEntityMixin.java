@@ -14,6 +14,7 @@ package net.scirave.nox.mixin;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -25,6 +26,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.scirave.nox.Nox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -33,12 +35,16 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier("Nox: Endermite bonus", 0.6, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if(Nox.CONFIG.endermiteMoveSpeedMultiplier > 1) {
+            EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+            if (attr != null)
+                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Endermite bonus", Nox.CONFIG.endermiteMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (target.world instanceof ServerWorld serverWorld) {
+        if (Nox.CONFIG.endermiteAttacksMakeTargetTeleport && target.world instanceof ServerWorld serverWorld) {
             double d = target.getX();
             double e = target.getY();
             double f = target.getZ();
@@ -64,9 +70,10 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         super.nox$invulnerableCheck(source, cir);
-        if (source.getName().equals("fall") || source.getName().equals("inWall")) {
+        if (source.getName().equals("fall") && Nox.CONFIG.endermitesImmuneToFallDamage)
             cir.setReturnValue(true);
-        }
+        else if (source.getName().equals("inWall") && !Nox.CONFIG.endermitesCanSuffocate)
+            cir.setReturnValue(true);
     }
 
 
