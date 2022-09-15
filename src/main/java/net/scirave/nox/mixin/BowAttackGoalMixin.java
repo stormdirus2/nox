@@ -59,7 +59,7 @@ public class BowAttackGoalMixin {
             ci.cancel();
         } else if (heldShield) {
             heldShield = false;
-            windup = 4;
+            windup = 6;
             ci.cancel();
         }
     }
@@ -72,7 +72,7 @@ public class BowAttackGoalMixin {
             this.backward = false;
 
             double d = this.actor.squaredDistanceTo(target.getX(), target.getY(), target.getZ());
-            if (d < (this.squaredRange * 0.5D)) {
+            if (d < (this.squaredRange * 0.25D)) {
                 this.backward = true;
             }
 

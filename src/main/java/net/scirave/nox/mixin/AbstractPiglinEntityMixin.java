@@ -12,7 +12,7 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.mob.AbstractPiglinEntity;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,7 +27,7 @@ public abstract class AbstractPiglinEntityMixin extends HostileEntityMixin {
     
     @Override
     public boolean nox$isAllowedToMine() {
-        return Nox.CONFIG.piglinsBreakBlocks;
+        return NoxConfig.piglinsBreakBlocks;
     }
 
 }

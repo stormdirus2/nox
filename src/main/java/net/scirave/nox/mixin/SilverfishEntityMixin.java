@@ -11,9 +11,8 @@
 
 package net.scirave.nox.mixin;
 
-import net.minecraft.entity.EntityData;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.PounceAtTargetGoal;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -22,10 +21,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.SilverfishEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.scirave.nox.Nox;
+import net.minecraft.world.World;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.Nox$PouncingEntityInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,11 +34,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class SilverfishEntityMixin extends HostileEntityMixin implements Nox$PouncingEntityInterface {
 
     @Override
-    public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if (Nox.CONFIG.silverfishMoveSpeedMultiplier > 1) {
+    public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
+        if (NoxConfig.silverfishMoveSpeedMultiplier > 1) {
             EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (attr != null)
-                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Silverfish bonus", Nox.CONFIG.silverfishMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Silverfish bonus", NoxConfig.silverfishMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         }
     }
 
@@ -52,24 +49,24 @@ public abstract class SilverfishEntityMixin extends HostileEntityMixin implement
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (Nox.CONFIG.silverfishAttacksGiveMiningFatigue)
+        if (NoxConfig.silverfishAttacksGiveMiningFatigue)
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 300, 2), (SilverfishEntity) (Object) this);
     }
 
     @Override
-    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        super.nox$invulnerableCheck(source, cir);
-        if (source.getName().equals("fall") && Nox.CONFIG.silverfishImmuneToFallDamage)
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$shouldTakeDamage(source, amount, cir);
+        if (source.getName().equals("fall") && NoxConfig.silverfishImmuneToFallDamage)
             cir.setReturnValue(true);
-        else if (source.getName().equals("drown") && !Nox.CONFIG.silverfishCanDrown)
+        else if (source.getName().equals("drown") && !NoxConfig.silverfishCanDrown)
             cir.setReturnValue(true);
-        else if (source.getName().equals("inWall") && !Nox.CONFIG.silverfishCanSuffocate)
-            cir.setReturnValue(true);
+        else if (source.getName().equals("inWall") && !NoxConfig.silverfishCanSuffocate)
+            cir.setReturnValue(false);
     }
 
     @Override
     public boolean nox$isAllowedToPounce() {
-        return Nox.CONFIG.silverfishPounceAtTarget;
+        return NoxConfig.silverfishPounceAtTarget;
     }
 
 }

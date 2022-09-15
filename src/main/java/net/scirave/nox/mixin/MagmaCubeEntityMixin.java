@@ -17,7 +17,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,19 +33,19 @@ public abstract class MagmaCubeEntityMixin extends SlimeEntityMixin {
 
     @Inject(method = "getTicksUntilNextJump", at = @At("HEAD"), cancellable = true)
     private void nox$makeMagmaCubesJumpConstantly(CallbackInfoReturnable<Integer> cir) {
-        if (Nox.CONFIG.slimesJumpConstantly)
+        if (NoxConfig.slimesJumpConstantly)
             cir.setReturnValue(4);
     }
 
     @Override
     public void nox$slimeOnAttack(LivingEntity victim, CallbackInfo ci) {
-        if (Nox.CONFIG.magmaCubeAttacksIgniteTarget)
+        if (NoxConfig.magmaCubeAttacksIgniteTarget)
             victim.setOnFireFor(4);
     }
 
     private void nox$attemptLavaFill(BlockPos pos) {
         if (!this.world.isClient && this.world.getBlockState(pos).getMaterial().isReplaceable()) {
-            this.world.setBlockState(pos, Nox.CONFIG.magmaCubeMakesLavaSourceBlocks ? nox$LAVA_SOURCE : nox$FLOWING_LAVA);
+            this.world.setBlockState(pos, NoxConfig.magmaCubeMakesLavaSourceBlocks ? nox$LAVA_SOURCE : nox$FLOWING_LAVA);
         }
     }
 
@@ -57,16 +57,16 @@ public abstract class MagmaCubeEntityMixin extends SlimeEntityMixin {
 
     @Override
     public void nox$slimeOnDeath() {
-        if (Nox.CONFIG.magmaCubeLeavesLavaWhenKilled) {
+        if (NoxConfig.magmaCubeLeavesLavaWhenKilled) {
             BlockPos origin = this.getBlockPos();
             nox$attemptLavaFill(origin);
             int size = this.getSize();
             if (size < 2) {
-                if (!Nox.CONFIG.magmaCubeMakesLavaSourceBlocks)
+                if (!NoxConfig.magmaCubeMakesLavaSourceBlocks)
                     nox$attemptSmallLavaFill(origin.up());
             }
             else {
-                if (Nox.CONFIG.magmaCubeMakesLavaSourceBlocks)
+                if (NoxConfig.magmaCubeMakesLavaSourceBlocks)
                     nox$attemptLavaFill(origin.up());
                 else
                     nox$attemptSmallLavaFill(origin.up());
@@ -75,7 +75,7 @@ public abstract class MagmaCubeEntityMixin extends SlimeEntityMixin {
                 nox$attemptLavaFill(origin.south());
                 nox$attemptLavaFill(origin.east());
                 nox$attemptLavaFill(origin.west());
-                if (size >= 3) {
+                if (size >= 4) {
                     nox$attemptLavaFill(origin.up().north());
                     nox$attemptLavaFill(origin.up().south());
                     nox$attemptLavaFill(origin.up().east());

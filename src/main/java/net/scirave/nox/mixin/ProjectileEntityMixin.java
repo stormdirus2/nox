@@ -12,11 +12,9 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.scirave.nox.util.NoxUtil;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,10 +36,6 @@ public abstract class ProjectileEntityMixin {
 
         if (owner instanceof GolemEntity golemOwner) {
             if ((!(entity instanceof Monster) && entity != golemOwner.getTarget()) || !golemOwner.canTarget(entity.getType())) {
-                cir.setReturnValue(false);
-            }
-        } else if (owner instanceof MobEntity mobOwner && entity instanceof MobEntity mobEntity) {
-            if (NoxUtil.isAnAlly(mobOwner, mobEntity)) {
                 cir.setReturnValue(false);
             }
         }

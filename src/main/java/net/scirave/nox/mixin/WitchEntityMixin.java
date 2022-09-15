@@ -12,19 +12,25 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.FleeEntityGoal;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WitchEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
-import net.scirave.nox.Nox;
+import net.minecraft.util.math.MathHelper;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(WitchEntity.class)
 public abstract class WitchEntityMixin extends HostileEntityMixin {
@@ -32,19 +38,30 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
     @Shadow
     public abstract boolean isDrinking();
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/WitchEntity;isDrinking()Z"))
-    public boolean nox$witchDontDrinkInRange(WitchEntity instance) {
-        if (Nox.CONFIG.witchesOnlyDrinkAlone) {
-            LivingEntity target = this.getTarget();
-            if (target != null && target.squaredDistanceTo((WitchEntity) (Object) this) <= 49)
-                return true;
+    @Inject(method = "initGoals", at = @At("TAIL"))
+    public void nox$witchDrinkingFlee(CallbackInfo ci) {
+        if (NoxConfig.witchesFleeToDrink) {
+            this.goalSelector.add(1, new FleeEntityGoal((WitchEntity) (Object) this, LivingEntity.class, 4.0F, 1.1D, 1.35D, (living) -> {
+                if (!this.isDrinking()) return false;
+
+                if (living instanceof PlayerEntity) {
+                    return true;
+                } else if (living instanceof MobEntity mob) {
+                    return mob.getTarget() == (Object) this;
+                }
+                return false;
+            }));
         }
-        return this.isDrinking();
+    }
+
+    @ModifyArgs(method = "initGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/goal/ProjectileAttackGoal;<init>(Lnet/minecraft/entity/ai/RangedAttackMob;DIF)V"))
+    public void nox$witchFasterAttack(Args args) {
+        args.set(2, MathHelper.ceil((int) args.get(2) * 0.75));
     }
 
     @ModifyArg(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
     public Potion nox$witchUpgradedPotions(Potion original) {
-        if (Nox.CONFIG.witchesDrinkBetterPotions) {
+        if (NoxConfig.witchesDrinkBetterPotions) {
             if (Potions.WATER_BREATHING.equals(original)) {
                 return Potions.LONG_WATER_BREATHING;
             } else if (Potions.FIRE_RESISTANCE.equals(original)) {
@@ -59,28 +76,45 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
         return original;
     }
 
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/EntityAttributeInstance;addTemporaryModifier(Lnet/minecraft/entity/attribute/EntityAttributeModifier;)V"))
+    public void nox$witchNoDrinkingSlowdown(EntityAttributeInstance instance, EntityAttributeModifier modifier) {
+        // No slowdown!
+    }
+
     @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
     public ItemStack nox$witchLingeringPotions(ItemStack original) {
-        if (Nox.CONFIG.witchesUseLingeringPotions)
+        if (NoxConfig.witchesUseLingeringPotions)
             return new ItemStack(Items.LINGERING_POTION);
         return original;
     }
 
     @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
     public Potion nox$witchUpgradedSlowness(Potion original) {
-        if (Nox.CONFIG.witchesUseStrongerSlowness && Potions.SLOWNESS.equals(original)) {
+        if (NoxConfig.witchesUseStrongerSlowness && Potions.SLOWNESS.equals(original)) {
             return Potions.STRONG_SLOWNESS;
         }
         return original;
     }
 
     @Override
-    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        super.nox$invulnerableCheck(source, cir);
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$shouldTakeDamage(source, amount, cir);
         if (source.isMagic())
-            cir.setReturnValue(true); // Intentionally non-configurable
+            cir.setReturnValue(false); // Intentionally non-configurable
         if (source.isProjectile() && !source.bypassesArmor())
-            cir.setReturnValue(Nox.CONFIG.witchesResistProjectiles);
+            cir.setReturnValue(!NoxConfig.witchesResistProjectiles);
+    }
+
+    @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/WitchEntity;isDrinking()Z"))
+    public boolean nox$witchDrinkWhileAttack(WitchEntity instance) {
+        return false;
+    }
+
+    @ModifyArgs(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/thrown/PotionEntity;setVelocity(DDDFF)V"))
+    public void nox$witchBetterAim(Args args) {
+        args.set(1, (double) args.get(1) * 0.50);
+        args.set(3, (float) ((float) args.get(3) + 0.25));
+        args.set(4, (float) args.get(4) / 4);
     }
 
 }

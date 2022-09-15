@@ -17,7 +17,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -29,12 +29,12 @@ public abstract class GuardianEntityMixin extends HostileEntityMixin {
     private static final BlockState nox$SMALL_WATER = nox$WATER.with(Properties.LEVEL_15, 7);
 
     @Override
-    public void nox$onDeath(DamageSource source, CallbackInfo ci) {
-    if (Nox.CONFIG.guardiansPlaceWaterOnDeath && !this.world.isClient) {
+    public void nox$onDamaged(DamageSource source, float amount, CallbackInfo ci) {
+    if (NoxConfig.guardiansPlaceWaterOnDeath && !this.world.isClient) {
             BlockPos pos = this.getBlockPos();
             BlockState state = this.world.getBlockState(pos);
             if (state != nox$WATER && state.getMaterial().isReplaceable()) {
-                if (Nox.CONFIG.guardianDeathLeavesWaterSource)
+                if (NoxConfig.guardianDeathLeavesWaterSource)
                     this.world.setBlockState(pos, nox$WATER);
                 else {
                     // order matters

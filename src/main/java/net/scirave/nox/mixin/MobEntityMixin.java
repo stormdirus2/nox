@@ -11,9 +11,11 @@
 
 package net.scirave.nox.mixin;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.GoalSelector;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -21,10 +23,11 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.scirave.nox.Nox;
+import net.minecraft.world.World;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.NoxUtil;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -68,37 +71,38 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
         //Overridden
     }
 
-    @Inject(method = "initialize", at = @At("TAIL"))
-    public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
+    @Inject(method = "<init>", at = @At("TAIL"))
+    public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         //Overridden
     }
 
-    @Inject(method = "initialize", at = @At("HEAD"))
-    public void nox$maybeApplyHostileAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if (this instanceof Monster) {
-            this.nox$hostileAttributes((MobEntity) (Object) this);
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
+        if (this instanceof Monster)
+            this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+    }
+
+    @Inject(method = "initEquipment", at = @At("TAIL"))
+    public void nox$difficultyScaling(Random random, LocalDifficulty localDifficulty, CallbackInfo ci) {
+        if (this instanceof Monster && NoxConfig.monsterGearScales) {
+            NoxUtil.weaponRoulette((ServerWorld) this.getWorld(), (MobEntity) (Object) this, random, localDifficulty);
+            NoxUtil.armorRoulette((ServerWorld) this.getWorld(), (MobEntity) (Object) this, random, localDifficulty);
         }
     }
 
-    public void nox$hostileAttributes(MobEntity mob) {
-        EntityAttributeInstance attr;
-        if (Nox.CONFIG.monsterBaseHealthMultiplier > 1) {
-            attr = mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-            if (attr != null) {
-                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", Nox.CONFIG.monsterBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-                mob.setHealth(mob.getMaxHealth());
+    @Override
+    public void nox$onDamaged(DamageSource source, float amount, CallbackInfo ci) {
+        if (this instanceof Monster && source.getAttacker() != null) {
+            if (this.isUsingItem()) {
+                this.stopUsingItem();
             }
-        }
-        if (Nox.CONFIG.monsterFollowRangeMultiplier >= 0) {
-            attr = mob.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE);
-            if (attr != null)
-                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", Nox.CONFIG.monsterFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         }
     }
 
     @Override
     public void nox$onPushAway(Entity entity, CallbackInfo ci) {
-        if (Nox.CONFIG.contactProvokesMonsters && this instanceof Monster && this.getTarget() == null
+        if (this instanceof Monster && NoxConfig.monsterAngerOnShove && this.getTarget() == null
                 && entity instanceof PlayerEntity player && this.canTarget(player)) {
             nox$maybeAngerOnShove(player);
         }
@@ -109,10 +113,12 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
     }
 
     @Override
-    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        Entity attacker = source.getAttacker();
-        if (attacker instanceof MobEntity mob && NoxUtil.isAnAlly(mob, (MobEntity) (Object) this)) {
-            cir.setReturnValue(true);
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        if (amount < this.getHealth() || (this.getHealth()/this.getMaxHealth()) > 0.25) {
+            Entity attacker = source.getAttacker();
+            if (attacker instanceof MobEntity mob && NoxUtil.isAnAlly(mob, (MobEntity) (Object) this)) {
+                cir.setReturnValue(false);
+            }
         }
     }
 

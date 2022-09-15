@@ -4,6 +4,7 @@
   "package": "net.scirave.nox.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AbstractBlockMixin",
     "AbstractPiglinEntityMixin",
     "AbstractSkeletonEntityMixin",
     "ActiveTargetGoalMixin",
@@ -12,6 +13,7 @@
     "BowAttackGoalMixin",
     "CaveSpiderEntityMixin",
     "ChargingPlayerPhaseMixin",
+    "ChorusFlowerBlockMixin",
     "CreeperEntityMixin",
     "CreeperIgniteGoalMixin",
     "CrossbowAttackGoalMixin",
@@ -29,6 +31,7 @@
     "GhastShootFireballGoalMixin",
     "GolemEntityMixin",
     "GuardianEntityMixin",
+    "GuardianFireBeamGoalMixin",
     "HoldingPatternPhaseMixin",
     "HostileEntityMixin",
     "HuskEntityMixin",

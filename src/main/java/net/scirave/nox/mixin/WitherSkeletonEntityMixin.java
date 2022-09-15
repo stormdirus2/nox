@@ -11,10 +11,9 @@
 
 package net.scirave.nox.mixin;
 
-import net.minecraft.entity.EntityData;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -23,33 +22,32 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.scirave.nox.Nox;
+import net.minecraft.world.World;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WitherSkeletonEntity.class)
 public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMixin {
 
     @Inject(method = "initEquipment", at = @At("TAIL"))
-    public void nox$witherSkeletonArchers(LocalDifficulty difficulty, CallbackInfo ci) {
-        if (Nox.CONFIG.witherSkeletonArchersExist && this.getRandom().nextBoolean()) {
+    public void nox$witherSkeletonArchers(Random random, LocalDifficulty localDifficulty, CallbackInfo ci) {
+        if (NoxConfig.witherSkeletonArchersExist && this.getRandom().nextBoolean()) {
             this.equipStack(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         }
     }
 
     @ModifyVariable(method = "createArrowProjectile", at = @At("HEAD"), argsOnly = true)
     public float nox$witherSkeletonArcherBuff(float original) {
-        if (Nox.CONFIG.witherSkeletonArcherDamageMultiplier > 1)
-            return original * Nox.CONFIG.witherSkeletonArcherDamageMultiplier;
+        if (NoxConfig.witherSkeletonArcherDamageMultiplier > 1)
+            return original * NoxConfig.witherSkeletonArcherDamageMultiplier;
         return original;
     }
 
@@ -60,26 +58,26 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
-        if (Nox.CONFIG.witherSkeletonWitheringRadius > 0) {
+        if (NoxConfig.witherSkeletonWitheringRadius > 0) {
             LivingEntity target = this.getTarget();
-            if (target != null && !target.hasStatusEffect(StatusEffects.WITHER) && target.squaredDistanceTo((WitherSkeletonEntity) (Object) this) <= MathHelper.square(Nox.CONFIG.witherSkeletonWitheringRadius)) {
+            if (target != null && !target.hasStatusEffect(StatusEffects.WITHER) && target.squaredDistanceTo((WitherSkeletonEntity) (Object) this) <= MathHelper.square(NoxConfig.witherSkeletonWitheringRadius)) {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80), (WitherSkeletonEntity) (Object) this);
             }
         }
     }
 
     @Override
-    public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if (Nox.CONFIG.witherSkeletonKnockbackResistanceBonus > 0) {
+    public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
+        if (NoxConfig.witherSkeletonKnockbackResistanceBonus > 0) {
             EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
             if (attr != null)
-                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", Nox.CONFIG.witherSkeletonKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
+                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", NoxConfig.witherSkeletonKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
         }
     }
 
     @Override
     public boolean nox$isAllowedToMine() {
-        return Nox.CONFIG.witherSkeletonsBreakBlocks;
+        return NoxConfig.witherSkeletonsBreakBlocks;
     }
 
 }

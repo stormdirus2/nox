@@ -28,7 +28,7 @@ public abstract class ItemEntityMixin {
 
     @Inject(method = "isFireImmune", at = @At("HEAD"), cancellable = true)
     public void nox$fireImmuneItems(CallbackInfoReturnable<Boolean> cir) {
-        if (NoxUtil.FIREPROOF.contains(this.getStack().getItem())) {
+        if (this.getStack().getItem().getRegistryEntry().isIn(NoxUtil.FIREPROOF)) {
             cir.setReturnValue(true);
         }
     }

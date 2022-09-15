@@ -18,6 +18,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.util.math.BlockPos;
 import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,7 +35,7 @@ public abstract class SpiderEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (Nox.CONFIG.spiderAttacksPlaceWebs && this.getType().getWidth() >= EntityType.CAVE_SPIDER.getWidth()) {
+        if (NoxConfig.spiderAttacksPlaceWebs && this.getType().getWidth() >= EntityType.CAVE_SPIDER.getWidth()) {
             BlockPos pos = target.getBlockPos();
             if (this.world.getBlockState(pos).getMaterial().isReplaceable())
                 this.world.setBlockState(pos, Nox.NOX_COBWEB.getDefaultState());
@@ -42,10 +43,10 @@ public abstract class SpiderEntityMixin extends HostileEntityMixin {
     }
 
     @Override
-    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        super.nox$invulnerableCheck(source, cir);
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$shouldTakeDamage(source, amount, cir);
         if (source.getName().equals("fall")) {
-            cir.setReturnValue(Nox.CONFIG.spidersImmuneToFallDamage);
+            cir.setReturnValue(!NoxConfig.spidersImmuneToFallDamage);
         }
     }
 

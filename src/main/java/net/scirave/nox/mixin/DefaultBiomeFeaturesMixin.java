@@ -15,7 +15,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,55 +28,55 @@ public class DefaultBiomeFeaturesMixin {
 
     @ModifyArgs(method = "addMonsters", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;<init>(Lnet/minecraft/entity/EntityType;III)V", ordinal = 7))
     private static void nox$witchIncreasedSpawn(Args args) {
-        if (Nox.CONFIG.doMoreWitchSpawns) {
-            args.set(1, ((int) args.get(1)) * 2);
+        if (NoxConfig.doMoreWitchSpawns) {
+            args.set(1, ((int) args.get(1)) * 3);
             args.set(3, ((int) args.get(3)) * 3);
         }
     }
 
     @ModifyArgs(method = "addMonsters", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;<init>(Lnet/minecraft/entity/EntityType;III)V", ordinal = 5))
     private static void nox$slimeDecreasedSpawn(Args args) {
-        if (Nox.CONFIG.allowSlimesInAllChunks) {
-            args.set(1, ((int) args.get(1)) / 4);
+        if (NoxConfig.slimeNaturalSpawn) {
+            args.set(1, (int) Math.floor(((int) args.get(1)) / 2));
             args.set(2, ((int) args.get(2)) / 4);
-            args.set(2, (int) ((int) args.get(3) * 0.75));
+            args.set(3, ((int) args.get(3)) / 2);
         }
     }
 
     @ModifyArgs(method = "addOceanMobs", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;<init>(Lnet/minecraft/entity/EntityType;III)V", ordinal = 2))
     private static void nox$drownedIncreasedSpawn1(Args args) {
-        if (Nox.CONFIG.doMoreDrownedSpawns) {
-            args.set(1, ((int) args.get(1)) * 2);
+        if (NoxConfig.doMoreDrownedSpawns) {
+            args.set(1, ((int) args.get(1)) * 8);
             args.set(2, ((int) args.get(2)) * 4);
-            args.set(3, ((int) args.get(3)) * 4);
+            args.set(3, ((int) args.get(3)) * 8);
         }
     }
 
     @ModifyArgs(method = "addWarmOceanMobs", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;<init>(Lnet/minecraft/entity/EntityType;III)V", ordinal = 3))
     private static void nox$drownedIncreasedSpawn2(Args args) {
-        if (Nox.CONFIG.doMoreDrownedSpawns) {
-            args.set(1, ((int) args.get(1)) * 2);
+        if (NoxConfig.doMoreDrownedSpawns) {
+            args.set(1, ((int) args.get(1)) * 8);
             args.set(2, ((int) args.get(2)) * 4);
-            args.set(3, ((int) args.get(3)) * 4);
+            args.set(3, ((int) args.get(3)) * 8);
         }
     }
 
     @Inject(method = "addCaveMobs", at = @At("TAIL"))
     private static void nox$caveSpiderSpawns(SpawnSettings.Builder builder, CallbackInfo ci) {
-        if (Nox.CONFIG.spawnCaveSpidersInCaves)
+        if (NoxConfig.spawnCaveSpidersInCaves)
             builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.CAVE_SPIDER, 80, 4, 4));
     }
 
     @Inject(method = "addOceanMobs", at = @At("TAIL"))
     private static void nox$guardianSpawns1(SpawnSettings.Builder builder, int squidWeight, int squidMaxGroupSize, int codWeight, CallbackInfo ci) {
-        if (Nox.CONFIG.guardianNaturalSpawnWeight > 0)
-            builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, Nox.CONFIG.guardianNaturalSpawnWeight, 4, 4));
+        if (NoxConfig.guardianNaturalSpawnWeight > 0)
+            builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, NoxConfig.guardianNaturalSpawnWeight, 4, 4));
     }
 
     @Inject(method = "addWarmOceanMobs", at = @At("TAIL"))
     private static void nox$guardianSpawns2(SpawnSettings.Builder builder, int squidWeight, int squidMinGroupSize, CallbackInfo ci) {
-        if (Nox.CONFIG.guardianNaturalSpawnWeight > 0)
-            builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, Nox.CONFIG.guardianNaturalSpawnWeight, 4, 4));
+        if (NoxConfig.guardianNaturalSpawnWeight > 0)
+            builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, NoxConfig.guardianNaturalSpawnWeight, 4, 4));
     }
 
 }

@@ -12,7 +12,7 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.passive.SnowGolemEntity;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
@@ -23,8 +23,8 @@ public abstract class SnowGolemEntityMixin extends GolemEntityMixin {
 
     @ModifyArgs(method = "initGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/goal/ProjectileAttackGoal;<init>(Lnet/minecraft/entity/ai/RangedAttackMob;DIF)V"))
     public void nox$snowGolemFasterShooting(Args args) {
-        args.set(2, ((int) args.get(2)) / Math.max(Nox.CONFIG.snowGolemAttackRechargeSpeedMultiplier, 0));
-        args.set(3, ((float) args.get(3)) * Math.max(Nox.CONFIG.snowGolemAttackRangeMultiplier, 1));
+        args.set(2, ((int) args.get(2)) / Math.max(NoxConfig.snowGolemAttackRechargeSpeedMultiplier, 0));
+        args.set(3, ((float) args.get(3)) * Math.max(NoxConfig.snowGolemAttackRangeMultiplier, 1));
     }
 
 }

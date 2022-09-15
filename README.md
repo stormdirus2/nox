@@ -41,11 +41,11 @@ Experimentation is encouraged.
 ## Monster Changes
 
 ### All monsters..
-* Do not have friendly fire 
-* Projectiles phase through allies
+* Do not have friendly fire (NOTE: If the mob is at or below 25% of their max health, and the damage would kill them, it still applies!)
 * Are angered when ran into (relevant to neutral monsters like Endermen)
-* +50% base health
 * +50% base follow range
+* That naturally spawn with random equipment (i.e. Skeletons and Zombies) will now spawn with better equipment based on the closest Player's equipment and the Local Difficulty
+* Can have item use canceled by being damaged
 
 ### Bow AI..
 * Prefers a farther range
@@ -62,8 +62,7 @@ Experimentation is encouraged.
 * Strafes
 
 ### All Zombies..
-* Take reduced knockback (unless they're a baby)
-* Periodically pounce at their target
+* Have increased movement speed (+25% base)
 * Avoid and flee from the sun (if it affects them)
 * Can mine blocks
 
@@ -74,7 +73,7 @@ Experimentation is encouraged.
 ### Spiders..
 * Avoid the sun
 * Are immune to fall damage
-* Places a cobweb at the victims' location upon successful attack
+* Place a cobweb at the victims' location upon successful attack
 
 ### Cave Spiders..
 * Inherit changes from Spiders
@@ -82,7 +81,6 @@ Experimentation is encouraged.
 
 ### Creepers..
 * Flee blocking entities
-* Pounce at their target
 * Move during ignition
 * Breach walls
 * Continue to ignite without line of sight
@@ -90,8 +88,8 @@ Experimentation is encouraged.
 
 ### Endermen..
 * Can break blocks
-* Apply 10 seconds of Blindness on aggro
-* Apply 10 seconds of Blindness upon successful attack
+* Apply 7 seconds of Darkness on aggro
+* Apply 7 seconds of Darkness upon successful attack
 * Teleport when damaged
 * Do not teleport when damaged by being on fire or magic
 
@@ -102,15 +100,18 @@ Experimentation is encouraged.
 * Spawn naturally
 * Jump constantly
 * Are invulnerable to fall and non-armor-piercing projectile damage
-* Spawn a short-lived Poison II effect cloud on death, with a radius proportional to their size
+* Spawn a short-lived Poison II effect cloud on death, with a radius and windup proportional to their size
+* Modified size logic (doesn't spawn ginormous too often)
 
 ### Witches..
 * Spawn more frequently
 * Use lingering potions with buffed effect clouds
+* Throw potions 25% more often
+* Can drink while throwing potions
 * Use stronger Slowness
-* Are invulnerable to magic and non-armor-piercing projectile damage
+* Are invulnerable to magic
 * Use better beneficial potions (stronger or longer duration)
-* Do not drink when target is in close proximity (7 blocks)
+* Run away while drinking a potion
 
 ### Wither Skeletons..
 * Spawn naturally (in the Nether)
@@ -122,9 +123,9 @@ Experimentation is encouraged.
 
 ### Blazes..
 * Strafe
-* Prefer a farther range
+* Prefer a farther range, but will occasionally try to close in
 * Spawn naturally (in the Nether)
-* Shoot fireballs twice as often
+* Shoot fireballs 50% more often
 * Do not shoot shielding entities (you must bait it out)
 * Ignite the target on fire for 4 seconds when in close proximity (2 blocks)
 * Blaze Rods are fire-resistant (as well as Blaze Powder)
@@ -132,7 +133,7 @@ Experimentation is encouraged.
 ### Ghasts..
 * +150% base health
 * Spawn more frequently
-* Fireballs from are twice as powerful
+* Fireballs from them are twice as powerful
 * Fireballs no longer deal 1000 damage to Ghasts (:concern:)
 * Fireball cooldown is 3 times less
 * Fireballs from Ghasts bypass shields
@@ -176,11 +177,12 @@ Experimentation is encouraged.
 ### Endermites..
 * +60% base speed
 * Are invulnerable to fall and suffocation damage
-* Teleports the victim like a Chorus Fruit does on successful attack
+* Teleports the victim like a Chorus Fruit upon successful attack
 
 ### Guardians..
-* Place water upon death
+* Place water upon taking damage
 * Spawn naturally
+* Won't make that stupid beam noise unless their target is a player
 
 ### Drowned..
 * Have increased speed in water
@@ -190,7 +192,7 @@ Experimentation is encouraged.
 * Apply Hunger II instead of Hunger I
 
 ### Strays..
-* Apply Slowness II instead of Slowness I
+* Apply Slowness III instead of Slowness I
 
 ## Boss Changes
 

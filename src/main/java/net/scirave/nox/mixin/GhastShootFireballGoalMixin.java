@@ -12,7 +12,7 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.mob.GhastEntity;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +27,7 @@ public class GhastShootFireballGoalMixin {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z", shift = At.Shift.BY, by = 1))
     public void nox$ghastLessCooldown(CallbackInfo ci) {
-        if (Nox.CONFIG.ghastReducedFireballCooldown)
+        if (NoxConfig.ghastReducedFireballCooldown)
             this.cooldown = 0;
     }
 

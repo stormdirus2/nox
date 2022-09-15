@@ -23,10 +23,12 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,9 +37,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.Objects;
-import java.util.Random;
-
 @Mixin(SlimeEntity.class)
 public abstract class SlimeEntityMixin extends MobEntityMixin {
 
@@ -45,18 +44,41 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     public abstract int getSize();
 
     @Shadow
+    public abstract void setSize(int size, boolean heal);
+
+    @Shadow
     public abstract EntityType<? extends SlimeEntity> getType();
 
-    @Inject(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/gen/random/ChunkRandom;getSlimeRandom(IIJJ)Ljava/util/Random;"), cancellable = true)
-    private static void nox$slimesSpawnNaturally(EntityType<SlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
-        if (Nox.CONFIG.allowSlimesInAllChunks && world.getLightLevel(pos) <= 7) {
-            cir.setReturnValue(SlimeEntity.canMobSpawn(type, world, spawnReason, pos, random));
+    @Inject(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/random/ChunkRandom;getSlimeRandom(IIJJ)Lnet/minecraft/util/math/random/Random;"), cancellable = true)
+    private static void nox$slimeSpawnNaturally(EntityType<SlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
+        if (NoxConfig.slimeNaturalSpawn) {
+            if (world.getLightLevel(pos) <= 7) {
+                cir.setReturnValue(SlimeEntity.canMobSpawn(type, world, spawnReason, pos, random));
+            }
         }
+    }
+
+    @Inject(method = "initialize", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/MobEntity;initialize(Lnet/minecraft/world/ServerWorldAccess;Lnet/minecraft/world/LocalDifficulty;Lnet/minecraft/entity/SpawnReason;Lnet/minecraft/entity/EntityData;Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/entity/EntityData;"))
+    public void nox$betterSlimeSpawn(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
+        int size = 3;
+        float random = this.getRandom().nextFloat() * 10 + difficulty.getClampedLocalDifficulty();
+
+        if (random < 5) {
+            size = 2;
+        }
+        if (random < 2) {
+            size = 1;
+        }
+        if (random > 9.5) {
+            size = 4;
+        }
+
+        this.setSize(size, true);
     }
 
     @Inject(method = "getTicksUntilNextJump", at = @At("HEAD"), cancellable = true)
     private void nox$makeSlimesJumpConstantly(CallbackInfoReturnable<Integer> cir) {
-        if (Nox.CONFIG.slimesJumpConstantly)
+        if (NoxConfig.slimesJumpConstantly)
             cir.setReturnValue(4);
     }
 
@@ -73,52 +95,54 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     }
 
     @Override
-    public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
+    public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         EntityAttributeInstance attr;
-        if (Nox.CONFIG.slimeBaseHealthMultiplier > 1) {
+        if (NoxConfig.slimeBaseHealthMultiplier > 1) {
             attr = this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
             if (attr != null) {
-                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", Nox.CONFIG.slimeBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
                 this.setHealth(this.getMaxHealth());
             }
         }
-        if (Nox.CONFIG.slimeFollowRangeMultiplier > 1) {
+        if (NoxConfig.slimeFollowRangeMultiplier > 1) {
             attr = this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE);
             if (attr != null)
-                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", Nox.CONFIG.slimeFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         }
-        if (Nox.CONFIG.slimeMoveSpeedMultiplier > 1) {
+        if (NoxConfig.slimeMoveSpeedMultiplier > 1) {
             attr = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (attr != null)
-                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", Nox.CONFIG.slimeMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         }
 
         attr = this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_KNOCKBACK);
         if (attr != null)
-            attr.addPersistentModifier(new EntityAttributeModifier("Nox: Slime bonus", 0, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+            attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 0, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
     }
 
     @Override
-    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        super.nox$invulnerableCheck(source, cir);
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$shouldTakeDamage(source, amount, cir);
         if (source.getName().equals("fall"))
-            cir.setReturnValue(Nox.CONFIG.slimesImmuneToFallDamage);
+            cir.setReturnValue(!NoxConfig.slimesImmuneToFallDamage);
         else if (source.isProjectile() && !source.bypassesArmor())
-            cir.setReturnValue(Nox.CONFIG.slimesResistProjectiles);
+            cir.setReturnValue(!NoxConfig.slimesResistProjectiles);
     }
 
     @Override
     public void nox$onDeath(DamageSource source, CallbackInfo ci) {
-        this.nox$slimeOnDeath();
+        if (this.getWorld() instanceof ServerWorld) {
+            this.nox$slimeOnDeath();
+        }
     }
 
     public void nox$slimeOnDeath() {
         // Prevent poison cloud effect from being applied to mod-added Slimes
-        if (Nox.CONFIG.slimePoisonCloudOnDeath && this.getType() == EntityType.SLIME) {
+        if (NoxConfig.slimePoisonCloudOnDeath && this.getType() == EntityType.SLIME) {
             AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(this.world, this.getX(), this.getY(), this.getZ());
             cloud.setRadius(2.5F * this.getSize());
             cloud.setRadiusOnUse(-0.5F);
-            cloud.setWaitTime(10 * this.getSize());
+            cloud.setWaitTime(10 + 15 * (this.getSize() - 1));
             cloud.setDuration(cloud.getDuration() * this.getSize() / 4);
             cloud.setRadiusGrowth(-cloud.getRadius() / (float) cloud.getDuration());
             cloud.addEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 1));

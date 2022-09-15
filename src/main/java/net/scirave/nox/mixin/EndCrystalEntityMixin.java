@@ -15,7 +15,7 @@ import net.minecraft.entity.boss.dragon.EnderDragonFight;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.Nox$EnderDragonFightInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class EndCrystalEntityMixin extends EntityMixin {
 
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if (this.world instanceof ServerWorld serverWorld && Nox.CONFIG.endCrystalsIndestructibleUnlessConnectedToDragon) {
+        if (this.world instanceof ServerWorld serverWorld && NoxConfig.endCrystalsIndestructibleUnlessConnectedToDragon) {
             EnderDragonFight enderDragonFight = serverWorld.getEnderDragonFight();
             if (enderDragonFight != null && ((Nox$EnderDragonFightInterface) enderDragonFight).inDragonRange(this.getPos())) {
                 if (!((Nox$EnderDragonFightInterface) enderDragonFight).isConnectedCrystal((EndCrystalEntity) (Object) this)) {

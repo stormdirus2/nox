@@ -13,7 +13,7 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$FleeSunlightGoal;
 import net.scirave.nox.util.Nox$SwimGoalInterface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,7 +32,7 @@ public abstract class AbstractSkeletonEntityMixin extends HostileEntityMixin imp
 
     @Override
     public boolean nox$canSwim() {
-        return Nox.CONFIG.skeletonsCanSwim;
+        return NoxConfig.skeletonsCanSwim;
     }
 
 }
