@@ -21,7 +21,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.World;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
@@ -31,11 +30,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
+
 @Mixin(WitherSkeletonEntity.class)
 public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMixin {
 
     @Inject(method = "initEquipment", at = @At("TAIL"))
-    public void nox$witherSkeletonArchers(Random random, LocalDifficulty localDifficulty, CallbackInfo ci) {
+    public void nox$witherSkeletonArchers(LocalDifficulty difficulty, CallbackInfo ci) {
         if (this.getRandom().nextBoolean()) {
             this.equipStack(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         }
@@ -62,7 +64,8 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
 
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", 0.3, EntityAttributeModifier.Operation.ADDITION));
+        Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)).addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", 0.3, EntityAttributeModifier.Operation.ADDITION));
     }
 
 }
+
