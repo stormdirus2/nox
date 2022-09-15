@@ -106,7 +106,7 @@ public class CrossbowAttackGoalMixin {
         }
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/intprovider/UniformIntProvider;get(Lnet/minecraft/util/math/random/Random;)I"))
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/intprovider/UniformIntProvider;get(Ljava/util/Random;)I"))
     public void nox$crossbowPrioritizeCharging(CallbackInfo ci) {
         if (this.stage == CrossbowAttackGoal.Stage.UNCHARGED) {
             this.actor.setCurrentHand(ProjectileUtil.getHandPossiblyHolding(this.actor, Items.CROSSBOW));
@@ -116,3 +116,4 @@ public class CrossbowAttackGoalMixin {
     }
 
 }
+
