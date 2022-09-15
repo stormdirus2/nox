@@ -12,30 +12,26 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.World;
 import net.scirave.nox.util.NoxUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WitherEntity.class)
 public abstract class WitherEntityMixin extends HostileEntityMixin {
@@ -44,16 +40,6 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
     private int blockBreakingCooldown;
 
     private int summonCooldown = 600;
-
-    @ModifyArg(method = "createWitherAttributes", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;add(Lnet/minecraft/entity/attribute/EntityAttribute;D)Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;", ordinal = 0))
-    private static double nox$witherMoreHealth(double original) {
-        return original * 2;
-    }
-
-    @ModifyArg(method = "createWitherAttributes", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;add(Lnet/minecraft/entity/attribute/EntityAttribute;D)Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;", ordinal = 3))
-    private static double nox$witherMoreRange(double original) {
-        return original * 2;
-    }
 
     private void nox$witherBreakBlocks() {
         if (!this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) return;
@@ -110,7 +96,7 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
                 for (int i = 0; i < 3; i++) {
                     WitherSkeletonEntity skeleton = EntityType.WITHER_SKELETON.create(serverWorld);
                     if (skeleton != null) {
-                        skeleton.setPos(this.getX() + this.getRandom().nextInt(-2, 2), this.getY(), this.getZ() + this.getRandom().nextInt(-2, 2));
+                        skeleton.setPos(this.getX() + this.getRandom().nextBetween(-2, 2), this.getY(), this.getZ() + this.getRandom().nextBetween(-2, 2));
                         skeleton.initialize(serverWorld, this.world.getLocalDifficulty(skeleton.getBlockPos()), SpawnReason.REINFORCEMENT, null, null);
                         serverWorld.spawnEntityAndPassengers(skeleton);
                         skeleton.setTarget(target);
@@ -122,13 +108,15 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
     }
 
     @Override
-    public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
+    public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         //Non-applicable
     }
 
     @Override
-    public void nox$hostileAttributes(MobEntity mob) {
-        //Non-applicable
+    public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
+        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Wither bonus", 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        this.setHealth(this.getMaxHealth());
+        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Wither bonus", 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
 
 }

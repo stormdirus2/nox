@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.IronGolemEntity;
+import net.minecraft.util.math.Box;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,7 +40,7 @@ public abstract class IronGolemEntityMixin extends GolemEntityMixin {
     public void nox$ironGolemSweepAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {
         if (this.canSweepAttack) {
             this.canSweepAttack = false;
-            List<MobEntity> list = this.world.getEntitiesByClass(MobEntity.class, target.getBoundingBox().expand(1.0D, 0.25D, 1.0D), (mob) -> (mob instanceof Monster || mob.getTarget() == (Object) this) && this.canTarget(mob.getType()) && this.canTarget(mob));
+            List<MobEntity> list = this.world.getEntitiesByClass(MobEntity.class, Box.of(target.getPos(), 1, 1, 1), (mob) -> (mob instanceof Monster || mob.getTarget() == (Object) this) && this.canTarget(mob.getType()) && this.canTarget(mob));
             for (MobEntity mob : list) {
                 this.tryAttack(mob);
             }

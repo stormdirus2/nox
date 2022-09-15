@@ -19,6 +19,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.entity.mob.PhantomEntity;
+import net.minecraft.util.math.random.Random;
 import net.scirave.nox.util.Nox$MiningInterface;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,8 +28,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Random;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin implements Nox$MiningInterface {
@@ -60,6 +59,12 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
     @Shadow
     public abstract boolean canTarget(LivingEntity target);
 
+    @Shadow
+    public abstract boolean isUsingItem();
+
+    @Shadow
+    public abstract void stopUsingItem();
+
     @Inject(method = "blockedByShield", at = @At("HEAD"), cancellable = true)
     public void nox$ghastFireballsPierce(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         if (
@@ -77,6 +82,11 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
 
     @Inject(method = "onDeath", at = @At("HEAD"))
     public void nox$onDeath(DamageSource source, CallbackInfo ci) {
+        //Overridden
+    }
+
+    @Inject(method = "applyDamage", at = @At("HEAD"))
+    public void nox$onDamaged(DamageSource source, float amount, CallbackInfo ci) {
         //Overridden
     }
 

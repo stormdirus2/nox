@@ -11,23 +11,19 @@
 
 package net.scirave.nox.mixin;
 
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.TargetPredicate;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.EndPortalFeature;
 import net.scirave.nox.util.NoxUtil;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -36,11 +32,6 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
 
     private static final TargetPredicate RANGE_PREDICATE = TargetPredicate.createAttackable();
     private int cooldown = 0;
-
-    @ModifyArg(method = "createEnderDragonAttributes", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;add(Lnet/minecraft/entity/attribute/EntityAttribute;D)Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;", ordinal = 0))
-    private static double nox$enderDragonMoreHealth(double original) {
-        return original * 3;
-    }
 
     @Override
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
@@ -66,13 +57,14 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
     }
 
     @Override
-    public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
+    public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         //Non-applicable
     }
 
     @Override
-    public void nox$hostileAttributes(MobEntity mob) {
-        //Non-applicable
+    public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
+        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Enderdragon bonus", 2, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        this.setHealth(this.getMaxHealth());
     }
 
 }

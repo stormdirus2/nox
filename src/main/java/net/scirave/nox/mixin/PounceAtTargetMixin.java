@@ -40,8 +40,8 @@ public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceInte
 
     @ModifyArgs(method = "start", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/MobEntity;setVelocity(DDD)V"))
     public void nox$betterPounce(Args args) {
-        args.set(0, ((double) args.get(0)) * 2.5);
-        args.set(2, ((double) args.get(2)) * 2.5);
+        args.set(0, ((double) args.get(0)) * 2);
+        args.set(2, ((double) args.get(2)) * 2);
     }
 
     @Inject(method = "canStart", at = @At("HEAD"), cancellable = true)

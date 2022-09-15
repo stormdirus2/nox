@@ -15,8 +15,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 
 import java.util.EnumSet;
 
@@ -31,14 +32,21 @@ public class Nox$CreeperBreachGoal extends Goal {
 
     public boolean canStart() {
         LivingEntity living = this.creeper.getTarget();
-        return Nox.CONFIG.creepersBreachWalls && living != null && living.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && shouldBreach(living);
+        return NoxConfig.creepersBreachWalls && living != null && living.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && shouldBreach(living);
+    }
+
+    public boolean withinReach(Vec3d pos, LivingEntity target) {
+        double yDiff = Math.abs(pos.y - target.getY());
+        return yDiff <= 7;
     }
 
     private boolean shouldBreach(LivingEntity living) {
         if (!creeper.isNavigating() && this.creeper.age > 60 && (this.creeper.isOnGround() || this.creeper.isTouchingWater())) {
             Path path = creeper.getNavigation().findPathTo(living, 0);
-            if (path == null || (!path.reachesTarget() && path.getEnd() != null && path.getEnd().getSquaredDistance(this.creeper.getBlockPos()) <= 4)) {
-                return true;
+            if (path == null) {
+                return withinReach(this.creeper.getPos(), living);
+            } else if (!path.reachesTarget() && path.getEnd() != null && path.getEnd().getSquaredDistance(this.creeper.getBlockPos()) <= 4) {
+                return withinReach(path.getEnd().getPos(), living);
             } else {
                 creeper.getNavigation().startMovingAlong(path, 1.0);
             }

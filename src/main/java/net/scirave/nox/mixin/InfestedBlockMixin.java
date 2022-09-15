@@ -27,7 +27,7 @@ public class InfestedBlockMixin {
 
     @Inject(method = "spawnSilverfish", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), locals = LocalCapture.CAPTURE_FAILSOFT)
     public void nox$silverfishReapplyAttributes(ServerWorld world, BlockPos pos, CallbackInfo ci, SilverfishEntity silverfishEntity) {
-        silverfishEntity.initialize(world, world.getLocalDifficulty(pos), SpawnReason.REINFORCEMENT, null, null);
+        silverfishEntity.initialize(world, world.getLocalDifficulty(pos), SpawnReason.TRIGGERED, null, null);
     }
 
 }

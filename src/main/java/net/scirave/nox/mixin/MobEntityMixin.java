@@ -11,7 +11,10 @@
 
 package net.scirave.nox.mixin;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -20,10 +23,11 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.scirave.nox.Nox;
+import net.minecraft.world.World;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.NoxUtil;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -67,27 +71,37 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
         //Overridden
     }
 
-    @Inject(method = "initialize", at = @At("TAIL"))
-    public void nox$modifyAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
+    @Inject(method = "<init>", at = @At("TAIL"))
+    public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         //Overridden
     }
 
-    @Inject(method = "initialize", at = @At("HEAD"))
-    public void nox$maybeApplyHostileAttributes(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
-        if (this instanceof Monster && Nox.CONFIG.buffAllMonsters) {
-            this.nox$hostileAttributes((MobEntity) (Object) this);
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
+        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+    }
+
+    @Inject(method = "initEquipment", at = @At("TAIL"))
+    public void nox$difficultyScaling(Random random, LocalDifficulty localDifficulty, CallbackInfo ci) {
+        if (this instanceof Monster && NoxConfig.monsterGearScales) {
+            NoxUtil.weaponRoulette((ServerWorld) this.getWorld(), (MobEntity) (Object) this, random, localDifficulty);
+            NoxUtil.armorRoulette((ServerWorld) this.getWorld(), (MobEntity) (Object) this, random, localDifficulty);
         }
     }
 
-    public void nox$hostileAttributes(MobEntity mob) {
-        mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", 0.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        mob.setHealth(mob.getMaxHealth());
-        mob.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addPersistentModifier(new EntityAttributeModifier("Nox: Hostile bonus", 0.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+    @Override
+    public void nox$onDamaged(DamageSource source, float amount, CallbackInfo ci) {
+        if (this instanceof Monster && source.getAttacker() != null) {
+            if (this.isUsingItem()) {
+                this.stopUsingItem();
+            }
+        }
     }
 
     @Override
     public void nox$onPushAway(Entity entity, CallbackInfo ci) {
-        if (this instanceof Monster && this.getTarget() == null && entity instanceof PlayerEntity player && this.canTarget(player)) {
+        if (this instanceof Monster && NoxConfig.monsterAngerOnShove && this.getTarget() == null && entity instanceof PlayerEntity player && this.canTarget(player)) {
             nox$maybeAngerOnShove(player);
         }
     }

@@ -11,47 +11,45 @@
 
 package net.scirave.nox.config;
 
-import draylar.omegaconfig.api.Comment;
-import draylar.omegaconfig.api.Config;
-import net.scirave.nox.Nox;
-import org.jetbrains.annotations.Nullable;
+import eu.midnightdust.lib.config.MidnightConfig;
 
-public class NoxConfig implements Config {
+public class NoxConfig extends MidnightConfig {
 
     // Global
-    @Comment("[Global] Friendly fire enabled")
-    public boolean friendlyFire = false;
-    @Comment("[Global] Mobs see through walls")
-    public boolean mobXray = true;
-    @Comment("[Global] Baseline Monster buffs")
-    public boolean buffAllMonsters = true;
-    @Comment("[Global] Baseline Golem buffs")
-    public boolean buffAllGolems = true;
-    @Comment("[Global] (Certain) mobs can break blocks")
-    public boolean mobsBreakBlocks = true;
+    @Entry
+    public static boolean noFriendlyFire = true;
+    @Entry
+    public static boolean mobXray = true;
+    @Entry
+    public static double monsterRangeMultiplier = 1.5;
+    @Entry
+    public static boolean monsterGearScales = true;
+    @Entry
+    public static boolean monsterAngerOnShove = true;
+    @Entry
+    public static boolean buffGolems = true;
+    @Entry
+    public static boolean mobsBreakBlocks = true;
+
+    // Block breaking
+    @Entry
+    public static float blockBreakingHardnessCutoff = 3.0F;
 
     // Sleep
-    @Comment("[Sleep] Monsters detected glow")
-    public boolean sleepApplyGlowing = true;
-    @Comment("[Sleep] Check expands to reach sea level")
-    public boolean sleepExtendToSeaLevel = true;
-    @Comment("[Sleep] Horizontal search distance")
-    public int sleepHorizontalSearchDistance = 50;
-    @Comment("[Sleep] Minimum vertical search distance")
-    public int sleepMinVerticalSearchDistance = 20;
+    @Entry
+    public static boolean sleepApplyGlowing = true;
+    @Entry
+    public static boolean sleepExtendToSeaLevel = true;
+    @Entry
+    public static int sleepHorizontalSearchDistance = 50;
+    @Entry
+    public static int sleepMinVerticalSearchDistance = 20;
 
     // Mobs
-    @Comment("[Mobs] Creepers breach walls")
-    public boolean creepersBreachWalls = true;
-
-    @Override
-    public String getName() {
-        return "Nox Config";
-    }
-
-    @Override
-    public @Nullable String getModid() {
-        return Nox.MOD_ID;
-    }
-
+    @Entry
+    public static boolean creepersBreachWalls = true;
+    @Entry
+    public static boolean creepersRunFromShields = true;
+    @Entry
+    public static boolean endermiteFlowerSpawn = true;
 }

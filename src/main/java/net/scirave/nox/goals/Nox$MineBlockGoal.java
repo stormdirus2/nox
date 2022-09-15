@@ -22,7 +22,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.scirave.nox.Nox;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.Nox$MiningInterface;
 import net.scirave.nox.util.NoxUtil;
 import org.jetbrains.annotations.Nullable;
@@ -32,6 +32,9 @@ public class Nox$MineBlockGoal extends Goal {
 
     protected final MobEntity owner;
     private LivingEntity target;
+
+    @Nullable
+    private LivingEntity targetSeen;
     private BlockPos posToMine;
     private int mineTick;
 
@@ -48,7 +51,7 @@ public class Nox$MineBlockGoal extends Goal {
     }
 
     public static boolean canMine(BlockState block) {
-        if (block.getBlock().getHardness() >= 3.0F && block.getMaterial() != Material.WOOD) {
+        if (block.getBlock().getHardness() >= NoxConfig.blockBreakingHardnessCutoff && block.getMaterial() != Material.WOOD) {
             return false;
         }
         return NoxUtil.isAtWoodLevel(block);
@@ -139,12 +142,25 @@ public class Nox$MineBlockGoal extends Goal {
     public boolean canStart() {
         if (shouldContinue()) {
             return true;
-        } else if (!Nox.CONFIG.mobsBreakBlocks) {
+        } else if (!NoxConfig.mobsBreakBlocks) {
             return false;
         }
         LivingEntity victim = this.owner.getTarget();
+        if (victim == null || victim.isDead()) {
+            this.targetSeen = null;
+            return false;
+        }
 
-        if (this.owner.age > 60 && (this.owner.isOnGround() || this.owner.isTouchingWater()) && victim != null && victim.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+        if (this.owner.age > 60 && (this.owner.isOnGround() || this.owner.isTouchingWater()) && victim.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+
+            if (this.targetSeen != victim) {
+                if (this.owner.canSee(victim)) {
+                    this.targetSeen = victim;
+                } else {
+                    return false;
+                }
+            }
+
             Path path = this.owner.getNavigation().findPathTo(victim, 0);
             if (path != null && path.reachesTarget()) {
                 return false;

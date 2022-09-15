@@ -13,7 +13,6 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.StrayEntity;
-import net.scirave.nox.goals.Nox$FleeSunlightGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;

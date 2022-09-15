@@ -72,7 +72,7 @@ public class CrossbowAttackGoalMixin {
             ci.cancel();
         } else if (heldShield) {
             heldShield = false;
-            windup = 4;
+            windup = 6;
             ci.cancel();
         }
     }
@@ -94,7 +94,7 @@ public class CrossbowAttackGoalMixin {
             boolean backward = false;
 
             double d = this.actor.squaredDistanceTo(target.getX(), target.getY(), target.getZ());
-            if (d < this.squaredRange) {
+            if (d < this.squaredRange * 0.5D) {
                 backward = true;
             }
 
@@ -106,7 +106,7 @@ public class CrossbowAttackGoalMixin {
         }
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/intprovider/UniformIntProvider;get(Ljava/util/Random;)I"))
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/intprovider/UniformIntProvider;get(Lnet/minecraft/util/math/random/Random;)I"))
     public void nox$crossbowPrioritizeCharging(CallbackInfo ci) {
         if (this.stage == CrossbowAttackGoal.Stage.UNCHARGED) {
             this.actor.setCurrentHand(ProjectileUtil.getHandPossiblyHolding(this.actor, Items.CROSSBOW));

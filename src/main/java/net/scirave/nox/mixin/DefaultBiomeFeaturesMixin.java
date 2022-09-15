@@ -27,15 +27,15 @@ public class DefaultBiomeFeaturesMixin {
 
     @ModifyArgs(method = "addMonsters", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;<init>(Lnet/minecraft/entity/EntityType;III)V", ordinal = 7))
     private static void nox$witchIncreasedSpawn(Args args) {
-        args.set(1, ((int) args.get(1)) * 2);
+        args.set(1, ((int) args.get(1)) * 3);
         args.set(3, ((int) args.get(3)) * 3);
     }
 
     @ModifyArgs(method = "addMonsters", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;<init>(Lnet/minecraft/entity/EntityType;III)V", ordinal = 5))
     private static void nox$slimeDecreasedSpawn(Args args) {
-        args.set(1, ((int) args.get(1))/4);
-        args.set(2, ((int) args.get(2))/4);
-        args.set(2, (int) ((int) args.get(3)*0.75));
+        args.set(1, (int) Math.floor(((int) args.get(1)) / 3));
+        args.set(2, ((int) args.get(2)) / 4);
+        args.set(3, ((int) args.get(3)) / 2);
     }
 
     @ModifyArgs(method = "addOceanMobs", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;<init>(Lnet/minecraft/entity/EntityType;III)V", ordinal = 2))
@@ -59,12 +59,12 @@ public class DefaultBiomeFeaturesMixin {
 
     @Inject(method = "addOceanMobs", at = @At("TAIL"))
     private static void nox$guardianSpawns1(SpawnSettings.Builder builder, int squidWeight, int squidMaxGroupSize, int codWeight, CallbackInfo ci) {
-        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, 10, 4, 4));
+        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, 10, 2, 3));
     }
 
     @Inject(method = "addWarmOceanMobs", at = @At("TAIL"))
     private static void nox$guardianSpawns2(SpawnSettings.Builder builder, int squidWeight, int squidMinGroupSize, CallbackInfo ci) {
-        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, 10, 4, 4));
+        //builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, 10, 2, 3));
     }
 
 }

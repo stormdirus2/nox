@@ -13,9 +13,9 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
-import net.minecraft.entity.ai.goal.PounceAtTargetGoal;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$CreeperBreachGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,13 +28,15 @@ public abstract class CreeperEntityMixin extends HostileEntityMixin {
     @Inject(method = "initGoals", at = @At("TAIL"))
     public void nox$creeperFleeBlocking(CallbackInfo ci) {
         this.goalSelector.add(2, new FleeEntityGoal((CreeperEntity) (Object) this, LivingEntity.class, 4.0F, 1.2D, 1.5D, (living) -> {
+            if (!NoxConfig.creepersRunFromShields) return false;
+
             if (living instanceof LivingEntity livingEntity) {
                 return livingEntity.isBlocking() && livingEntity.blockedByShield(EntityDamageSource.explosion((CreeperEntity) (Object) this));
             }
             return false;
         }));
         this.goalSelector.add(3, new Nox$CreeperBreachGoal((CreeperEntity) (Object) this));
-        this.goalSelector.add(3, new PounceAtTargetGoal((CreeperEntity) (Object) this, 0.4F));
+        //this.goalSelector.add(3, new PounceAtTargetGoal((CreeperEntity) (Object) this, 0.4F));
     }
 
 }

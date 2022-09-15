@@ -42,10 +42,10 @@ Experimentation is encouraged.
 
 ### All monsters..
 * Do not have friendly fire 
-* Projectiles phase through allies
 * Are angered when ran into (relevant to neutral monsters like Endermen)
 * +50% base health
 * +50% base follow range
+* That naturally spawn with random equipment (i.e. Skeletons and Zombies) will now spawn with better equipment based on the closest Player's equipment and the Local Difficulty
 
 ### Bow AI..
 * Prefers a farther range
@@ -62,8 +62,7 @@ Experimentation is encouraged.
 * Strafes
 
 ### All Zombies..
-* Take reduced knockback (unless they're a baby)
-* Periodically pounce at their target
+* Have increased movement speed (+25% base)
 * Avoid and flee from the sun (if it affects them)
 * Can mine blocks
 
@@ -82,7 +81,6 @@ Experimentation is encouraged.
 
 ### Creepers..
 * Flee blocking entities
-* Pounce at their target
 * Move during ignition
 * Breach walls
 * Continue to ignite without line of sight
@@ -90,8 +88,8 @@ Experimentation is encouraged.
 
 ### Endermen..
 * Can break blocks
-* Apply 10 seconds of Blindness on aggro
-* Apply 10 seconds of Blindness upon successful attack
+* Apply 7 seconds of Darkness on aggro
+* Apply 7 seconds of Darkness upon successful attack
 * Teleport when damaged
 * Do not teleport when damaged by being on fire or magic
 
@@ -102,15 +100,17 @@ Experimentation is encouraged.
 * Spawn naturally
 * Jump constantly
 * Are invulnerable to fall and non-armor-piercing projectile damage
-* Spawn a short-lived Poison II effect cloud on death, with a radius proportional to their size
+* Spawn a short-lived Poison II effect cloud on death, with a radius and windup proportional to their size
 
 ### Witches..
 * Spawn more frequently
 * Use lingering potions with buffed effect clouds
+* Throw potions 25% more often
+* Can drink while throwing potions
 * Use stronger Slowness
-* Are invulnerable to magic and non-armor-piercing projectile damage
+* Are invulnerable to magic
 * Use better beneficial potions (stronger or longer duration)
-* Do not drink when target is in close proximity (7 blocks)
+* Run away while drinking a potion
 
 ### Wither Skeletons..
 * Spawn naturally (in the Nether)
@@ -176,7 +176,7 @@ Experimentation is encouraged.
 ### Endermites..
 * +60% base speed
 * Are invulnerable to fall and suffocation damage
-* Teleports the victim like a Chorus Fruit does on successful attack
+* Teleports the victim like a Chorus Fruit upon successful attack
 
 ### Guardians..
 * Place water upon death

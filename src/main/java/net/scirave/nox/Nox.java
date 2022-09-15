@@ -11,17 +11,28 @@
 
 package net.scirave.nox;
 
-import draylar.omegaconfig.OmegaConfig;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ToolItem;
+import net.minecraft.util.registry.Registry;
 import net.scirave.nox.config.NoxConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class Nox implements ModInitializer {
 
     public static String MOD_ID = "nox";
-    public static final NoxConfig CONFIG = OmegaConfig.register(NoxConfig.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static List<Item> TOOLS = null;
+    public static List<Item> ARMOR = null;
 
     @Override
     public void onInitialize() {
-        // Empty...
+        NoxConfig.init(MOD_ID, NoxConfig.class);
+        TOOLS = Registry.ITEM.stream().filter((item) -> item instanceof ToolItem).toList();
+        ARMOR = Registry.ITEM.stream().filter((item) -> item instanceof ArmorItem).toList();
     }
 }

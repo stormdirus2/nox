@@ -40,7 +40,7 @@ public abstract class PiglinBrainMixin {
                 ItemStack stack = iterator.next();
                 Item item = stack.getItem();
                 if (item instanceof ArmorItem armor) {
-                    if (armor.getMaterial() == ArmorMaterials.GOLD || ItemTags.PIGLIN_LOVED.contains(item)) {
+                    if (armor.getMaterial() == ArmorMaterials.GOLD || item.getRegistryEntry().isIn(ItemTags.PIGLIN_LOVED)) {
                         hasGoldenArmor = true;
                     } else {
                         cir.setReturnValue(false);
