@@ -43,7 +43,6 @@ Experimentation is encouraged.
 ### All monsters..
 * Do not have friendly fire 
 * Are angered when ran into (relevant to neutral monsters like Endermen)
-* +50% base health
 * +50% base follow range
 * That naturally spawn with random equipment (i.e. Skeletons and Zombies) will now spawn with better equipment based on the closest Player's equipment and the Local Difficulty
 
