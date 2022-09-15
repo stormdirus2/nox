@@ -180,6 +180,7 @@ Experimentation is encouraged.
 ### Guardians..
 * Place water upon death
 * Spawn naturally
+* Won't make that stupid beam noise unless their target is a player
 
 ### Drowned..
 * Have increased speed in water

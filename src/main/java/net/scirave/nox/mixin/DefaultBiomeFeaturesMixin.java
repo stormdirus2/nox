@@ -40,14 +40,14 @@ public class DefaultBiomeFeaturesMixin {
 
     @ModifyArgs(method = "addOceanMobs", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;<init>(Lnet/minecraft/entity/EntityType;III)V", ordinal = 2))
     private static void nox$drownedIncreasedSpawn1(Args args) {
-        args.set(1, ((int) args.get(1)) * 2);
+        args.set(1, ((int) args.get(1)) * 4);
         args.set(2, ((int) args.get(2)) * 4);
         args.set(3, ((int) args.get(3)) * 4);
     }
 
     @ModifyArgs(method = "addWarmOceanMobs", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;<init>(Lnet/minecraft/entity/EntityType;III)V", ordinal = 3))
     private static void nox$drownedIncreasedSpawn2(Args args) {
-        args.set(1, ((int) args.get(1)) * 2);
+        args.set(1, ((int) args.get(1)) * 4);
         args.set(2, ((int) args.get(2)) * 4);
         args.set(3, ((int) args.get(3)) * 4);
     }
@@ -64,7 +64,7 @@ public class DefaultBiomeFeaturesMixin {
 
     @Inject(method = "addWarmOceanMobs", at = @At("TAIL"))
     private static void nox$guardianSpawns2(SpawnSettings.Builder builder, int squidWeight, int squidMinGroupSize, CallbackInfo ci) {
-        //builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, 10, 2, 3));
+        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GUARDIAN, 10, 2, 3));
     }
 
 }

@@ -4,6 +4,8 @@ accessible   class   net/minecraft/entity/ai/goal/CrossbowAttackGoal$Stage
 
 accessible   class   net/minecraft/entity/mob/GhastEntity$ShootFireballGoal
 
+accessible   class   net/minecraft/entity/mob/GuardianEntity$FireBeamGoal
+
 accessible   class   net/minecraft/entity/mob/BlazeEntity$ShootFireballGoal
 
 accessible   class   net/minecraft/entity/mob/DrownedEntity$TridentAttackGoal
