@@ -96,7 +96,7 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
                 for (int i = 0; i < 3; i++) {
                     WitherSkeletonEntity skeleton = EntityType.WITHER_SKELETON.create(serverWorld);
                     if (skeleton != null) {
-                        skeleton.setPos(this.getX() + this.getRandom().nextBetween(-2, 2), this.getY(), this.getZ() + this.getRandom().nextBetween(-2, 2));
+                        skeleton.setPos(this.getX() + this.getRandom().nextInt(-2, 2), this.getY(), this.getZ() + this.getRandom().nextInt(-2, 2));
                         skeleton.initialize(serverWorld, this.world.getLocalDifficulty(skeleton.getBlockPos()), SpawnReason.REINFORCEMENT, null, null);
                         serverWorld.spawnEntityAndPassengers(skeleton);
                         skeleton.setTarget(target);
@@ -120,3 +120,4 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
     }
 
 }
+
