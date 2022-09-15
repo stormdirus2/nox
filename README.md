@@ -76,7 +76,7 @@ Experimentation is encouraged.
 
 ### Cave Spiders..
 * Inherent changes from Spiders
-* Instead of placing a cobweb, apply 10 seconds of Slowness II
+* Instead of placing a cobweb, apply 10 seconds of Slowness III
 
 ### Creepers..
 * Flee blocking entities
@@ -189,7 +189,7 @@ Experimentation is encouraged.
 * Apply Hunger II instead of Hunger I
 
 ### Strays..
-* Apply Slowness II instead of Slowness I
+* Apply Slowness III instead of Slowness I
 
 ## Boss Changes
 
