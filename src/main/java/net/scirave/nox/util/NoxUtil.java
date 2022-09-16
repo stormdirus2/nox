@@ -247,8 +247,6 @@ public class NoxUtil {
             double damage = 4 * 2;
             double total = Math.max((getBestPlayerDPS(player) / 3) * 2, damage);
 
-            Nox.LOGGER.info("Total damage is: " + total);
-
             int armor = 0;
             float toughness = 0;
 
@@ -287,7 +285,6 @@ public class NoxUtil {
 
                         armor += armorItem.getProtection();
                         toughness += armorItem.getToughness();
-                        Nox.LOGGER.info("Leeway amount is: " + getLeewayAmount(damage, total, armor, toughness, modifier));
 
                         double newLeeway = getLeewayAmount(damage, total, armor, toughness, modifier);
                         if ((newLeeway <= 0 && (newLeeway - lastLeeway) >= 0)
