@@ -24,7 +24,6 @@ import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
@@ -37,6 +36,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Objects;
+import java.util.Random;
 
 @Mixin(MobEntity.class)
 public abstract class MobEntityMixin extends LivingEntityMixin {
@@ -79,14 +81,15 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE)).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
 
     @Inject(method = "initEquipment", at = @At("TAIL"))
-    public void nox$difficultyScaling(Random random, LocalDifficulty localDifficulty, CallbackInfo ci) {
+    public void nox$difficultyScaling(LocalDifficulty difficulty, CallbackInfo ci) {
+        Random random    = new Random();
         if (this instanceof Monster && NoxConfig.monsterGearScales) {
-            NoxUtil.weaponRoulette((ServerWorld) this.getWorld(), (MobEntity) (Object) this, random, localDifficulty);
-            NoxUtil.armorRoulette((ServerWorld) this.getWorld(), (MobEntity) (Object) this, random, localDifficulty);
+            NoxUtil.weaponRoulette((ServerWorld) this.getWorld(), (MobEntity) (Object) this, random, difficulty);
+            NoxUtil.armorRoulette((ServerWorld) this.getWorld(), (MobEntity) (Object) this, random, difficulty);
         }
     }
 

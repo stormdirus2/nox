@@ -36,7 +36,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.LocalDifficulty;
 import net.scirave.nox.Nox;
@@ -45,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 
 public class NoxUtil {
 
@@ -325,3 +325,4 @@ public class NoxUtil {
     }
 
 }
+

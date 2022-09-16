@@ -21,7 +21,6 @@ import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,10 +31,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.Objects;
+import java.util.Random;
+
 @Mixin(SlimeEntity.class)
 public abstract class SlimeEntityMixin extends MobEntityMixin {
 
-    @Inject(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/random/ChunkRandom;getSlimeRandom(IIJJ)Lnet/minecraft/util/math/random/Random;"), cancellable = true)
+    @Inject(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/gen/random/ChunkRandom;getSlimeRandom(IIJJ)Ljava/util/Random;"), cancellable = true)
     private static void nox$slimeSpawnNaturally(EntityType<SlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
         if (world.getLightLevel(pos) <= 7) {
             cir.setReturnValue(SlimeEntity.canMobSpawn(type, world, spawnReason, pos, random));
@@ -59,11 +61,11 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
 
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 1.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 1.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         this.setHealth(this.getMaxHealth());
-        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 1.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_KNOCKBACK).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 0, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
-        this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 0.3, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE)).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 1.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_KNOCKBACK)).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 0, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+        Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED)).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 0.3, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
 
     @Override
@@ -98,3 +100,4 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     }
 
 }
+
