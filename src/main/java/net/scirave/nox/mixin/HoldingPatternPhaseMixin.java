@@ -41,7 +41,7 @@ public abstract class HoldingPatternPhaseMixin extends AbstractPhase {
     @Shadow
     protected abstract void strafePlayer(PlayerEntity player);
 
-    @Inject(method = "tickInRange", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/random/Random;nextInt(I)I", ordinal = 0), cancellable = true)
+    @Inject(method = "tickInRange", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I", ordinal = 0), cancellable = true)
     public void nox$enderDragonLessStalling(CallbackInfo ci) {
         BlockPos blockPos = this.dragon.world.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(EndPortalFeature.ORIGIN));
         PlayerEntity player = this.dragon.world.getClosestPlayer(PLAYERS_IN_RANGE_PREDICATE, this.dragon, blockPos.getX(), blockPos.getY(), blockPos.getZ());
