@@ -35,7 +35,7 @@ public class DefaultBiomeFeaturesMixin {
     @ModifyArgs(method = "addMonsters", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;<init>(Lnet/minecraft/entity/EntityType;III)V", ordinal = 5))
     private static void nox$slimeDecreasedSpawn(Args args) {
         if (NoxConfig.slimeNaturalSpawn) {
-            args.set(1, (int) Math.floor(((int) args.get(1)) / 3));
+            args.set(1, (int) Math.floor(((int) args.get(1)) / 2));
             args.set(2, ((int) args.get(2)) / 4);
             args.set(3, ((int) args.get(3)) / 2);
         }
