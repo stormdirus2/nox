@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,8 +38,10 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
 
     @Inject(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/random/ChunkRandom;getSlimeRandom(IIJJ)Lnet/minecraft/util/math/random/Random;"), cancellable = true)
     private static void nox$slimeSpawnNaturally(EntityType<SlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
-        if (world.getLightLevel(pos) <= 7) {
-            cir.setReturnValue(SlimeEntity.canMobSpawn(type, world, spawnReason, pos, random));
+        if (NoxConfig.slimeNaturalSpawn) {
+            if (world.getLightLevel(pos) <= 7) {
+                cir.setReturnValue(SlimeEntity.canMobSpawn(type, world, spawnReason, pos, random));
+            }
         }
     }
 
@@ -67,10 +70,10 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     }
 
     @Override
-    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        super.nox$invulnerableCheck(source, cir);
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$shouldTakeDamage(source, amount, cir);
         if (source.getName().equals("fall") || (source.isProjectile() && !source.bypassesArmor())) {
-            cir.setReturnValue(true);
+            cir.setReturnValue(false);
         }
     }
 

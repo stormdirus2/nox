@@ -34,10 +34,10 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
     private int cooldown = 0;
 
     @Override
-    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        super.nox$invulnerableCheck(source, cir);
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$shouldTakeDamage(source, amount, cir);
         if (source.isExplosive()) {
-            cir.setReturnValue(true);
+            cir.setReturnValue(false);
         }
     }
 

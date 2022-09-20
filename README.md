@@ -41,10 +41,11 @@ Experimentation is encouraged.
 ## Monster Changes
 
 ### All monsters..
-* Do not have friendly fire 
+* Do not have friendly fire (NOTE: If the mob is at or below 25% of their max health, and the damage would kill them, it still applies!)
 * Are angered when ran into (relevant to neutral monsters like Endermen)
 * +50% base follow range
 * That naturally spawn with random equipment (i.e. Skeletons and Zombies) will now spawn with better equipment based on the closest Player's equipment and the Local Difficulty
+* Can have item use canceled by being damaged
 
 ### Bow AI..
 * Prefers a farther range
@@ -72,7 +73,7 @@ Experimentation is encouraged.
 ### Spiders..
 * Avoid the sun
 * Are immune to fall damage
-* Places a cobweb at the victims' location upon successful attack
+* Place a cobweb at the victims' location upon successful attack
 
 ### Cave Spiders..
 * Inherent changes from Spiders
@@ -131,7 +132,7 @@ Experimentation is encouraged.
 ### Ghasts..
 * +150% base health
 * Spawn more frequently
-* Fireballs from are twice as powerful
+* Fireballs from them are twice as powerful
 * Fireballs no longer deal 1000 damage to Ghasts (:concern:)
 * Fireball cooldown is 3 times less
 * Fireballs from Ghasts bypass shields
@@ -178,7 +179,7 @@ Experimentation is encouraged.
 * Teleports the victim like a Chorus Fruit upon successful attack
 
 ### Guardians..
-* Place water upon death
+* Place water upon taking damage
 * Spawn naturally
 * Won't make that stupid beam noise unless their target is a player
 

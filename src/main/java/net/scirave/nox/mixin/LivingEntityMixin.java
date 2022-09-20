@@ -35,9 +35,6 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
     private boolean mining = false;
 
     @Shadow
-    public abstract boolean isBaby();
-
-    @Shadow
     @Nullable
     public abstract EntityAttributeInstance getAttributeInstance(EntityAttribute attribute);
 
@@ -65,6 +62,8 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
     @Shadow
     public abstract void stopUsingItem();
 
+    @Shadow public abstract float getHealth();
+
     @Inject(method = "blockedByShield", at = @At("HEAD"), cancellable = true)
     public void nox$ghastFireballsPierce(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         if (
@@ -82,6 +81,11 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
 
     @Inject(method = "onDeath", at = @At("HEAD"))
     public void nox$onDeath(DamageSource source, CallbackInfo ci) {
+        //Overridden
+    }
+
+    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         //Overridden
     }
 

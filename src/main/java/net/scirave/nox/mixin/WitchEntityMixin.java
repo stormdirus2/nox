@@ -39,7 +39,7 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "initGoals", at = @At("TAIL"))
     public void nox$witchDrinkingFlee(CallbackInfo ci) {
-        this.goalSelector.add(1, new FleeEntityGoal((WitchEntity) (Object) this, LivingEntity.class, 4.0F, 1.2D, 1.5D, (living) -> {
+        this.goalSelector.add(1, new FleeEntityGoal((WitchEntity) (Object) this, LivingEntity.class, 4.0F, 1.1D, 1.35D, (living) -> {
             if (!this.isDrinking()) return false;
 
             if (living instanceof PlayerEntity) {
@@ -91,10 +91,10 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
     }
 
     @Override
-    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        super.nox$invulnerableCheck(source, cir);
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$shouldTakeDamage(source, amount, cir);
         if (source.isMagic()) {
-            cir.setReturnValue(true);
+            cir.setReturnValue(false);
         }
     }
 

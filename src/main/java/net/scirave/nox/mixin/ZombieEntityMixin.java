@@ -29,9 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ZombieEntityMixin extends HostileEntityMixin {
 
     @Shadow
-    public abstract boolean isBaby();
-
-    @Shadow
     protected abstract boolean burnsInDaylight();
 
     @Override

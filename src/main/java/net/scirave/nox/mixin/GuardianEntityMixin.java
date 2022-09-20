@@ -25,7 +25,7 @@ public abstract class GuardianEntityMixin extends HostileEntityMixin {
     private static final BlockState WATER = Blocks.WATER.getDefaultState();
 
     @Override
-    public void nox$onDeath(DamageSource source, CallbackInfo ci) {
+    public void nox$onDamaged(DamageSource source, float amount, CallbackInfo ci) {
         BlockPos pos = this.getBlockPos();
         if (this.world.getBlockState(pos).getMaterial().isReplaceable()) {
             this.world.setBlockState(pos, WATER);

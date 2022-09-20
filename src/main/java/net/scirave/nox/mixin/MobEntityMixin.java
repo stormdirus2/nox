@@ -111,10 +111,12 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
     }
 
     @Override
-    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        Entity attacker = source.getAttacker();
-        if (attacker instanceof MobEntity mob && NoxUtil.isAnAlly(mob, (MobEntity) (Object) this)) {
-            cir.setReturnValue(true);
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        if (amount < this.getHealth() || (this.getHealth()/this.getMaxHealth()) > 0.25) {
+            Entity attacker = source.getAttacker();
+            if (attacker instanceof MobEntity mob && NoxUtil.isAnAlly(mob, (MobEntity) (Object) this)) {
+                cir.setReturnValue(false);
+            }
         }
     }
 
