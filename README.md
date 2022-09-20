@@ -101,6 +101,7 @@ Experimentation is encouraged.
 * Jump constantly
 * Are invulnerable to fall and non-armor-piercing projectile damage
 * Spawn a short-lived Poison II effect cloud on death, with a radius and windup proportional to their size
+* Modified size logic (doesn't spawn ginormous too often)
 
 ### Witches..
 * Spawn more frequently
