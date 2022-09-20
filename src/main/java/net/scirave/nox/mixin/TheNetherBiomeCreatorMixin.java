@@ -16,6 +16,7 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.TheNetherBiomeCreator;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -25,19 +26,25 @@ public class TheNetherBiomeCreatorMixin {
 
     @Redirect(method = "createNetherWastes", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$Builder;spawn(Lnet/minecraft/entity/SpawnGroup;Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;)Lnet/minecraft/world/biome/SpawnSettings$Builder;", ordinal = 0))
     private static SpawnSettings.Builder nox$adjustNetherWastesSpawns(SpawnSettings.Builder instance, SpawnGroup spawnGroup, SpawnSettings.SpawnEntry spawnEntry) {
-        instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.BLAZE, 10, 4, 4));
+        if (NoxConfig.blazeNaturalSpawn) {
+            instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.BLAZE, 10, 2, 3));
+        }
         return instance.spawn(spawnGroup, new SpawnSettings.SpawnEntry(EntityType.GHAST, MathHelper.ceil(spawnEntry.getWeight().getValue() * 1.5), spawnEntry.minGroupSize, spawnEntry.maxGroupSize));
     }
 
     @Redirect(method = "createBasaltDeltas", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$Builder;spawn(Lnet/minecraft/entity/SpawnGroup;Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;)Lnet/minecraft/world/biome/SpawnSettings$Builder;", ordinal = 0))
     private static SpawnSettings.Builder nox$adjustBasaltDeltasSpawns(SpawnSettings.Builder instance, SpawnGroup spawnGroup, SpawnSettings.SpawnEntry spawnEntry) {
-        instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.BLAZE, 20, 1, 4));
+        if (NoxConfig.blazeNaturalSpawn) {
+            instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.BLAZE, 20, 1, 3));
+        }
         return instance.spawn(spawnGroup, new SpawnSettings.SpawnEntry(EntityType.GHAST, MathHelper.ceil(spawnEntry.getWeight().getValue() * 1.5), spawnEntry.minGroupSize, spawnEntry.maxGroupSize * 4));
     }
 
     @Redirect(method = "createCrimsonForest", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$Builder;spawn(Lnet/minecraft/entity/SpawnGroup;Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;)Lnet/minecraft/world/biome/SpawnSettings$Builder;", ordinal = 0))
     private static SpawnSettings.Builder nox$adjustCrimsonForestSpawns(SpawnSettings.Builder instance, SpawnGroup spawnGroup, SpawnSettings.SpawnEntry spawnEntry) {
-        instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.BLAZE, 3, 1, 4));
+        if (NoxConfig.blazeNaturalSpawn) {
+            instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.BLAZE, 3, 1, 3));
+        }
         instance.spawn(spawnGroup, new SpawnSettings.SpawnEntry(EntityType.GHAST, 60, 1, 4));
         return instance.spawn(spawnGroup, spawnEntry);
     }

@@ -40,9 +40,15 @@ public abstract class BlazeShootFireballGoalMixin {
     @Shadow
     protected abstract double getFollowRange();
 
+    boolean extraTick = false;
     @Inject(method = "tick", at = @At("HEAD"))
     public void nox$blazeLessFireballCooldown(CallbackInfo ci) {
-        this.fireballCooldown--;
+        if (extraTick) {
+            this.fireballCooldown--;
+            extraTick = false;
+        } else {
+            extraTick = true;
+        }
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/BlazeEntity;getX()D", ordinal = 0), cancellable = true)
@@ -64,7 +70,7 @@ public abstract class BlazeShootFireballGoalMixin {
                 ci.cancel();
             } else if (heldShield) {
                 heldShield = false;
-                windup = 4;
+                windup = 6;
                 ci.cancel();
             }
         }

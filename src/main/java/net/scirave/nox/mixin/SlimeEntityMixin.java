@@ -106,7 +106,9 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
 
     @Override
     public void nox$onDeath(DamageSource source, CallbackInfo ci) {
-        this.nox$slimeOnDeath();
+        if (this.getWorld() instanceof ServerWorld) {
+            this.nox$slimeOnDeath();
+        }
     }
 
     public void nox$slimeOnDeath() {

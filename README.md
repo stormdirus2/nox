@@ -122,9 +122,9 @@ Experimentation is encouraged.
 
 ### Blazes..
 * Strafe
-* Prefer a farther range
+* Prefer a farther range, but will occasionally try to close in
 * Spawn naturally (in the Nether)
-* Shoot fireballs twice as often
+* Shoot fireballs 50% more often
 * Do not shoot shielding entities (you must bait it out)
 * Ignite the target on fire for 4 seconds when in close proximity (2 blocks)
 * Blaze Rods are fire-resistant (as well as Blaze Powder)

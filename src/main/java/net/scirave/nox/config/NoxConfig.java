@@ -54,4 +54,6 @@ public class NoxConfig extends MidnightConfig {
     public static boolean slimeNaturalSpawn = true;
     @Entry
     public static boolean endermiteFlowerSpawn = true;
+    @Entry
+    public static boolean blazeNaturalSpawn = true;
 }

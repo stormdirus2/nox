@@ -15,5 +15,6 @@
   "nox.midnightconfig.creepersBreachWalls": "Creepers can breach walls",
   "nox.midnightconfig.creepersRunFromShields": "Creepers will run from shielding Players",
   "nox.midnightconfig.slimeNaturalSpawn": "Slimes can spawn naturally",
-  "nox.midnightconfig.endermiteFlowerSpawn": "Chorus Flowers spawn an Endermite when broken"
+  "nox.midnightconfig.endermiteFlowerSpawn": "Chorus Flowers spawn an Endermite when broken",
+  "nox.midnightconfig.blazeNaturalSpawn": "Blazes can spawn naturally"
 }
