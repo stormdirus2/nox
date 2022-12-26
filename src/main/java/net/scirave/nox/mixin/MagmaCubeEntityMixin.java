@@ -16,23 +16,35 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MagmaCubeEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = MagmaCubeEntity.class)
 public abstract class MagmaCubeEntityMixin extends SlimeEntityMixin {
 
     private static final BlockState LAVA = Blocks.LAVA.getDefaultState().with(FluidBlock.LEVEL, 3);
 
+
+    @Inject(method = "getTicksUntilNextJump", at = @At("HEAD"), cancellable = true)
+    private void nox$makeMagmaCubesJumpConstantly(CallbackInfoReturnable<Integer> cir) {
+        if (NoxConfig.magmaCubesJumpConstantly)
+            cir.setReturnValue(4);
+    }
+
     @Override
     public void nox$slimeOnAttack(LivingEntity victim, CallbackInfo ci) {
-        victim.setOnFireFor(4);
+        if (NoxConfig.magmaCubeContactFireDuration > 0) {
+            victim.setOnFireFor(NoxConfig.magmaCubeContactFireDuration);
+        }
     }
 
     private void nox$attemptLavaFill(BlockPos pos) {
-        if (this.world.getBlockState(pos).getMaterial().isReplaceable()) {
+        if (this.world.getBlockState(pos).getMaterial().isReplaceable() && NoxConfig.magmaCubeLavaOnDeath) {
             this.world.setBlockState(pos, LAVA);
         }
     }

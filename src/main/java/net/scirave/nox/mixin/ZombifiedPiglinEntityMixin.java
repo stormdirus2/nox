@@ -14,6 +14,7 @@ package net.scirave.nox.mixin;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.scirave.nox.config.NoxConfig;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,6 +32,11 @@ public abstract class ZombifiedPiglinEntityMixin extends HostileEntityMixin {
     public void nox$maybeAngerOnShove(PlayerEntity player) {
         super.nox$maybeAngerOnShove(player);
         this.angerNearbyZombifiedPiglins();
+    }
+
+    @Override
+    public boolean nox$isAllowedToMine() {
+        return NoxConfig.zombifiedPiglinsMineBlocks;
     }
 
 }

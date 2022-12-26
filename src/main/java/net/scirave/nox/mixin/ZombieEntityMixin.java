@@ -17,6 +17,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.world.World;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$FleeSunlightGoal;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ZombieEntity.class)
+@Mixin(value = ZombieEntity.class)
 public abstract class ZombieEntityMixin extends HostileEntityMixin {
 
     @Shadow
@@ -33,7 +34,9 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Zombie bonus", 0.25, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (NoxConfig.zombieSpeedMultiplier > 1) {
+            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Zombie bonus", NoxConfig.zombieSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
 
     @Inject(method = "initGoals", at = @At("HEAD"))
@@ -50,6 +53,11 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
     public void nox$zombieHideFromSun() {
         this.goalSelector.add(1, new AvoidSunlightGoal((ZombieEntity) (Object) this));
         this.goalSelector.add(0, new Nox$FleeSunlightGoal((ZombieEntity) (Object) this, 1.0F));
+    }
+
+    @Override
+    public boolean nox$isAllowedToMine() {
+        return NoxConfig.zombiesMineBlocks;
     }
 
 }

@@ -32,16 +32,16 @@ public class Nox$CreeperBreachGoal extends Goal {
 
     public boolean canStart() {
         LivingEntity living = this.creeper.getTarget();
-        return NoxConfig.creepersBreachWalls && living != null && living.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && shouldBreach(living);
+        return NoxConfig.creeperBreachDistance > 0 && living != null && living.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && shouldBreach(living);
     }
 
     public boolean withinReach(Vec3d pos, LivingEntity target) {
         double yDiff = Math.abs(pos.y - target.getY());
-        return yDiff <= 7;
+        return yDiff <= NoxConfig.creeperBreachDistance;
     }
 
     private boolean shouldBreach(LivingEntity living) {
-        if (!creeper.isNavigating() && this.creeper.age > 60 && (this.creeper.isOnGround() || this.creeper.isTouchingWater())) {
+        if (!creeper.isNavigating() && this.creeper.age > 60 && (this.creeper.isOnGround() || !this.creeper.isTouchingWater())) {
             Path path = creeper.getNavigation().findPathTo(living, 0);
             if (path == null) {
                 return withinReach(this.creeper.getPos(), living);

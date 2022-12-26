@@ -16,11 +16,12 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.VindicatorEntity;
 import net.minecraft.world.World;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(VindicatorEntity.class)
+@Mixin(value = VindicatorEntity.class)
 public abstract class VindicatorEntityMixin extends HostileEntityMixin {
 
     @Override
@@ -30,7 +31,14 @@ public abstract class VindicatorEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addTemporaryModifier(new EntityAttributeModifier("Nox: Vindicator bonus", 0.3, EntityAttributeModifier.Operation.ADDITION));
+        if (NoxConfig.vindicatorKnockbackResistanceBonus > 0) {
+            this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addTemporaryModifier(new EntityAttributeModifier("Nox: Vindicator bonus", NoxConfig.vindicatorKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    @Override
+    public boolean nox$isAllowedToMine() {
+        return NoxConfig.vindicatorsMineBlocks;
     }
 
 }

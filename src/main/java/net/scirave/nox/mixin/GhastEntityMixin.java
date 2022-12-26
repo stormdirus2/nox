@@ -17,29 +17,36 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.world.World;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(GhastEntity.class)
+@Mixin(value = GhastEntity.class)
 public abstract class GhastEntityMixin extends MobEntityMixin {
 
     @Inject(method = "isFireballFromPlayer", at = @At("HEAD"), cancellable = true)
     private static void nox$ghastNoInstantDeath(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(false);
+        if (NoxConfig.returnToSender) {
+            cir.setReturnValue(false);
+        }
     }
 
     @Inject(method = "getFireballStrength", at = @At("RETURN"), cancellable = true)
     public void nox$ghastStrongerFireballs(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(cir.getReturnValue() * 2);
+        if (NoxConfig.ghastFireballStrengthMultiplier > 1) {
+            cir.setReturnValue(cir.getReturnValue() * NoxConfig.ghastFireballStrengthMultiplier);
+        }
     }
 
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Ghast bonus", 1.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        this.setHealth(this.getMaxHealth());
+        if (NoxConfig.ghastHealthMultiplier > 1) {
+            this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Ghast bonus", NoxConfig.ghastHealthMultiplier, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+            this.setHealth(this.getMaxHealth());
+        }
     }
 
 

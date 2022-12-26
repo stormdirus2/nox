@@ -12,6 +12,9 @@
 package net.scirave.nox.util;
 
 public interface Nox$MiningInterface {
+    default boolean nox$isAllowedToMine() {
+        return false;
+    }
 
     boolean isMining();
 

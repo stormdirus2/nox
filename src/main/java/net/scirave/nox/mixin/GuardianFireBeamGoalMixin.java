@@ -11,12 +11,10 @@
 
 package net.scirave.nox.mixin;
 
-import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(GuardianEntity.FireBeamGoal.class)

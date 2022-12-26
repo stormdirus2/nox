@@ -18,6 +18,7 @@ import net.minecraft.entity.ai.goal.AvoidSunlightGoal;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.util.math.BlockPos;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -37,7 +38,7 @@ public abstract class SpiderEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
         BlockPos pos = target.getBlockPos();
-        if (this.world.getBlockState(pos).getMaterial().isReplaceable()) {
+        if (this.world.getBlockState(pos).getMaterial().isReplaceable() && NoxConfig.spidersPlaceCobwebs) {
             this.world.setBlockState(pos, COBWEB);
         }
     }
@@ -45,7 +46,7 @@ public abstract class SpiderEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if (source.getName().equals("fall")) {
+        if (source.getName().equals("fall") && !NoxConfig.spidersTakeFallDamage) {
             cir.setReturnValue(false);
         }
     }

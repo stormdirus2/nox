@@ -58,7 +58,6 @@
     "SittingFlamingPhaseMixin",
     "SittingScanningPhaseMixin",
     "SlimeEntityMixin",
-    "SlimeMoveControlMixin",
     "SnowballEntityMixin",
     "SnowGolemEntityMixin",
     "SpiderEntityMixin",

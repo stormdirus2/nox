@@ -26,9 +26,9 @@ public abstract class GolemEntityMixin extends MobEntityMixin {
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         if (NoxConfig.buffGolems) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Golem bonus", 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+            this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Golem bonus", NoxConfig.golemHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
             this.setHealth(this.getMaxHealth());
-            this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Golem bonus", 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+            this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Golem bonus", NoxConfig.golemViewDistanceMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         }
     }
 

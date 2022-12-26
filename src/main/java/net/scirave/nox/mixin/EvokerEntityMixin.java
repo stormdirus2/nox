@@ -17,23 +17,26 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.EvokerEntity;
 import net.minecraft.world.World;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(EvokerEntity.class)
+@Mixin(value = EvokerEntity.class)
 public abstract class EvokerEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Evoker bonus", 0.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        this.setHealth(this.getMaxHealth());
+        if (NoxConfig.evokerHealthMultiplier > 1) {
+            this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Evoker bonus", NoxConfig.evokerHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+            this.setHealth(this.getMaxHealth());
+        }
     }
 
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if (source.isMagic() || (!source.bypassesArmor() && source.isProjectile())) {
+        if ((source.isMagic() && !NoxConfig.evokersTakeMagicDamage) || (!source.bypassesArmor() && source.isProjectile() && !NoxConfig.evokersTakeProjectileDamage)) {
             cir.setReturnValue(false);
         }
     }

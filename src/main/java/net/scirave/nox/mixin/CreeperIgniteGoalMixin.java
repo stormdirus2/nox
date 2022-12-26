@@ -16,6 +16,7 @@ import net.minecraft.entity.ai.goal.CreeperIgniteGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.scirave.nox.config.NoxConfig;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -64,7 +65,7 @@ public abstract class CreeperIgniteGoalMixin extends Goal {
     @Inject(method = "canStart", at = @At("RETURN"), cancellable = true)
     public void nox$creeperNoTargetShield(CallbackInfoReturnable<Boolean> cir) {
         LivingEntity victim = this.creeper.getTarget();
-        if (cir.getReturnValue() && victim != null && victim.isBlocking() && victim.blockedByShield(EntityDamageSource.explosion(this.creeper))) {
+        if (!NoxConfig.creepersAttackShields && cir.getReturnValue() && victim != null && victim.isBlocking() && victim.blockedByShield(EntityDamageSource.explosion(this.creeper))) {
             this.creeper.setFuseSpeed(-1);
             cir.setReturnValue(false);
         }

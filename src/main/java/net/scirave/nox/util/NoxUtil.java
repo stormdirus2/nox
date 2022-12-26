@@ -12,6 +12,7 @@
 package net.scirave.nox.util;
 
 import com.google.common.collect.Multimap;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.DamageUtil;
 import net.minecraft.entity.EquipmentSlot;
@@ -48,6 +49,8 @@ import java.util.Map;
 
 public class NoxUtil {
 
+    public static final TagKey<Block> NOX_ALWAYS_MINE = TagKey.of(Registry.BLOCK_KEY, new Identifier("c", "nox_always_mine"));
+    public static final TagKey<Block> NOX_CANT_MINE = TagKey.of(Registry.BLOCK_KEY, new Identifier("c", "nox_cant_mine"));
     public static final TagKey<Item> FIREPROOF = TagKey.of(Registry.ITEM_KEY, new Identifier("c:fireproof"));
     private final static ItemStack WOOD_PICKAXE = Items.WOODEN_PICKAXE.getDefaultStack();
     private final static ItemStack WOOD_AXE = Items.WOODEN_AXE.getDefaultStack();

@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "#climbable",
+    "minecraft:tinted_glass",
+    "#pressure_plates",
+    "#rails",
+    "#replaceable_plants",
+    "#saplings",
+    "#signs"
+  ]
+}

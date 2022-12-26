@@ -24,6 +24,7 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.util.math.MathHelper;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
@@ -39,16 +40,18 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "initGoals", at = @At("TAIL"))
     public void nox$witchDrinkingFlee(CallbackInfo ci) {
-        this.goalSelector.add(1, new FleeEntityGoal((WitchEntity) (Object) this, LivingEntity.class, 4.0F, 1.1D, 1.35D, (living) -> {
-            if (!this.isDrinking()) return false;
+        if (NoxConfig.witchesFleeToHeal) {
+            this.goalSelector.add(1, new FleeEntityGoal((WitchEntity) (Object) this, LivingEntity.class, 4.0F, 1.1D, 1.35D, (living) -> {
+                if (!this.isDrinking()) return false;
 
-            if (living instanceof PlayerEntity) {
-                return true;
-            } else if (living instanceof MobEntity mob) {
-                return mob.getTarget() == (Object) this;
-            }
-            return false;
-        }));
+                if (living instanceof PlayerEntity) {
+                    return true;
+                } else if (living instanceof MobEntity mob) {
+                    return mob.getTarget() == (Object) this;
+                }
+                return false;
+            }));
+        }
     }
 
     @ModifyArgs(method = "initGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/goal/ProjectileAttackGoal;<init>(Lnet/minecraft/entity/ai/RangedAttackMob;DIF)V"))
@@ -58,17 +61,17 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
 
     @ModifyArg(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
     public Potion nox$witchUpgradedPotions(Potion original) {
-
-        if (Potions.WATER_BREATHING.equals(original)) {
-            return Potions.LONG_WATER_BREATHING;
-        } else if (Potions.FIRE_RESISTANCE.equals(original)) {
-            return Potions.LONG_FIRE_RESISTANCE;
-        } else if (Potions.HEALING.equals(original)) {
-            return Potions.STRONG_HEALING;
-        } else if (Potions.SWIFTNESS.equals(original)) {
-            return Potions.STRONG_SWIFTNESS;
+        if (NoxConfig.witchesHaveBetterPotions) {
+            if (Potions.WATER_BREATHING.equals(original)) {
+                return Potions.LONG_WATER_BREATHING;
+            } else if (Potions.FIRE_RESISTANCE.equals(original)) {
+                return Potions.LONG_FIRE_RESISTANCE;
+            } else if (Potions.HEALING.equals(original)) {
+                return Potions.STRONG_HEALING;
+            } else if (Potions.SWIFTNESS.equals(original)) {
+                return Potions.STRONG_SWIFTNESS;
+            }
         }
-
         return original;
     }
 
@@ -79,12 +82,15 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
 
     @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
     public ItemStack nox$witchLingeringPotions(ItemStack original) {
-        return new ItemStack(Items.LINGERING_POTION);
+        if (NoxConfig.witchLingeringPotionRadiusMultiplier > 0) {
+            return new ItemStack(Items.LINGERING_POTION);
+        }
+        return original;
     }
 
     @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
     public Potion nox$witchUpgradedSlowness(Potion original) {
-        if (Potions.SLOWNESS.equals(original)) {
+        if (NoxConfig.witchesHaveBetterSlowness && Potions.SLOWNESS.equals(original)) {
             return Potions.STRONG_SLOWNESS;
         }
         return original;
@@ -93,7 +99,7 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if (source.isMagic()) {
+        if (!NoxConfig.witchesTakeMagicDamage && source.isMagic()) {
             cir.setReturnValue(false);
         }
     }

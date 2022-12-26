@@ -38,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MobEntity.class)
+@Mixin(value = MobEntity.class)
 public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Shadow
@@ -79,7 +79,9 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (this instanceof Monster) {
+            this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
 
     @Inject(method = "initEquipment", at = @At("TAIL"))

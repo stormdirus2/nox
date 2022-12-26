@@ -22,6 +22,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -31,12 +32,14 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Endermite bonus", 0.6, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (NoxConfig.endermiteSpeedMultiplier > 1) {
+            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Endermite bonus", NoxConfig.endermiteSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (target.world instanceof ServerWorld serverWorld) {
+        if (target.world instanceof ServerWorld serverWorld && NoxConfig.endermitesTeleportTargetOnHit) {
             double d = target.getX();
             double e = target.getY();
             double f = target.getZ();
@@ -62,7 +65,7 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if (source.getName().equals("fall") || source.getName().equals("inWall")) {
+        if ((source.getName().equals("fall") && !NoxConfig.endermitesTakeFallDamage) || (source.getName().equals("inWall") && !NoxConfig.endermitesSuffocate)) {
             cir.setReturnValue(false);
         }
     }

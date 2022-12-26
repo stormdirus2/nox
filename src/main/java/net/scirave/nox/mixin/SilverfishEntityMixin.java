@@ -21,6 +21,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.SilverfishEntity;
 import net.minecraft.world.World;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -42,13 +43,15 @@ public abstract class SilverfishEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 300, 2), (SilverfishEntity) (Object) this);
+        if (NoxConfig.silverfishMiningFatigueBiteDuration > 0) {
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, NoxConfig.silverfishMiningFatigueBiteDuration, 2), (SilverfishEntity) (Object) this);
+        }
     }
 
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if (source.getName().equals("fall") || source.getName().equals("drown") || source.getName().equals("inWall")) {
+        if ((source.getName().equals("fall") && !NoxConfig.silverfishTakeFallDamage) || (source.getName().equals("drown") && !NoxConfig.silverfishDrown) || (source.getName().equals("inWall") && !NoxConfig.silverfishSuffocate)) {
             cir.setReturnValue(false);
         }
     }

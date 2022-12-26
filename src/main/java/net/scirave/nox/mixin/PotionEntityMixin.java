@@ -12,6 +12,7 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.projectile.thrown.PotionEntity;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -21,12 +22,12 @@ public abstract class PotionEntityMixin extends ProjectileEntityMixin {
 
     @ModifyArg(method = "applyLingeringPotion", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/AreaEffectCloudEntity;setRadius(F)V"))
     public float nox$witchBiggerPotionRadius(float original) {
-        return original * 1.5F;
+        return original * NoxConfig.witchLingeringPotionRadiusMultiplier;
     }
 
     @ModifyArg(method = "applyLingeringPotion", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/AreaEffectCloudEntity;setWaitTime(I)V"))
     public int nox$witchFasterCloudWindup(int original) {
-        return original / 2;
+        return original / NoxConfig.witchPotionWindupDivisor;
     }
 
 }
