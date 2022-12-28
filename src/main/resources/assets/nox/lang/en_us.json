@@ -58,7 +58,7 @@
   "nox.midnightconfig.silverfishDrown": "Silverfish can drown",
   "nox.midnightconfig.silverfishSuffocate": "Silverfish can suffocate",
   "nox.midnightconfig.slimesTakeFallDamage": "Slimes take fall damage",
-  "nox.midnightconfig.slimesTakeProjectileDamage": "Slime take projectile damage",
+  "nox.midnightconfig.slimesTakeProjectileDamage": "Slimes take projectile damage",
   "nox.midnightconfig.spidersTakeFallDamage": "Spiders take fall damage",
   "nox.midnightconfig.witchesTakeMagicDamage": "Witches take magic damage",
 

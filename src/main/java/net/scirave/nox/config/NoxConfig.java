@@ -55,7 +55,7 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static boolean guardiansWaterOnDeath = true;
     @Entry
-    public static boolean guardianWaterSourceOnDeath = false;
+    public static boolean guardiansWaterSourceOnDeath = false;
     @Entry
     public static boolean magmaCubeLavaOnDeath = true;
 
