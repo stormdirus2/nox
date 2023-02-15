@@ -38,7 +38,7 @@ public abstract class GhastEntityMixin extends MobEntityMixin {
 
     @Inject(method = "getFireballStrength", at = @At("RETURN"), cancellable = true)
     public void nox$ghastStrongerFireballs(CallbackInfoReturnable<Integer> cir) {
-        if(NoxConfig.ghastFireballExplosionStrengthMultiplier){
+        if(NoxConfig.ghastFireballExplosionStrengthMultiplier > 0){
             cir.setReturnValue(cir.getReturnValue() * NoxConfig.ghastFireballExplosionStrengthMultiplier);
         }
     }

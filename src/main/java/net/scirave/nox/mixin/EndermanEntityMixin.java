@@ -86,9 +86,4 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
     public boolean nox$isAllowedToMine() {
         return NoxConfig.endermenBreakBlocks;
     }
-
-    @Override
-    public boolean nox$isAllowedToMine() {
-        return NoxConfig.endermenMineBlocks;
-    }
 }

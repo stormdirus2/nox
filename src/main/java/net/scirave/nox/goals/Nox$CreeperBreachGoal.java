@@ -17,6 +17,7 @@ import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.Nox$CreeperBreachInterface;
 
 import java.util.EnumSet;

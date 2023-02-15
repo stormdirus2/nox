@@ -37,13 +37,6 @@ public abstract class MagmaCubeEntityMixin extends SlimeEntityMixin {
             cir.setReturnValue(4);
     }
 
-
-    @Inject(method = "getTicksUntilNextJump", at = @At("HEAD"), cancellable = true)
-    private void nox$makeMagmaCubesJumpConstantly(CallbackInfoReturnable<Integer> cir) {
-        if (NoxConfig.magmaCubesJumpConstantly)
-            cir.setReturnValue(4);
-    }
-
     @Override
     public void nox$slimeOnAttack(LivingEntity victim, CallbackInfo ci) {
         if (NoxConfig.magmaCubeAttacksIgniteTarget)

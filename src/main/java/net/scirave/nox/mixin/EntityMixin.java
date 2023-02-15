@@ -64,9 +64,4 @@ public abstract class EntityMixin {
         // Overridden
     }
 
-    @Inject(method = "isInvulnerableTo", at = @At("HEAD"), cancellable = true)
-    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        //Overridden
-    }
-
 }

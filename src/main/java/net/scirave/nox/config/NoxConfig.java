@@ -117,7 +117,7 @@ public class NoxConfig extends MidnightConfig {
 
     // Creepers
     @Entry
-    public static boolean slimeNaturalSpawn = true;
+    public static boolean creepersBreachWalls = true;
     @Entry
     public static boolean moreWitchSpawns = true;
     @Entry
@@ -128,13 +128,9 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static int freeRangeGuardiansSpawnWeight = 10;
     @Entry
-    public static boolean blazeNaturalSpawn = true;
-    @Entry
     public static boolean witherSkeletonsSpawnNaturally = true;
     @Entry
     public static boolean ghastsInWarpedForests = true;
-    @Entry
-    public static boolean endermiteFlowerSpawn = true;
 
     // Behavior
     @Entry
@@ -148,11 +144,7 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static boolean phantomsNoClip = true;
     @Entry
-    public static boolean piglinsRequireExclusivelyGoldArmor = true;
-    @Entry
     public static boolean magmaCubesJumpConstantly = true;
-    @Entry
-    public static boolean slimesJumpConstantly = true;
     @Entry
     public static boolean spidersPlaceCobwebs = true;
     @Entry
@@ -190,8 +182,6 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static boolean blazeFasterShooting = true;
     @Entry
-    public static float drownedSwimSpeedMultiplier = 10F;
-    @Entry
     public static double endermiteSpeedMultiplier = 1.6;
     @Entry
     public static double evokerHealthMultiplier = 1.5;
@@ -213,12 +203,6 @@ public class NoxConfig extends MidnightConfig {
     public static double slimeKnockbackMultiplier = 0;
     @Entry
     public static double slimeSpeedMultiplier = 0.3;
-    @Entry
-    public static double vindicatorKnockbackResistanceBonus = 0.3;
-    @Entry
-    public static float witherSkeletonArcherDamageMultiplier = 1.5F;
-    @Entry
-    public static double witherSkeletonKnockbackResistanceBonus = 0.3;
     @Entry
     public static double zombieSpeedMultiplier = 1.25;
 
@@ -276,10 +260,6 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static int snowGolemDamage = 4;
     @Entry
-    public static int snowGolemAttackRechargeSpeedMultiplier = 2;
-    @Entry
-    public static float snowGolemAttackRangeMultiplier = 1.4F;
-    @Entry
     public static float snowGolemShotSpeed = 1.6F;
     @Entry
     public static float snowGolemInverseAccuracy = 3.0F;
@@ -307,7 +287,6 @@ public class NoxConfig extends MidnightConfig {
     public static int dragonFireballCooldown = 100;
     @Entry
     public static boolean dragonTakesExplosiveDamage = false;
-    public static boolean creepersRunFromShields = true;
 
     // Ender Dragon
     @Entry//@Comment("[Ender Dragon] Base health multiplier")
