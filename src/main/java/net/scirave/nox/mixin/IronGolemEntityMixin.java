@@ -29,24 +29,26 @@ import java.util.List;
 @Mixin(IronGolemEntity.class)
 public abstract class IronGolemEntityMixin extends GolemEntityMixin {
 
-    private boolean canSweepAttack = true;
-
     @Shadow
     public abstract boolean canTarget(EntityType<?> type);
 
     @Shadow
     public abstract boolean tryAttack(Entity target);
 
+    private boolean nox$canSweepAttack = true;
+
     @Inject(method = "tryAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/IronGolemEntity;applyDamageEffects(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"))
     public void nox$ironGolemSweepAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {
-        if (NoxConfig.ironGolemSweepAttack && this.canSweepAttack) {
-            this.canSweepAttack = false;
-            List<MobEntity> list = this.world.getEntitiesByClass(MobEntity.class, Box.of(target.getPos(), 1, 1, 1), (mob) -> (mob instanceof Monster || mob.getTarget() == (Object) this) && this.canTarget(mob.getType()) && this.canTarget(mob));
-            for (MobEntity mob : list) {
-                this.tryAttack(mob);
+        if (NoxConfig.ironGolemsHaveASweepAttack) {
+            if (this.nox$canSweepAttack) {
+                this.nox$canSweepAttack = false;
+                List<MobEntity> list = this.world.getEntitiesByClass(MobEntity.class, Box.of(target.getPos(), 1, 1, 1), (mob) -> (mob instanceof Monster || mob.getTarget() == (Object) this) && this.canTarget(mob.getType()) && this.canTarget(mob));
+                for (MobEntity mob : list) {
+                    this.tryAttack(mob);
+                }
             }
+            this.nox$canSweepAttack = true;
         }
-        this.canSweepAttack = true;
     }
 
 }

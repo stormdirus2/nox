@@ -31,5 +31,10 @@ public abstract class AbstractPiglinEntityMixin extends HostileEntityMixin {
     public boolean nox$isAllowedToMine() {
         return NoxConfig.piglinsMineBlocks;
     }
+    
+    @Override
+    public boolean nox$isAllowedToMine() {
+        return NoxConfig.piglinsBreakBlocks;
+    }
 
 }

@@ -31,5 +31,4 @@ public abstract class GolemEntityMixin extends MobEntityMixin {
             this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Golem bonus", NoxConfig.golemViewDistanceMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         }
     }
-
 }

@@ -27,6 +27,7 @@ public abstract class PillagerEntityMixin extends HostileEntityMixin {
 
     @Override
     public boolean nox$isAllowedToMine() {
-        return NoxConfig.pillagersMineBlocks;
+        return NoxConfig.pillagersBreakBlocks;
     }
+
 }

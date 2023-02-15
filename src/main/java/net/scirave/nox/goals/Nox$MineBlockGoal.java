@@ -30,7 +30,6 @@ import static net.scirave.nox.util.NoxUtil.NOX_CANT_MINE;
 
 public class Nox$MineBlockGoal extends Goal {
 
-
     protected final MobEntity owner;
     private LivingEntity target;
 
@@ -188,7 +187,7 @@ public class Nox$MineBlockGoal extends Goal {
 
     @Override
     public void start() {
-        ((Nox$MiningInterface) this.owner).setMining(true);
+        ((Nox$MiningInterface) this.owner).nox$setMining(true);
         this.target = this.owner.getTarget();
     }
 
@@ -205,7 +204,7 @@ public class Nox$MineBlockGoal extends Goal {
 
     @Override
     public void stop() {
-        ((Nox$MiningInterface) this.owner).setMining(false);
+        ((Nox$MiningInterface) this.owner).nox$setMining(false);
         this.mineTick = 0;
         if (this.posToMine != null) {
             this.owner.world.setBlockBreakingInfo(this.owner.getId(), this.posToMine, -1);

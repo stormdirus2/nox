@@ -40,10 +40,11 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
     }
 
     @Inject(method = "initGoals", at = @At("HEAD"))
-    public void nox$universalZombieGoals(CallbackInfo ci) {
+    public void nox$zombieInitGoals(CallbackInfo ci) {
         if (this.burnsInDaylight()) {
             nox$zombieHideFromSun();
         }
+
         this.goalSelector.add(0, new Nox$MineBlockGoal((ZombieEntity) (Object) this));
         //PounceAtTargetGoal goal = new PounceAtTargetGoal((ZombieEntity) (Object) this, 0.25F);
         //((Nox$PounceInterface) goal).setCooldown(30L);
@@ -57,7 +58,7 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin {
 
     @Override
     public boolean nox$isAllowedToMine() {
-        return NoxConfig.zombiesMineBlocks;
+        return NoxConfig.zombiesBreakBlocks;
     }
 
 }

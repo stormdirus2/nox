@@ -51,7 +51,6 @@ public abstract class PiglinBrainMixin {
                     }
                 }
 
-
                 cir.setReturnValue(hasGoldenArmor);
             }
         }

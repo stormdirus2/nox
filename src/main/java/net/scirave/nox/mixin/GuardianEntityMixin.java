@@ -24,21 +24,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuardianEntity.class)
 public abstract class GuardianEntityMixin extends HostileEntityMixin {
-    //AeiouEnigma's work
     private static final BlockState nox$WATER = Blocks.WATER.getDefaultState();
     private static final BlockState nox$FLOWING_WATER = nox$WATER.with(Properties.LEVEL_15, 8);
     private static final BlockState nox$SMALL_WATER = nox$WATER.with(Properties.LEVEL_15, 7);
 
     @Override
     public void nox$onDamaged(DamageSource source, float amount, CallbackInfo ci) {
-        if (NoxConfig.guardiansWaterOnDeath && !this.world.isClient) {
+    if (NoxConfig.guardiansPlaceWaterOnDeath && !this.world.isClient) {
             BlockPos pos = this.getBlockPos();
             BlockState state = this.world.getBlockState(pos);
-            if (state != nox$WATER && state.getMaterial().equals(Material.AIR)) {
-                if (NoxConfig.guardiansWaterSourceOnDeath) {
+            if (state != nox$WATER && state.getMaterial().isReplaceable()) {
+                if (NoxConfig.guardianDeathLeavesWaterSource)
                     this.world.setBlockState(pos, nox$WATER);
-                } else {
-                    // (Comment from AeiouEnigma): order matters
+                else {
+                    // order matters
                     state = this.world.getBlockState(pos.up());
                     this.world.setBlockState(pos, nox$FLOWING_WATER);
                     if (state != nox$WATER && state.getMaterial().isReplaceable())

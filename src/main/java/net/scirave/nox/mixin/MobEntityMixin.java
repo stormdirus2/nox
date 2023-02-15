@@ -79,9 +79,8 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        if (this instanceof Monster) {
+        if (this instanceof Monster)
             this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        }
     }
 
     @Inject(method = "initEquipment", at = @At("TAIL"))
@@ -103,7 +102,8 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Override
     public void nox$onPushAway(Entity entity, CallbackInfo ci) {
-        if (this instanceof Monster && NoxConfig.monsterAngerOnShove && this.getTarget() == null && entity instanceof PlayerEntity player && this.canTarget(player)) {
+        if (this instanceof Monster && NoxConfig.monsterAngerOnShove && this.getTarget() == null
+                && entity instanceof PlayerEntity player && this.canTarget(player)) {
             nox$maybeAngerOnShove(player);
         }
     }

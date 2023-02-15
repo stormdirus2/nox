@@ -22,7 +22,10 @@ public abstract class PotionEntityMixin extends ProjectileEntityMixin {
 
     @ModifyArg(method = "applyLingeringPotion", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/AreaEffectCloudEntity;setRadius(F)V"))
     public float nox$witchBiggerPotionRadius(float original) {
-        return original * NoxConfig.witchLingeringPotionRadiusMultiplier;
+        if(NoxConfig.witchesUseLingeringPotions){
+            return original * NoxConfig.witchLingeringPotionRadiusMultiplier;
+        }
+        return original;
     }
 
     @ModifyArg(method = "applyLingeringPotion", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/AreaEffectCloudEntity;setWaitTime(I)V"))

@@ -11,17 +11,8 @@
 
 package net.scirave.nox.util;
 
-public interface Nox$MiningInterface {
-    default boolean nox$isAllowedToMine() {
-        return false;
-    }
+public interface Nox$PounceGoalInterface {
 
-    default boolean nox$isAllowedToMine() {
-        return false;
-    }
-
-    boolean nox$isMining();
-
-    void nox$setMining(boolean bool);
+    void nox$setPounceCooldown(long pounceCooldown);
 
 }

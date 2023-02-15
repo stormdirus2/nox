@@ -22,6 +22,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.World;
@@ -38,22 +39,20 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
 
     @Inject(method = "initEquipment", at = @At("TAIL"))
     public void nox$witherSkeletonArchers(Random random, LocalDifficulty localDifficulty, CallbackInfo ci) {
-        if (NoxConfig.witherSkeletonArchers && this.getRandom().nextBoolean()) {
+        if (NoxConfig.witherSkeletonArchersExist && this.getRandom().nextBoolean()) {
             this.equipStack(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         }
     }
 
     @ModifyVariable(method = "createArrowProjectile", at = @At("HEAD"), argsOnly = true)
     public float nox$witherSkeletonArcherBuff(float original) {
-        if (NoxConfig.witherSkeletonArcherDamageMultiplier > 1) {
+        if (NoxConfig.witherSkeletonArcherDamageMultiplier > 1)
             return original * NoxConfig.witherSkeletonArcherDamageMultiplier;
-        }
         return original;
     }
 
-
     @Inject(method = "initGoals", at = @At("TAIL"))
-    public void nox$witherSkeletonBreakWalls(CallbackInfo ci) {
+    public void nox$witherSkeletonInitGoals(CallbackInfo ci) {
         this.goalSelector.add(4, new Nox$MineBlockGoal((WitherSkeletonEntity) (Object) this));
     }
 
@@ -61,7 +60,7 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
     public void nox$onTick(CallbackInfo ci) {
         if (NoxConfig.witherSkeletonsWitherAuraRadius > 0) {
             LivingEntity target = this.getTarget();
-            if (target != null && !target.hasStatusEffect(StatusEffects.WITHER) && target.squaredDistanceTo((WitherSkeletonEntity) (Object) this) <= NoxConfig.witherSkeletonsWitherAuraRadius) {
+            if (target != null && !target.hasStatusEffect(StatusEffects.WITHER) && target.squaredDistanceTo((WitherSkeletonEntity) (Object) this) <= MathHelper.square(NoxConfig.witherSkeletonsWitherAuraRadius)) {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, NoxConfig.witherSkeletonsWitherAuraDuration), (WitherSkeletonEntity) (Object) this);
             }
         }
@@ -75,8 +74,9 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
                 attr.addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", NoxConfig.witherSkeletonKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
         }
     }
+
     @Override
     public boolean nox$isAllowedToMine() {
-        return NoxConfig.witherSkeletonsMineBlocks;
+        return NoxConfig.witherSkeletonsBreakBlocks;
     }
 }

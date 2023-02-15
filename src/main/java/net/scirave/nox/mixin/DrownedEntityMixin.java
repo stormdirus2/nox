@@ -22,9 +22,8 @@ public abstract class DrownedEntityMixin extends ZombieEntityMixin {
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/DrownedEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
     private float nox$drownedFasterSwimming(float original) {
-        if (NoxConfig.drownedSwimSpeedMultiplier > 1) {
+        if (NoxConfig.drownedSwimSpeedMultiplier > 1)
             return original * NoxConfig.drownedSwimSpeedMultiplier;
-        }
         return original;
     }
 

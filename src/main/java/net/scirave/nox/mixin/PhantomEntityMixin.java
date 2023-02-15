@@ -24,16 +24,14 @@ public abstract class PhantomEntityMixin extends MobEntityMixin {
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
-        if (NoxConfig.phantomsNoClip) {
+        if (NoxConfig.phantomsPhaseThroughBlocks)
             this.noClip = true;
-        }
     }
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (NoxConfig.phantomWeaknessBiteDuration > 0) {
+        if (NoxConfig.phantomAttacksApplyWeakness)
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, NoxConfig.phantomWeaknessBiteDuration), (PhantomEntity) (Object) this);
-        }
     }
 
 }

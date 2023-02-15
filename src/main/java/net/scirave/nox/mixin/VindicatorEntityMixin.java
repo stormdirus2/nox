@@ -12,6 +12,7 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.VindicatorEntity;
@@ -32,13 +33,15 @@ public abstract class VindicatorEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         if (NoxConfig.vindicatorKnockbackResistanceBonus > 0) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addTemporaryModifier(new EntityAttributeModifier("Nox: Vindicator bonus", NoxConfig.vindicatorKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
+            EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
+            if (attr != null)
+                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Vindicator bonus", NoxConfig.vindicatorKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
         }
     }
 
     @Override
     public boolean nox$isAllowedToMine() {
-        return NoxConfig.vindicatorsMineBlocks;
+        return NoxConfig.vindicatorsBreakBlocks;
     }
 
 }

@@ -31,14 +31,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EnderDragonEntity.class)
 public abstract class EnderDragonEntityMixin extends MobEntityMixin {
 
-    private static final TargetPredicate RANGE_PREDICATE = TargetPredicate.createAttackable();
+    private static final TargetPredicate nox$RANGE_PREDICATE = TargetPredicate.createAttackable();
     private int nox$fireballCooldown = 0;
 
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if (source.isExplosive() && !NoxConfig.dragonTakesExplosiveDamage) {
-            cir.setReturnValue(false);
+        if (source.isExplosive()) {
+            cir.setReturnValue(!NoxConfig.enderDragonIsImmuneToExplosionDamage);
         }
     }
 
@@ -46,9 +46,9 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
     public void nox$onTick(CallbackInfo ci) {
         if (nox$fireballCooldown <= 0) {
             BlockPos blockPos = this.world.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(EndPortalFeature.ORIGIN));
-            PlayerEntity player = this.world.getClosestPlayer(RANGE_PREDICATE, (EnderDragonEntity) (Object) this, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            PlayerEntity player = this.world.getClosestPlayer(nox$RANGE_PREDICATE, (EnderDragonEntity) (Object) this, blockPos.getX(), blockPos.getY(), blockPos.getZ());
             if (player != null && player.squaredDistanceTo((EnderDragonEntity) (Object) this) >= 49.0D && this.canSee(player)) {
-                nox$fireballCooldown = NoxConfig.dragonFireballCooldown;
+                nox$fireballCooldown = NoxConfig.enderDragonFireballCooldown;
                 NoxUtil.EnderDragonShootFireball((EnderDragonEntity) (Object) this, player);
             }
         } else {

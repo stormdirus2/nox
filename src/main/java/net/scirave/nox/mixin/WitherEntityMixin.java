@@ -42,7 +42,7 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
     @Shadow
     private int blockBreakingCooldown;
 
-    private int summonCooldown = NoxConfig.witherSkeletonSummonCooldown;
+    private int nox$reinforcementsCooldown = NoxConfig.witherCallReinforcementsCooldown;
 
     private void nox$witherBreakBlocks() {
         if (!this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) || !NoxConfig.destructiveWither) return;
@@ -78,34 +78,39 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
 
     }
 
+    @Inject(method = "onSummoned", at = @At("TAIL"))
+    private void nox$onSummoned(CallbackInfo ci) {
+        this.setHealth(this.getMaxHealth());
+    }
+
     @Inject(method = "mobTick", at = @At("HEAD"))
     public void nox$witherNoVanillaBreak(CallbackInfo ci) {
-        this.blockBreakingCooldown = NoxConfig.witherBlockBreakingCooldown;
+        if (NoxConfig.witherRapidlyBreaksSurroundingBlocks)
+            this.blockBreakingCooldown = NoxConfig.witherBlockBreakingCooldown;
     }
 
     @Inject(method = "mobTick", at = @At("TAIL"))
     public void nox$witherBetterBreak(CallbackInfo ci) {
-        nox$witherBreakBlocks();
+        if (NoxConfig.witherRapidlyBreaksSurroundingBlocks)
+            nox$witherBreakBlocks();
     }
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
         LivingEntity target = this.getTarget();
-        if(NoxConfig.witherSkeletonSummonCooldown > 0) {
-            if (this.getWorld() instanceof ServerWorld serverWorld) {
-                if (summonCooldown > 0) {
-                    summonCooldown--;
-                } else if (target != null && target.squaredDistanceTo((WitherEntity) (Object) this) <= 49) {
-                    summonCooldown = 600;
-                    for (int i = 0; i < 3; i++) {
-                        WitherSkeletonEntity skeleton = EntityType.WITHER_SKELETON.create(serverWorld);
-                        if (skeleton != null) {
-                            skeleton.setPos(this.getX() + this.getRandom().nextBetween(-2, 2), this.getY(), this.getZ() + this.getRandom().nextBetween(-2, 2));
-                            skeleton.initialize(serverWorld, this.world.getLocalDifficulty(skeleton.getBlockPos()), SpawnReason.REINFORCEMENT, null, null);
-                            serverWorld.spawnEntityAndPassengers(skeleton);
-                            skeleton.setTarget(target);
-                            skeleton.playSpawnEffects();
-                        }
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            if (nox$reinforcementsCooldown > 0) {
+                nox$reinforcementsCooldown--;
+            } else if (target != null && target.squaredDistanceTo((WitherEntity) (Object) this) <= MathHelper.square(NoxConfig.witherReinforcementsTriggerRadius)) {
+                nox$reinforcementsCooldown = NoxConfig.witherCallReinforcementsCooldown;
+                for (int i = 0; i < NoxConfig.witherReinforcementsGroupSize; i++) {
+                    WitherSkeletonEntity skeleton = EntityType.WITHER_SKELETON.create(serverWorld);
+                    if (skeleton != null) {
+                        skeleton.setPos(this.getX() + this.getRandom().nextBetween(-2, 2), this.getY(), this.getZ() + this.getRandom().nextBetween(-2, 2));
+                        skeleton.initialize(serverWorld, this.world.getLocalDifficulty(skeleton.getBlockPos()), SpawnReason.REINFORCEMENT, null, null);
+                        serverWorld.spawnEntityAndPassengers(skeleton);
+                        skeleton.setTarget(target);
+                        skeleton.playSpawnEffects();
                     }
                 }
             }

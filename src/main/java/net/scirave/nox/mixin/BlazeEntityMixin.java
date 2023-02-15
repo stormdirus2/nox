@@ -23,9 +23,11 @@ public abstract class BlazeEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
-        LivingEntity target = this.getTarget();
-        if (target != null && target.squaredDistanceTo((BlazeEntity) (Object) this) <= MathHelper.square(NoxConfig.blazeBurnAura)) {
-            target.setOnFireFor(NoxConfig.blazeAuraDuration);
+        if (NoxConfig.blazeIgnitionRadius > 0) {
+            LivingEntity target = this.getTarget();
+            if (target != null && target.squaredDistanceTo((BlazeEntity) (Object) this) <= MathHelper.square(NoxConfig.blazeIgnitionRadius)) {
+                target.setOnFireFor(NoxConfig.blazeAuraDuration);
+            }
         }
     }
 

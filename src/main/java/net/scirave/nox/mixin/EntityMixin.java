@@ -12,6 +12,7 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -32,13 +33,19 @@ public abstract class EntityMixin {
     public boolean noClip;
 
     @Shadow
-    public abstract boolean isAlive();
+    public abstract BlockPos getBlockPos();
 
     @Shadow
     public abstract Box getBoundingBox();
 
     @Shadow
-    public abstract BlockPos getBlockPos();
+    public abstract Vec3d getPos();
+
+    @Shadow
+    public abstract World getWorld();
+
+    @Shadow
+    public abstract boolean isAlive();
 
     @Shadow
     public abstract double getX();
@@ -50,10 +57,12 @@ public abstract class EntityMixin {
     public abstract double getZ();
 
     @Shadow
-    public abstract World getWorld();
+    public abstract EntityType<?> getType();
 
-    @Shadow
-    public abstract Vec3d getPos();
+    @Inject(method = "isInvulnerableTo", at = @At("HEAD"), cancellable = true)
+    public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        // Overridden
+    }
 
     @Inject(method = "isInvulnerableTo", at = @At("HEAD"), cancellable = true)
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {

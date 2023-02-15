@@ -25,11 +25,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class HostileEntityMixin extends MobEntityMixin {
 
     @Inject(method = "canSpawnInDark", at = @At("HEAD"), cancellable = true)
-    private static void nox$onSpawnAttempt(EntityType<? extends HostileEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, net.minecraft.util.math.random.Random random, CallbackInfoReturnable<Boolean> cir) {
-        if (type == EntityType.CAVE_SPIDER && spawnReason == SpawnReason.NATURAL) {
-                if (pos.getY() >= world.getSeaLevel() || world.isSkyVisibleAllowingSea(pos)) {
-                    cir.setReturnValue(false);
-            }
-        }
+    private static void nox$onSpawnAttempt(EntityType<? extends HostileEntity> type, ServerWorldAccess world,
+                                           SpawnReason spawnReason, BlockPos pos, net.minecraft.util.math.random.Random random, CallbackInfoReturnable<Boolean> cir) {
+        if (type == EntityType.CAVE_SPIDER && spawnReason == SpawnReason.NATURAL)
+            if (pos.getY() >= world.getSeaLevel() || world.isSkyVisibleAllowingSea(pos))
+                cir.setReturnValue(false);
     }
 }

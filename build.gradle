@@ -19,6 +19,10 @@ repositories {
         name "modrinth"
         url "https://api.modrinth.com/maven"
     }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://maven.nucleoid.xyz' } // Polymer
+    maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
 dependencies {
@@ -32,6 +36,9 @@ dependencies {
 
     modImplementation "maven.modrinth:midnightlib:${midnightlib_version}"
     include "maven.modrinth:midnightlib:${midnightlib_version}"
+    modImplementation include ("eu.pb4:polymer:${project.polymer_version}")
+
+    modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {

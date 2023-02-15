@@ -44,7 +44,7 @@ public abstract class BlazeShootFireballGoalMixin {
     boolean extraTick = false;
     @Inject(method = "tick", at = @At("HEAD"))
     public void nox$blazeLessFireballCooldown(CallbackInfo ci) {
-        if (NoxConfig.blazeFasterShooting) {
+        if(NoxConfig.lessBlazeFireballCooldown) {
             if (extraTick) {
                 this.fireballCooldown--;
                 extraTick = false;

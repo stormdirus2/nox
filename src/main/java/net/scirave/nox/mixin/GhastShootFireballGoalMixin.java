@@ -27,8 +27,7 @@ public class GhastShootFireballGoalMixin {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z", shift = At.Shift.BY, by = 1))
     public void nox$ghastLessCooldown(CallbackInfo ci) {
-        if (NoxConfig.ghastLessFireballCooldown) {
+        if (NoxConfig.ghastReducedFireballCooldown)
             this.cooldown = 0;
-        }
     }
 }

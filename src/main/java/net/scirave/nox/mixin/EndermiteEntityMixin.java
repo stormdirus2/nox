@@ -13,6 +13,7 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -32,14 +33,16 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        if (NoxConfig.endermiteSpeedMultiplier > 1) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Endermite bonus", NoxConfig.endermiteSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if(NoxConfig.endermiteMoveSpeedMultiplier > 1) {
+            EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+            if (attr != null)
+                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Endermite bonus", NoxConfig.endermiteMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         }
     }
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (target.world instanceof ServerWorld serverWorld && NoxConfig.endermitesTeleportTargetOnHit) {
+        if (NoxConfig.endermiteAttacksMakeTargetTeleport && target.world instanceof ServerWorld serverWorld) {
             double d = target.getX();
             double e = target.getY();
             double f = target.getZ();
@@ -65,9 +68,10 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if ((source.getName().equals("fall") && !NoxConfig.endermitesTakeFallDamage) || (source.getName().equals("inWall") && !NoxConfig.endermitesSuffocate)) {
-            cir.setReturnValue(false);
-        }
+        if (source.getName().equals("fall"))
+            cir.setReturnValue(!NoxConfig.endermitesImmuneToFallDamage);
+        else if (source.getName().equals("inWall"))
+            cir.setReturnValue(NoxConfig.endermitesCanSuffocate);
     }
 
 

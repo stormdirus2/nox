@@ -46,7 +46,7 @@ public abstract class DragonFireballEntityMixin extends ExplosiveProjectileEntit
 
     @ModifyArg(method = "onCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"))
     public Entity nox$enderDragonAdjustedFireball(Entity entity) {
-        if (this.getOwner() instanceof EnderDragonEntity && entity instanceof AreaEffectCloudEntity cloud) {
+        if (NoxConfig.buffEnderDragonFireball && this.getOwner() instanceof EnderDragonEntity && entity instanceof AreaEffectCloudEntity cloud) {
             cloud.setDuration(NoxConfig.dragonBreathDuration);
             cloud.setRadius(NoxConfig.dragonBreathRadius);
             cloud.setWaitTime(cloud.getWaitTime() / 2);

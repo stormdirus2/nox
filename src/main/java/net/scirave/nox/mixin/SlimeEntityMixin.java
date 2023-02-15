@@ -12,6 +12,7 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -42,7 +43,11 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     @Shadow
     public abstract int getSize();
 
-    @Shadow public abstract void setSize(int size, boolean heal);
+    @Shadow
+    public abstract void setSize(int size, boolean heal);
+
+    @Shadow
+    public abstract EntityType<? extends SlimeEntity> getType();
 
     @Inject(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/random/ChunkRandom;getSlimeRandom(IIJJ)Lnet/minecraft/util/math/random/Random;"), cancellable = true)
     private static void nox$slimeSpawnNaturally(EntityType<SlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
@@ -52,7 +57,7 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
             }
         }
     }
-    
+
     @Inject(method = "initialize", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/MobEntity;initialize(Lnet/minecraft/world/ServerWorldAccess;Lnet/minecraft/world/LocalDifficulty;Lnet/minecraft/entity/SpawnReason;Lnet/minecraft/entity/EntityData;Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/entity/EntityData;"))
     public void nox$betterSlimeSpawn(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
         int size = 3;
@@ -69,7 +74,13 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
         }
 
         this.setSize(size, true);
-    } 
+    }
+
+    @Inject(method = "getTicksUntilNextJump", at = @At("HEAD"), cancellable = true)
+    private void nox$makeSlimesJumpConstantly(CallbackInfoReturnable<Integer> cir) {
+        if (NoxConfig.slimesJumpConstantly)
+            cir.setReturnValue(4);
+    }
 
     @Inject(method = "remove", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/SlimeEntity;setSize(IZ)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
     public void nox$slimeReapplyAttributes(Entity.RemovalReason reason, CallbackInfo ci, int i, Text text, boolean bl, float f, int j, int k, int l, float g, float h, SlimeEntity slimeEntity) {
@@ -91,19 +102,37 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
 
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeHealthMultiplier, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        this.setHealth(this.getMaxHealth());
-        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeViewDistanceMultiplier, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_KNOCKBACK).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeKnockbackMultiplier, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
-        this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeSpeedMultiplier, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        EntityAttributeInstance attr;
+        if (NoxConfig.slimeBaseHealthMultiplier > 1) {
+            attr = this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+            if (attr != null) {
+                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                this.setHealth(this.getMaxHealth());
+            }
+        }
+        if (NoxConfig.slimeFollowRangeMultiplier > 1) {
+            attr = this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE);
+            if (attr != null)
+                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
+        if (NoxConfig.slimeMoveSpeedMultiplier > 1) {
+            attr = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+            if (attr != null)
+                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
+
+        attr = this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_KNOCKBACK);
+        if (attr != null)
+            attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 0, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
     }
 
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if ((source.getName().equals("fall") && !NoxConfig.slimesTakeFallDamage) || (source.isProjectile() && !source.bypassesArmor() && !NoxConfig.slimesTakeProjectileDamage)) {
-            cir.setReturnValue(false);
-        }
+        if (source.getName().equals("fall"))
+            cir.setReturnValue(!NoxConfig.slimesImmuneToFallDamage);
+        else if (source.isProjectile() && !source.bypassesArmor())
+            cir.setReturnValue(!NoxConfig.slimesResistProjectiles);
     }
 
     @Override
@@ -114,7 +143,7 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     }
 
     public void nox$slimeOnDeath() {
-        if (NoxConfig.slimePoisonCloudDurationDivisor > 0) {
+        if (NoxConfig.slimePoisonCloudOnDeath && NoxConfig.slimePoisonCloudDurationDivisor > 0 && this.getType() == EntityType.SLIME) {
             AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(this.world, this.getX(), this.getY(), this.getZ());
             cloud.setRadius(NoxConfig.slimePoisonCloudRadiusMultiplier * this.getSize());
             cloud.setRadiusOnUse(-0.5F);
