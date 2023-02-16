@@ -94,12 +94,6 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
         //Overridden
     }
 
-    @Inject(method = "getTicksUntilNextJump", at = @At("HEAD"), cancellable = true)
-    private void nox$makeSlimesJumpConstantly(CallbackInfoReturnable<Integer> cir) {
-        if (NoxConfig.slimesJumpConstantly)
-            cir.setReturnValue(4);
-    }
-
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         EntityAttributeInstance attr;
