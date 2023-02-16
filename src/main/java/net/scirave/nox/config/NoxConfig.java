@@ -45,8 +45,6 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static boolean endermenBreakBlocks = true;
     @Entry
-    public static boolean magmaCubeLavaOnDeath = true;
-    @Entry
     public static boolean piglinsBreakBlocks = true;
     @Entry
     public static boolean pillagersBreakBlocks = true;
@@ -161,9 +159,9 @@ public class NoxConfig extends MidnightConfig {
     public static double golemFollowRangeMultiplier = 2.0;
     @Entry
     public static boolean ironGolemsHaveASweepAttack = true;
-    @Entry//@Comment("[Golems] Snow Golem attack recharge speed multiplier")
+    @Entry
     public static double snowGolemAttackRechargeSpeedMultiplier = 2;
-    @Entry//@Comment("[Golems] Snow Golem attack range multiplier")
+    @Entry
     public static float snowGolemAttackRangeMultiplier = 1.4F;
     @Entry
     public static int snowGolemDamage = 4;
@@ -172,155 +170,177 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static float snowGolemInverseAccuracy = 3.0F;
 
-    // Wither
-    @Entry
-    public static boolean destructiveWither = true;
-    @Entry
-    public static int witherBlockBreakingCooldown = 20;
-    @Entry
-    public static boolean withersSuffocate = false;
-
-    // Dragon
-    @Entry
-    public static int dragonBreathDuration = 300;
-    @Entry
-    public static float dragonBreathRadius = 3.0F;
-
     // Ender Dragon
-    @Entry//@Comment("[Ender Dragon] Base health multiplier")
+    @Comment(centered = true)
+    public static Comment comment_enderDragon;
+    @Entry
     public static double enderDragonBaseHealthMultiplier = 3.0;
-    @Entry//@Comment("[Ender Dragon] Fireball cooldown")
+    @Entry
     public static int enderDragonFireballCooldown = 100;
-    @Entry//@Comment("[Ender Dragon] Dragon is immune to explosion damage")
+    @Entry
     public static boolean enderDragonIsImmuneToExplosionDamage = true;
-    @Entry//@Comment("[End Crystals (in the fight vicinity) can only be damaged while connected to the Ender Dragon")
+    @Entry
     public static boolean endCrystalsIndestructibleUnlessConnectedToDragon = true;
+    @Entry
     public static boolean buffEnderDragonFireball = true;
+    @Entry
+    public static int enderDragonBreathDuration = 300;
+    @Entry
+    public static float enderDragonBreathRadius = 3.0F;
 
     // Endermen
-    @Entry//@Comment("[Endermen] Apply blindness when provoked")
+    @Comment(centered = true)
+    public static Comment comment_endermen;
+    @Entry
     public static boolean endermanAppliesBlindnessOnAggro = true;
-    @Entry//@Comment("[Endermen] Apply blindness on hit")
+    @Entry
     public static boolean endermanAppliesBlindnessOnHit = true;
-    @Entry//@Comment("[Endermen] Teleport when hit in melee")
+    @Entry
     public static boolean endermanTeleportsFromMeleeHit = true;
 
     // Endermites
-    @Entry//@Comment("[Endermites] Base move speed multiplier")
+    @Comment(centered = true)
+    public static Comment comment_endermites;
+    @Entry
     public static double endermiteMoveSpeedMultiplier = 1.6;
-    @Entry//@Comment("[Endermites] Attacks cause their target to teleport")
+    @Entry
     public static boolean endermiteAttacksMakeTargetTeleport = true;
-    @Entry//@Comment("[Endermites] Endermites are immune to fall damage")
+    @Entry
     public static boolean endermitesImmuneToFallDamage = true;
-    @Entry//@Comment("[Endermites] Endermites can suffocate in blocks")
+    @Entry
     public static boolean endermitesCanSuffocate = false;
 
     // Ghasts
-    @Entry//@Comment("[Ghasts] Base health multiplier")
+    @Comment(centered = true)
+    public static Comment comment_ghasts;
+    @Entry
     public static double ghastBaseHealthMultiplier = 2.5;
-    @Entry//@Comment("[Ghasts] Fireball explosion strength multiplier")
+    @Entry
     public static int ghastFireballExplosionStrengthMultiplier = 2;
-    @Entry//@Comment("[Ghasts] Reflected fireballs insta-kill Ghasts")
+    @Entry
     public static boolean ghastFireballsInstantlyKillGhasts = false;
-    @Entry//@Comment("[Ghasts] Shoot fireballs more frequently")
+    @Entry
     public static boolean ghastReducedFireballCooldown = true;
 
     // Guardians
-    @Entry//@Comment("[Guardians] Place water on death")
+    @Comment(centered = true)
+    public static Comment comment_guardians;
+    @Entry
     public static boolean guardiansPlaceWaterOnDeath = true;
+    @Entry
     public static boolean guardianDeathLeavesWaterSource = true;
 
     // Illagers
-    @Entry//@Comment("[Illagers] Evoker base health multiplier")
+    @Comment(centered = true)
+    public static Comment comment_illagers;
+    @Entry
     public static double evokerBaseHealthMultiplier = 1.5;
-    @Entry//@Comment("[Illagers] Evokers are immune to non-armor-piercing projectiles")
+    @Entry
     public static boolean evokersResistProjectiles = true;
-    @Entry//@Comment("[Illagers] Evokers are immune to magical damage")
+    @Entry
     public static boolean evokersImmuneToMagic = true;
-    @Entry//@Comment("[Illagers] Vindicator knockback resistance bonus")
+    @Entry
     public static double vindicatorKnockbackResistanceBonus = 0.3;
 
     // Phantoms
-    @Entry//@Comment("[Phantoms] Phantoms phase through blocks")
+    @Comment(centered = true)
+    public static Comment comment_phantoms;
+    @Entry
     public static boolean phantomsPhaseThroughBlocks = true;
-    @Entry//@Comment("[Phantoms] Attacks apply Weakness to target")
+    @Entry
     public static boolean phantomAttacksApplyWeakness = true;
 
     // Piglins
-    @Entry//@Comment("[Piglins] Become angry if the player wears any non-gold armor")
+    @Comment(centered = true)
+    public static Comment comment_piglins;
+    @Entry
     public static boolean piglinsRequireExclusivelyGoldArmor = true;
 
     // Shulkers
-    @Entry//@Comment("[Shulkers] Shulker bullets cause blindness")
+    @Comment(centered = true)
+    public static Comment comment_shulker;
+    @Entry
     public static boolean shulkerBulletsCauseBlindness = true;
 
     // Silverfish
-    @Entry//@Comment("[Silverfish] Base movement speed multiplier")
+    @Comment(centered = true)
+    public static Comment comment_silverfish;
+    @Entry
     public static double silverfishMoveSpeedMultiplier = 2.0;
-    @Entry//@Comment("[Silverfish] Silverfish attacks apply Mining Fatigue")
+    @Entry
     public static boolean silverfishAttacksGiveMiningFatigue = true;
-    @Entry//@Comment("[Silverfish] Silverfish pounce at their target")
+    @Entry
     public static boolean silverfishPounceAtTarget = true;
-    @Entry//@Comment("[Silverfish] Silverfish are immune to fall damage")
+    @Entry
     public static boolean silverfishImmuneToFallDamage = true;
-    @Entry//@Comment("[Silverfish] Silverfish can drown")
+    @Entry
     public static boolean silverfishCanDrown = false;
-    @Entry//@Comment("[Silverfish] Silverfish can suffocate in blocks")
+    @Entry
     public static boolean silverfishCanSuffocate = false;
 
-    @Entry//@Comment("[Skeletons] Skeletons can swim")
+    //Skeletons
+    @Comment(centered = true)
+    public static Comment comment_skeletons;
+    @Entry
     public static boolean skeletonsCanSwim = true;
-    @Entry//@Comment("[Skeletons] Stray attacks apply Slowness II")
+    @Entry
     public static boolean strayAttacksApplyStrongerSlowness = true;
-    @Entry//@Comment("[Skeletons] Wither skeletons can spawn with Bows")
+    @Entry
     public static boolean witherSkeletonArchersExist = true;
-    @Entry//@Comment("[Skeletons] Wither Skeleton Bow damage multiplier")
+    @Entry
     public static float witherSkeletonArcherDamageMultiplier = 1.5F;
-    @Entry//@Comment("[Skeletons] Wither Skeleton knockback resistance bonus")
+    @Entry
     public static double witherSkeletonKnockbackResistanceBonus = 0.3;
 
     // Slimes
-    @Entry//@Comment("[Slimes] Slime base health multiplier")
+    @Comment(centered = true)
+    public static Comment comment_slimes;
+    @Entry
     public static double slimeBaseHealthMultiplier = 2.5;
-    @Entry//@Comment("[Slimes] Base follow range multiplier")
+    @Entry
     public static double slimeFollowRangeMultiplier = 2.5;
-    @Entry//@Comment("[Slimes] Base move speed multiplier")
+    @Entry
     public static double slimeMoveSpeedMultiplier = 1.3;
-    @Entry//@Comment("[Slimes] Slimes jump constantly")
+    @Entry
     public static boolean slimesJumpConstantly = true;
-    @Entry//@Comment("[Slimes] Slimes are immune to fall damage")
+    @Entry
     public static boolean slimesImmuneToFallDamage = true;
-    @Entry//@Comment("[Slimes] Slimes are immune to non-armor-piercing projectiles")
+    @Entry
     public static boolean slimesResistProjectiles = true;
-    @Entry//@Comment("[Slimes] Slimes spawn poison cloud on death")
+    @Entry
     public static boolean slimePoisonCloudOnDeath = true;
-    @Entry//@Comment("[Slimes] Magma Cube attacks set target on fire")
+    @Entry
     public static boolean magmaCubeAttacksIgniteTarget = true;
-    @Entry//@Comment("[Slimes] Magma Cubes leave Lava when killed")
+    @Entry
     public static boolean magmaCubeLeavesLavaWhenKilled = true;
-    @Entry//@Comment("[Slimes] Magma Cubes place Lava sources on death. If this is false, non-source Lava is used")
+    @Entry
     public static boolean magmaCubeMakesLavaSourceBlocks = true;
 
+
     // Spiders
-    @Entry//@Comment("[Spiders] Spider attacks place webs")
+    @Comment(centered = true)
+    public static Comment comment_spiders;
+    @Entry
     public static boolean spiderAttacksPlaceWebs = true;
-    @Entry//@Comment("[Spiders] Spiders are immune to fall damage")
+    @Entry
     public static boolean spidersImmuneToFallDamage = true;
-    @Entry//@Comment("[Spiders] Cave Spider attacks place webs")
+    @Entry
     public static boolean caveSpiderAttacksPlaceWebs = false;
-    @Entry//@Comment("[Spiders] Cave Spider attacks give Slowness III")
+    @Entry
     public static boolean caveSpidersApplySlowness = true;
 
     // Witches
-    @Entry//@Comment("[Witches] Witches drink buffed potions")
+    @Comment(centered = true)
+    public static Comment comment_witches;
+    @Entry
     public static boolean witchesDrinkBetterPotions = true;
-    @Entry//@Comment("[Witches] Prevent potion drinking if target is within 7 blocks")
+    @Entry
     public static boolean witchesFleeToDrink = true;
-    @Entry//@Comment("[Witches] Use Lingering Potions instead of Splash Potions")
+    @Entry
     public static boolean witchesUseLingeringPotions = true;
-    @Entry//@Comment("[Witches] Use buffed Slowness potions")
+    @Entry
     public static boolean witchesUseStrongerSlowness = true;
-    @Entry//@Comment("[Witches] Ignore damage from non-armor-piercing projectiles")
+    @Entry
     public static boolean witchesResistProjectiles = true;
     @Entry
     public static boolean witchesTakeMagicDamage = false;
@@ -330,20 +350,30 @@ public class NoxConfig extends MidnightConfig {
     public static int witchPotionWindupDivisor = 2;
 
     // Wither
-    @Entry//@Comment("[Wither] Base health multiplier")
+    @Comment(centered = true)
+    public static Comment comment_wither;
+    @Entry
+    public static boolean destructiveWither = true;
+    @Entry
+    public static int witherBlockBreakingCooldown = 20;
+    @Entry
     public static double witherBaseHealthMultiplier = 2.0;
-    @Entry//@Comment("[Wither] Base follow range multiplier")
+    @Entry
     public static double witherFollowRangeMultiplier = 2.0;
-    @Entry//@Comment("[Wither] Wither rapidly breaks blocks around itself")
+    @Entry
     public static boolean witherRapidlyBreaksSurroundingBlocks = true;
-    @Entry//@Comment("[Wither] Cooldown for Wither to summon reinforcements")
+    @Entry
     public static int witherCallReinforcementsCooldown = 600;
-    @Entry//@Comment("[Wither] Wither summons X Wither Skeletons as reinforcements")
+    @Entry
     public static int witherReinforcementsGroupSize = 3;
-    @Entry//@Comment("[Wither] Can summon reinforcements if target is within X blocks")
+    @Entry
     public static int witherReinforcementsTriggerRadius = 7;
+    @Entry
+    public static boolean withersSuffocate = false;
 
     // Zombies
+    @Comment(centered = true)
+    public static Comment comment_zombies;
     /* TODO Not used
     @Entry//@Comment("[Zombies] Zombies pounce at their target")
     public static boolean zombiesPounceAtTarget = true;
@@ -354,13 +384,16 @@ public class NoxConfig extends MidnightConfig {
     @Entry//@Comment("[Zombies] Babies get knockback resistance")
     public static boolean babyZombiesGetKnockbackResistance = false;
     */
-    @Entry//@Comment("[Zombies] Drowned swim speed multiplier")
+    @Entry
     public static float drownedSwimSpeedMultiplier = 10.0F;
-    @Entry//@Comment("[Zombies] Husk attacks apply Hunger II")
+    @Entry
     public static boolean huskAttacksApplyStrongerHunger = true;
     @Entry
     public static double zombieSpeedMultiplier = 1.25;
 
+    //Blazes
+    @Comment(centered = true)
+    public static Comment comment_blazes;
     @Entry
     public static boolean lessBlazeFireballCooldown = true;
 
