@@ -16,6 +16,8 @@ import eu.midnightdust.lib.config.MidnightConfig;
 public class NoxConfig extends MidnightConfig {
 
     // Global
+    @Comment(centered = true)
+    public static Comment comment_global;
     @Entry
     public static boolean noFriendlyFire = true;
     @Entry
@@ -32,63 +34,47 @@ public class NoxConfig extends MidnightConfig {
     public static boolean monsterAngerOnShove = true;
     @Entry
     public static boolean buffGolems = true;
-    @Entry
-    public static boolean mobsBreakBlocks = true;
 
     // Block Breaking
+    @Comment(centered = true)
+    public static Comment comment_blockBreaking;
+    @Entry
+    public static boolean mobsBreakBlocks = true;
     @Entry
     public static float blockBreakingHardnessCutoff = 3.0F;
     @Entry
-    public static boolean piglinsMineBlocks = true;
-    @Entry
-    public static boolean endermenMineBlocks = true;
-    @Entry
-    public static boolean pillagersMineBlocks = true;
-    @Entry
-    public static boolean vindicatorsMineBlocks = true;
-    @Entry
-    public static boolean witherSkeletonsMineBlocks = true;
-    @Entry
-    public static boolean zombiesMineBlocks = true;
-    @Entry
-    public static boolean zombifiedPiglinsMineBlocks = true;
-    @Entry
-    public static int creeperBreachDistance = 7;
-
-    //Placing
-    @Entry
-    public static boolean guardiansWaterOnDeath = true;
-    @Entry
-    public static boolean guardiansWaterSourceOnDeath = false;
+    public static boolean endermenBreakBlocks = true;
     @Entry
     public static boolean magmaCubeLavaOnDeath = true;
-    @Entry//@Comment("[Block Breaking] Endermen can break blocks")
-    public static boolean endermenBreakBlocks = true;
-    @Entry//@Comment("[Block Breaking] Piglins can break blocks")
+    @Entry
     public static boolean piglinsBreakBlocks = true;
-    @Entry//@Comment("[Block Breaking] Pillagers can break blocks")
+    @Entry
     public static boolean pillagersBreakBlocks = true;
-    @Entry//@Comment("[Block Breaking] Vindicators can break blocks")
+    @Entry
     public static boolean vindicatorsBreakBlocks = true;
-    @Entry//@Comment("[Block Breaking] Wither Skeletons can break blocks")
+    @Entry
     public static boolean witherSkeletonsBreakBlocks = true;
-    @Entry//@Comment("[Block Breaking] Zombies can break blocks")
+    @Entry
     public static boolean zombiesBreakBlocks = true;
+    @Entry
+    public static boolean zombifiedPiglinsBreakBlocks = true;
 
     // Spawning
+    @Comment(centered = true)
+    public static Comment comment_spawning;
     @Entry
     public static boolean slimeNaturalSpawn = true;
-    @Entry//@Comment("[Spawning] Guardian natural spawn weight (0 to disable) Note: does not affect Ocean Monument spawns")
+    @Entry
     public static int guardianNaturalSpawnWeight = 10;
-    @Entry//@Comment("[Spawning] More Drowned spawn in Oceans")
+    @Entry
     public static boolean doMoreDrownedSpawns = true;
-    @Entry//@Comment("[Spawning] Witches spawn more frequently")
+    @Entry
     public static boolean doMoreWitchSpawns = true;
-    @Entry//@Comment("[Spawning] Cave Spiders spawn in caves")
+    @Entry
     public static boolean spawnCaveSpidersInCaves = true;
-    @Entry//@Comment("[Spawning] Ghasts spawn more often")
+    @Entry
     public static boolean increaseGhastSpawns = true;
-    @Entry//@Comment("[Spawning] Ghasts can spawn in Crimson/Warped Forest")
+    @Entry
     public static boolean spawnGhastsInMoreBiomes = true;
     @Entry
     public static boolean blazeNaturalSpawn = true;
@@ -98,6 +84,8 @@ public class NoxConfig extends MidnightConfig {
     public static boolean endermiteFlowerSpawn = true;
 
     // Sleep
+    @Comment(centered = true)
+    public static Comment comment_sleep;
     @Entry
     public static boolean sleepApplyGlowing = true;
     @Entry
@@ -107,108 +95,22 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static int sleepMinVerticalSearchDistance = 20;
 
-    // Spawning
-    // Mobs
-    // Blazes
-    @Entry//@Comment("[Blazes] Fireball recharge speed multiplier")
-    public static int blazeFireballRechargeSpeedMultiplier = 2;
-    @Entry//@Comment("[Blazes] Ignite targets within X blocks")
-    public static int blazeIgnitionRadius = 2;
-    @Entry
-    public static boolean lessBlazeFireballCooldown = true;
 
     // Creepers
+    @Comment(centered = true)
+    public static Comment comment_creepers;
     @Entry
     public static boolean creepersBreachWalls = true;
     @Entry
-    public static boolean moreWitchSpawns = true;
-    @Entry
-    public static boolean moreDrownedSpawns = true;
-    @Entry
-    public static boolean caveSpidersInCaves = true;
-    //from AeiouEnigma's pull request
-    @Entry
-    public static int freeRangeGuardiansSpawnWeight = 10;
-    @Entry
-    public static boolean witherSkeletonsSpawnNaturally = true;
-    @Entry
-    public static boolean ghastsInWarpedForests = true;
-
-    // Behavior
+    public static int creeperBreachDistance = 7;
     @Entry
     public static boolean creepersRunFromShields = true;
     @Entry
     public static boolean creepersAttackShields = false;
-    @Entry
-    public static boolean endermenTeleportOnHit = true;
-    @Entry
-    public static boolean endermitesTeleportTargetOnHit = true;
-    @Entry
-    public static boolean phantomsNoClip = true;
-    @Entry
-    public static boolean magmaCubesJumpConstantly = true;
-    @Entry
-    public static boolean spidersPlaceCobwebs = true;
-    @Entry
-    public static boolean witchesFleeToHeal = true;
-    @Entry
-    public static boolean witherSkeletonArchers = true;
-
-    // Immunities
-    @Entry
-    public static boolean endermitesTakeFallDamage = false;
-    @Entry
-    public static boolean endermitesSuffocate = false;
-    @Entry
-    public static boolean evokersTakeMagicDamage = false;
-    @Entry
-    public static boolean evokersTakeProjectileDamage = false;
-    @Entry
-    public static boolean returnToSender = false;
-    @Entry
-    public static boolean silverfishTakeFallDamage = false;
-    @Entry
-    public static boolean silverfishDrown = false;
-    @Entry
-    public static boolean silverfishSuffocate = false;
-    @Entry
-    public static boolean slimesTakeFallDamage = false;
-    @Entry
-    public static boolean slimesTakeProjectileDamage = false;
-    @Entry
-    public static boolean spidersTakeFallDamage = false;
-    @Entry
-    public static boolean witchesTakeMagicDamage = false;
-
-    // Stats
-    @Entry
-    public static boolean blazeFasterShooting = true;
-    @Entry
-    public static double endermiteSpeedMultiplier = 1.6;
-    @Entry
-    public static double evokerHealthMultiplier = 1.5;
-    @Entry
-    public static int ghastFireballStrengthMultiplier = 2;
-    @Entry
-    public static double ghastHealthMultiplier = 1.5;
-    @Entry
-    public static boolean ghastLessFireballCooldown = true;
-    @Entry
-    public static float witchLingeringPotionRadiusMultiplier = 1.5F;
-    @Entry
-    public static int witchPotionWindupDivisor = 2;
-    @Entry
-    public static double slimeHealthMultiplier = 1.5;
-    @Entry
-    public static double slimeViewDistanceMultiplier = 1.5;
-    @Entry
-    public static double slimeKnockbackMultiplier = 0;
-    @Entry
-    public static double slimeSpeedMultiplier = 0.3;
-    @Entry
-    public static double zombieSpeedMultiplier = 1.25;
 
     // Effects
+    @Comment(centered = true)
+    public static Comment comment_effects;
     @Entry
     public static int caveSpiderSlownessBiteDuration = 200;
     @Entry
@@ -229,14 +131,12 @@ public class NoxConfig extends MidnightConfig {
     public static int magmaCubeContactFireDuration = 4;
     @Entry
     public static int straySlownessLevel = 2;
-    @Entry
-    public static boolean witchesHaveBetterPotions = true;
-    @Entry
-    public static boolean witchesHaveBetterSlowness = true;
 
     // Auras
+    @Comment(centered = true)
+    public static Comment comment_auras;
     @Entry
-    public static int blazeBurnAura = 4;
+    public static int blazeIgnitionAuraRadius = 2;
     @Entry
     public static int blazeAuraDuration = 4;
     @Entry
@@ -253,12 +153,18 @@ public class NoxConfig extends MidnightConfig {
     public static int witherSkeletonsWitherAuraDuration = 80;
 
     // Golems
+    @Comment(centered = true)
+    public static Comment comment_golems;
     @Entry
-    public static double golemHealthMultiplier = 2;
+    public static double golemBaseHealthMultiplier = 2.0;
     @Entry
-    public static double golemViewDistanceMultiplier = 2;
+    public static double golemFollowRangeMultiplier = 2.0;
     @Entry
-    public static boolean ironGolemSweepAttack = true;
+    public static boolean ironGolemsHaveASweepAttack = true;
+    @Entry//@Comment("[Golems] Snow Golem attack recharge speed multiplier")
+    public static double snowGolemAttackRechargeSpeedMultiplier = 2;
+    @Entry//@Comment("[Golems] Snow Golem attack range multiplier")
+    public static float snowGolemAttackRangeMultiplier = 1.4F;
     @Entry
     public static int snowGolemDamage = 4;
     @Entry
@@ -272,12 +178,6 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static int witherBlockBreakingCooldown = 20;
     @Entry
-    public static int witherSkeletonSummonCooldown = 600;
-    @Entry
-    public static int witherHealthBonus = 0;
-    @Entry
-    public static double witherViewDistanceMultiplier = 1;
-    @Entry
     public static boolean withersSuffocate = false;
 
     // Dragon
@@ -285,10 +185,6 @@ public class NoxConfig extends MidnightConfig {
     public static int dragonBreathDuration = 300;
     @Entry
     public static float dragonBreathRadius = 3.0F;
-    @Entry
-    public static int dragonFireballCooldown = 100;
-    @Entry
-    public static boolean dragonTakesExplosiveDamage = false;
 
     // Ender Dragon
     @Entry//@Comment("[Ender Dragon] Base health multiplier")
@@ -328,18 +224,6 @@ public class NoxConfig extends MidnightConfig {
     public static boolean ghastFireballsInstantlyKillGhasts = false;
     @Entry//@Comment("[Ghasts] Shoot fireballs more frequently")
     public static boolean ghastReducedFireballCooldown = true;
-
-    // Golems
-    @Entry//@Comment("[Golems] Base health multiplier")
-    public static double golemBaseHealthMultiplier = 2.0;
-    @Entry//@Comment("[Golems] Base follow range multiplier")
-    public static double golemFollowRangeMultiplier = 2.0;
-    @Entry//@Comment("[Golems] Iron Golems make an area sweep attack")
-    public static boolean ironGolemsHaveASweepAttack = true;
-    @Entry//@Comment("[Golems] Snow Golem attack recharge speed multiplier")
-    public static double snowGolemAttackRechargeSpeedMultiplier = 2;
-    @Entry//@Comment("[Golems] Snow Golem attack range multiplier")
-    public static float snowGolemAttackRangeMultiplier = 1.4F;
 
     // Guardians
     @Entry//@Comment("[Guardians] Place water on death")
@@ -394,8 +278,6 @@ public class NoxConfig extends MidnightConfig {
     public static float witherSkeletonArcherDamageMultiplier = 1.5F;
     @Entry//@Comment("[Skeletons] Wither Skeleton knockback resistance bonus")
     public static double witherSkeletonKnockbackResistanceBonus = 0.3;
-    @Entry//@Comment("[Skeletons] Wither Skeletons passively wither target within X blocks")
-    public static int witherSkeletonWitheringRadius = 2;
 
     // Slimes
     @Entry//@Comment("[Slimes] Slime base health multiplier")
@@ -440,6 +322,12 @@ public class NoxConfig extends MidnightConfig {
     public static boolean witchesUseStrongerSlowness = true;
     @Entry//@Comment("[Witches] Ignore damage from non-armor-piercing projectiles")
     public static boolean witchesResistProjectiles = true;
+    @Entry
+    public static boolean witchesTakeMagicDamage = false;
+    @Entry
+    public static float witchLingeringPotionRadiusMultiplier = 1.5F;
+    @Entry
+    public static int witchPotionWindupDivisor = 2;
 
     // Wither
     @Entry//@Comment("[Wither] Base health multiplier")
@@ -470,5 +358,10 @@ public class NoxConfig extends MidnightConfig {
     public static float drownedSwimSpeedMultiplier = 10.0F;
     @Entry//@Comment("[Zombies] Husk attacks apply Hunger II")
     public static boolean huskAttacksApplyStrongerHunger = true;
+    @Entry
+    public static double zombieSpeedMultiplier = 1.25;
+
+    @Entry
+    public static boolean lessBlazeFireballCooldown = true;
 
 }

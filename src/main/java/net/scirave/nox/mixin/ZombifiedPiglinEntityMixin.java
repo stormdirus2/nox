@@ -36,7 +36,7 @@ public abstract class ZombifiedPiglinEntityMixin extends HostileEntityMixin {
 
     @Override
     public boolean nox$isAllowedToMine() {
-        return NoxConfig.zombifiedPiglinsMineBlocks;
+        return NoxConfig.zombifiedPiglinsBreakBlocks;
     }
 
 }
