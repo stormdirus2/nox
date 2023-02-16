@@ -20,8 +20,10 @@ public class NoxConfig extends MidnightConfig {
     public static boolean noFriendlyFire = true;
     @Entry
     public static boolean mobXray = true;
+    /* TODO Not used
     @Entry
     public static double monsterBaseHealthMultiplier = 1.5;
+     */
     @Entry
     public static double monsterRangeMultiplier = 1.5;
     @Entry
@@ -454,6 +456,7 @@ public class NoxConfig extends MidnightConfig {
     public static int witherReinforcementsTriggerRadius = 7;
 
     // Zombies
+    /* TODO Not used
     @Entry//@Comment("[Zombies] Zombies pounce at their target")
     public static boolean zombiesPounceAtTarget = true;
     @Entry//@Comment("[Zombies] Pounce cooldown (ticks)")
@@ -462,6 +465,7 @@ public class NoxConfig extends MidnightConfig {
     public static double zombieKnockbackResistanceBonus = 0.3;
     @Entry//@Comment("[Zombies] Babies get knockback resistance")
     public static boolean babyZombiesGetKnockbackResistance = false;
+    */
     @Entry//@Comment("[Zombies] Drowned swim speed multiplier")
     public static float drownedSwimSpeedMultiplier = 10.0F;
     @Entry//@Comment("[Zombies] Husk attacks apply Hunger II")

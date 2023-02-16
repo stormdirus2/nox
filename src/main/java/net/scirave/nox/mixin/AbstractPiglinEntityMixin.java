@@ -22,7 +22,7 @@ public abstract class AbstractPiglinEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$initGoals(CallbackInfo ci) {
-        if (NoxConfig.piglinsMineBlocks) {
+        if (this.nox$isAllowedToMine()) {
             this.goalSelector.add(1, new Nox$MineBlockGoal((AbstractPiglinEntity) (Object) this));
         }
     }

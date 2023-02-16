@@ -49,7 +49,7 @@ public abstract class SilverfishEntityMixin extends HostileEntityMixin implement
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (NoxConfig.silverfishMiningFatigueBiteDuration > 0) {
+        if (NoxConfig.silverfishAttacksGiveMiningFatigue) {
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, NoxConfig.silverfishMiningFatigueBiteDuration, 2), (SilverfishEntity) (Object) this);
         }
     }
