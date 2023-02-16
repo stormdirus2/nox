@@ -117,10 +117,10 @@
   "nox.midnightconfig.phantomsPhaseThroughBlocks": "Phantoms phase through blocks",
   "nox.midnightconfig.phantomAttacksApplyWeakness": "Attacks apply Weakness to target",
 
-  "nox.midnightconfig.comment_phantoms": "Piglins",
+  "nox.midnightconfig.comment_piglins": "Piglins",
   "nox.midnightconfig.piglinsRequireExclusivelyGoldArmor": "Piglins require exclusively gold armor",
 
-  "nox.midnightconfig.comment_phantoms": "Shulkers",
+  "nox.midnightconfig.comment_shulker": "Shulkers",
   "nox.midnightconfig.shulkerBulletsCauseBlindness": "Shulker bullets cause blindness",
 
   "nox.midnightconfig.comment_silverfish": "Silverfish",
