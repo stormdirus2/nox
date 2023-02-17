@@ -17,6 +17,7 @@ import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.Nox$CreeperBreachInterface;
 
 import java.util.EnumSet;
@@ -40,11 +41,11 @@ public class Nox$CreeperBreachGoal extends Goal {
 
     public boolean withinReach(Vec3d pos, LivingEntity target) {
         double yDiff = Math.abs(pos.y - target.getY());
-        return yDiff <= 7;
+        return yDiff <= NoxConfig.creeperBreachDistance;
     }
 
     private boolean shouldBreach(LivingEntity living) {
-        if (!creeper.isNavigating() && this.creeper.age > 60 && (this.creeper.isOnGround() || this.creeper.isTouchingWater())) {
+        if (!creeper.isNavigating() && this.creeper.age > 60 && (this.creeper.isOnGround() || !this.creeper.isTouchingWater())) {
             Path path = creeper.getNavigation().findPathTo(living, 0);
             if (path == null) {
                 return withinReach(this.creeper.getPos(), living);

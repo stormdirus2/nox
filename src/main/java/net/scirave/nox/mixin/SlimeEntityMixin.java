@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@Mixin(SlimeEntity.class)
+@Mixin(value = SlimeEntity.class)
 public abstract class SlimeEntityMixin extends MobEntityMixin {
 
     @Shadow
@@ -137,15 +137,14 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     }
 
     public void nox$slimeOnDeath() {
-        // Prevent poison cloud effect from being applied to mod-added Slimes
-        if (NoxConfig.slimePoisonCloudOnDeath && this.getType() == EntityType.SLIME) {
+        if (NoxConfig.slimePoisonCloudOnDeath && NoxConfig.slimePoisonCloudDurationDivisor > 0 && this.getType() == EntityType.SLIME) {
             AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(this.world, this.getX(), this.getY(), this.getZ());
-            cloud.setRadius(2.5F * this.getSize());
+            cloud.setRadius(NoxConfig.slimePoisonCloudRadiusMultiplier * this.getSize());
             cloud.setRadiusOnUse(-0.5F);
             cloud.setWaitTime(10 + 15 * (this.getSize() - 1));
-            cloud.setDuration(cloud.getDuration() * this.getSize() / 4);
+            cloud.setDuration(cloud.getDuration() * this.getSize() / NoxConfig.slimePoisonCloudDurationDivisor);
             cloud.setRadiusGrowth(-cloud.getRadius() / (float) cloud.getDuration());
-            cloud.addEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 1));
+            cloud.addEffect(new StatusEffectInstance(StatusEffects.POISON, NoxConfig.slimePoisonDuration, NoxConfig.slimePoisonAmplifier - 1));
             this.world.spawnEntity(cloud);
         }
     }

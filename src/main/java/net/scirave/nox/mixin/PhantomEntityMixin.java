@@ -31,7 +31,7 @@ public abstract class PhantomEntityMixin extends MobEntityMixin {
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
         if (NoxConfig.phantomAttacksApplyWeakness)
-            target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 300), (PhantomEntity) (Object) this);
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, NoxConfig.phantomWeaknessBiteDuration), (PhantomEntity) (Object) this);
     }
 
 }

@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(GhastEntity.class)
+@Mixin(value = GhastEntity.class)
 public abstract class GhastEntityMixin extends MobEntityMixin {
 
     @Inject(method = "isFireballFromPlayer", at = @At("HEAD"), cancellable = true)
@@ -38,7 +38,9 @@ public abstract class GhastEntityMixin extends MobEntityMixin {
 
     @Inject(method = "getFireballStrength", at = @At("RETURN"), cancellable = true)
     public void nox$ghastStrongerFireballs(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(cir.getReturnValue() * NoxConfig.ghastFireballExplosionStrengthMultiplier);
+        if(NoxConfig.ghastFireballExplosionStrengthMultiplier > 0){
+            cir.setReturnValue(cir.getReturnValue() * NoxConfig.ghastFireballExplosionStrengthMultiplier);
+        }
     }
 
     @Override

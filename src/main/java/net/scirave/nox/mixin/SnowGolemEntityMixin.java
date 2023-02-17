@@ -26,5 +26,9 @@ public abstract class SnowGolemEntityMixin extends GolemEntityMixin {
         args.set(2, ((int) args.get(2)) / Math.max(NoxConfig.snowGolemAttackRechargeSpeedMultiplier, 0));
         args.set(3, ((float) args.get(3)) * Math.max(NoxConfig.snowGolemAttackRangeMultiplier, 1));
     }
-
+    @ModifyArgs(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/thrown/SnowballEntity;setVelocity(DDDFF)V"))
+    public void nox$snowGolemShotMixin(Args args) {
+        args.set(3, NoxConfig.snowGolemShotSpeed);
+        args.set(4, NoxConfig.snowGolemInverseAccuracy);
+    }
 }

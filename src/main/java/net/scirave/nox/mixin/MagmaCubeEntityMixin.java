@@ -40,11 +40,11 @@ public abstract class MagmaCubeEntityMixin extends SlimeEntityMixin {
     @Override
     public void nox$slimeOnAttack(LivingEntity victim, CallbackInfo ci) {
         if (NoxConfig.magmaCubeAttacksIgniteTarget)
-            victim.setOnFireFor(4);
+            victim.setOnFireFor(NoxConfig.magmaCubeContactFireDuration);
     }
 
     private void nox$attemptLavaFill(BlockPos pos) {
-        if (!this.world.isClient && this.world.getBlockState(pos).getMaterial().isReplaceable()) {
+        if (!this.world.isClient && NoxConfig.magmaCubeLeavesLavaWhenKilled && this.world.getBlockState(pos).getMaterial().isReplaceable()) {
             this.world.setBlockState(pos, NoxConfig.magmaCubeMakesLavaSourceBlocks ? nox$LAVA_SOURCE : nox$FLOWING_LAVA);
         }
     }

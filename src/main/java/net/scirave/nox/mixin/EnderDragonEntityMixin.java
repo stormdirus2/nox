@@ -37,8 +37,8 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if (source.isExplosive() && NoxConfig.enderDragonIsImmuneToExplosionDamage) {
-            cir.setReturnValue(false);
+        if (source.isExplosive()) {
+            cir.setReturnValue(!NoxConfig.enderDragonIsImmuneToExplosionDamage);
         }
     }
 
@@ -64,7 +64,7 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
 
     @Override
     public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Enderdragon bonus", 2, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Enderdragon bonus", NoxConfig.enderDragonBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         this.setHealth(this.getMaxHealth());
     }
 

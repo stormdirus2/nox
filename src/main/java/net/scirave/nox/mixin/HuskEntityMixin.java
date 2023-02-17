@@ -24,8 +24,7 @@ public abstract class HuskEntityMixin extends ZombieEntityMixin {
     @ModifyArg(method = "tryAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;addStatusEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;Lnet/minecraft/entity/Entity;)Z"))
     public StatusEffectInstance nox$huskBetterHunger(StatusEffectInstance effect) {
         if (NoxConfig.huskAttacksApplyStrongerHunger)
-            return new StatusEffectInstance(effect.getEffectType(), effect.getDuration(), 1);
+            return new StatusEffectInstance(effect.getEffectType(), effect.getDuration(), NoxConfig.huskHungerLevel - 1);
         return effect;
     }
-
 }

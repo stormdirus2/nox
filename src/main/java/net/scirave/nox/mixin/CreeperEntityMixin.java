@@ -36,7 +36,9 @@ public abstract class CreeperEntityMixin extends HostileEntityMixin implements N
             }
             return false;
         }));
-        this.goalSelector.add(3, new Nox$CreeperBreachGoal((CreeperEntity) (Object) this));
+        if (NoxConfig.creeperBreachDistance > 0) {
+            this.goalSelector.add(3, new Nox$CreeperBreachGoal((CreeperEntity) (Object) this));
+        }
         //this.goalSelector.add(3, new PounceAtTargetGoal((CreeperEntity) (Object) this, 0.4F));
     }
 

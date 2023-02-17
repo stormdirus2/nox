@@ -13,6 +13,7 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.Material;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.state.property.Properties;
@@ -23,7 +24,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuardianEntity.class)
 public abstract class GuardianEntityMixin extends HostileEntityMixin {
-
     private static final BlockState nox$WATER = Blocks.WATER.getDefaultState();
     private static final BlockState nox$FLOWING_WATER = nox$WATER.with(Properties.LEVEL_15, 8);
     private static final BlockState nox$SMALL_WATER = nox$WATER.with(Properties.LEVEL_15, 7);
@@ -46,5 +46,4 @@ public abstract class GuardianEntityMixin extends HostileEntityMixin {
             }
         }
     }
-
 }

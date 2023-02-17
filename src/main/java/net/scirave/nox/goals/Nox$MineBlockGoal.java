@@ -12,8 +12,7 @@
 package net.scirave.nox.goals;
 
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
@@ -26,6 +25,8 @@ import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.Nox$MiningInterface;
 import net.scirave.nox.util.NoxUtil;
 import org.jetbrains.annotations.Nullable;
+import static net.scirave.nox.util.NoxUtil.NOX_ALWAYS_MINE;
+import static net.scirave.nox.util.NoxUtil.NOX_CANT_MINE;
 
 public class Nox$MineBlockGoal extends Goal {
 
@@ -50,10 +51,13 @@ public class Nox$MineBlockGoal extends Goal {
     }
 
     public static boolean canMine(BlockState block) {
-        if (block.getBlock().getHardness() >= NoxConfig.blockBreakingHardnessCutoff && block.getMaterial() != Material.WOOD) {
+        if (block.isIn(NOX_ALWAYS_MINE)) {
+            return NoxUtil.isAtWoodLevel(block);
+        } else if (block.getBlock().getHardness() >= NoxConfig.blockBreakingHardnessCutoff || block.isIn(NOX_CANT_MINE)) {
             return false;
+        } else {
+            return NoxUtil.isAtWoodLevel(block);
         }
-        return NoxUtil.isAtWoodLevel(block);
     }
 
     public @Nullable BlockPos findBlock(LivingEntity victim, @Nullable Path path) {

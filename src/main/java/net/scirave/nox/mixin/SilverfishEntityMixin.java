@@ -49,19 +49,20 @@ public abstract class SilverfishEntityMixin extends HostileEntityMixin implement
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (NoxConfig.silverfishAttacksGiveMiningFatigue)
-            target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 300, 2), (SilverfishEntity) (Object) this);
+        if (NoxConfig.silverfishAttacksGiveMiningFatigue) {
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, NoxConfig.silverfishMiningFatigueBiteDuration, 2), (SilverfishEntity) (Object) this);
+        }
     }
 
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if (source.getName().equals("fall") && NoxConfig.silverfishImmuneToFallDamage)
-            cir.setReturnValue(true);
-        else if (source.getName().equals("drown") && !NoxConfig.silverfishCanDrown)
-            cir.setReturnValue(true);
-        else if (source.getName().equals("inWall") && !NoxConfig.silverfishCanSuffocate)
-            cir.setReturnValue(false);
+        if (source.getName().equals("fall"))
+            cir.setReturnValue(NoxConfig.silverfishImmuneToFallDamage);
+        else if (source.getName().equals("drown"))
+            cir.setReturnValue(NoxConfig.silverfishCanDrown);
+        else if (source.getName().equals("inWall"))
+            cir.setReturnValue(NoxConfig.silverfishCanSuffocate);
     }
 
     @Override

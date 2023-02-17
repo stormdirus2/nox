@@ -72,7 +72,6 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
                 return Potions.STRONG_SWIFTNESS;
             }
         }
-
         return original;
     }
 
@@ -100,7 +99,7 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
         if (source.isMagic())
-            cir.setReturnValue(false); // Intentionally non-configurable
+            cir.setReturnValue(NoxConfig.witchesTakeMagicDamage);
         if (source.isProjectile() && !source.bypassesArmor())
             cir.setReturnValue(!NoxConfig.witchesResistProjectiles);
     }

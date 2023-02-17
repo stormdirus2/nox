@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(WitherSkeletonEntity.class)
+@Mixin(value = WitherSkeletonEntity.class)
 public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMixin {
 
     @Inject(method = "initEquipment", at = @At("TAIL"))
@@ -58,10 +58,10 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
-        if (NoxConfig.witherSkeletonWitheringRadius > 0) {
+        if (NoxConfig.witherSkeletonsWitherAuraRadius > 0) {
             LivingEntity target = this.getTarget();
-            if (target != null && !target.hasStatusEffect(StatusEffects.WITHER) && target.squaredDistanceTo((WitherSkeletonEntity) (Object) this) <= MathHelper.square(NoxConfig.witherSkeletonWitheringRadius)) {
-                target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80), (WitherSkeletonEntity) (Object) this);
+            if (target != null && !target.hasStatusEffect(StatusEffects.WITHER) && target.squaredDistanceTo((WitherSkeletonEntity) (Object) this) <= MathHelper.square(NoxConfig.witherSkeletonsWitherAuraRadius)) {
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, NoxConfig.witherSkeletonsWitherAuraDuration), (WitherSkeletonEntity) (Object) this);
             }
         }
     }
@@ -79,5 +79,4 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
     public boolean nox$isAllowedToMine() {
         return NoxConfig.witherSkeletonsBreakBlocks;
     }
-
 }

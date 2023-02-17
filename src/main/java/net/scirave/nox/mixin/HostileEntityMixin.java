@@ -31,5 +31,4 @@ public abstract class HostileEntityMixin extends MobEntityMixin {
             if (pos.getY() >= world.getSeaLevel() || world.isSkyVisibleAllowingSea(pos))
                 cir.setReturnValue(false);
     }
-
 }

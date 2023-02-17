@@ -18,6 +18,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.BlockTags;
@@ -33,6 +34,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WitherEntity.class)
 public abstract class WitherEntityMixin extends HostileEntityMixin {
@@ -43,7 +45,7 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
     private int nox$reinforcementsCooldown = NoxConfig.witherCallReinforcementsCooldown;
 
     private void nox$witherBreakBlocks() {
-        if (!this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) return;
+        if (!this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) || !NoxConfig.destructiveWither) return;
         Box box = this.getBoundingBox().expand(1, 0, 1);
 
         int i = MathHelper.floor(box.minX);
@@ -84,7 +86,7 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
     @Inject(method = "mobTick", at = @At("HEAD"))
     public void nox$witherNoVanillaBreak(CallbackInfo ci) {
         if (NoxConfig.witherRapidlyBreaksSurroundingBlocks)
-            this.blockBreakingCooldown = 20;
+            this.blockBreakingCooldown = NoxConfig.witherBlockBreakingCooldown;
     }
 
     @Inject(method = "mobTick", at = @At("TAIL"))
@@ -122,9 +124,17 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Wither bonus", 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Wither bonus", NoxConfig.witherBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         this.setHealth(this.getMaxHealth());
-        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Wither bonus", 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Wither bonus", NoxConfig.witherFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+    }
+
+    @Override
+    public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        super.nox$shouldTakeDamage(source, amount, cir);
+        if ((source.getName().equals("inWall") && !NoxConfig.withersSuffocate)) {
+            cir.setReturnValue(false);
+        }
     }
 
 }

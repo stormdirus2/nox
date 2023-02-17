@@ -24,7 +24,7 @@ public abstract class StrayEntityMixin extends AbstractSkeletonEntityMixin {
     @ModifyArg(method = "createArrowProjectile", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ArrowEntity;addEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;)V"))
     public StatusEffectInstance nox$strayBetterSlowness(StatusEffectInstance effect) {
         if (NoxConfig.strayAttacksApplyStrongerSlowness)
-            return new StatusEffectInstance(effect.getEffectType(), effect.getDuration(), 1);
+            return new StatusEffectInstance(effect.getEffectType(), effect.getDuration(), NoxConfig.straySlownessLevel - 1);
         return effect;
     }
 

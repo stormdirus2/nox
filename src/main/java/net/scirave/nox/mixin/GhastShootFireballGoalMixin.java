@@ -30,5 +30,4 @@ public class GhastShootFireballGoalMixin {
         if (NoxConfig.ghastReducedFireballCooldown)
             this.cooldown = 0;
     }
-
 }

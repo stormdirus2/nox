@@ -31,7 +31,7 @@ public abstract class CaveSpiderEntityMixin extends SpiderEntityMixin {
                 this.world.setBlockState(pos, Nox.NOX_COBWEB.getDefaultState());
         }
         if (NoxConfig.caveSpidersApplySlowness)
-            target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 2), (CaveSpiderEntity) (Object) this);
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, NoxConfig.caveSpiderSlownessBiteDuration, NoxConfig.caveSpiderSlownessBiteLevel - 1), (CaveSpiderEntity) (Object) this);
     }
 
 }

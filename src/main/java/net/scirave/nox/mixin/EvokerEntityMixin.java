@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(EvokerEntity.class)
+@Mixin(value = EvokerEntity.class)
 public abstract class EvokerEntityMixin extends HostileEntityMixin {
 
     @Override
@@ -40,10 +40,10 @@ public abstract class EvokerEntityMixin extends HostileEntityMixin {
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if (NoxConfig.evokersImmuneToMagic && source.isMagic())
-            cir.setReturnValue(false);
-        if (NoxConfig.evokersResistProjectiles && source.isProjectile() && !source.bypassesArmor())
-            cir.setReturnValue(false);
+        if (source.isMagic())
+            cir.setReturnValue(!NoxConfig.evokersImmuneToMagic);
+        if (source.isProjectile() && !source.bypassesArmor())
+            cir.setReturnValue(!NoxConfig.evokersResistProjectiles);
     }
 
 }

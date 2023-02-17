@@ -29,7 +29,7 @@ public abstract class ShulkerBulletEntityMixin extends ProjectileEntityMixin {
     public void nox$shulkerBlind(EntityHitResult entityHitResult, CallbackInfo ci) {
         if (NoxConfig.shulkerBulletsCauseBlindness && entityHitResult.getEntity() instanceof LivingEntity target) {
             if (this.getOwner() instanceof ShulkerBulletEntity owner) {
-                target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 100), owner);
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, NoxConfig.shulkerBulletBlindnessDuration), owner);
             }
         }
     }
