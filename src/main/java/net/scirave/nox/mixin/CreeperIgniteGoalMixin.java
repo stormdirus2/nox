@@ -55,7 +55,7 @@ public abstract class CreeperIgniteGoalMixin extends Goal {
             this.creeper.setFuseSpeed(-1);
         } else if (d > 16.0D) {
             this.creeper.setFuseSpeed(-1);
-        } else if (this.target.isBlocking() && this.target.blockedByShield(EntityDamageSource.explosion(this.creeper))) {
+        } else if (!NoxConfig.creepersAttackShields && this.target.isBlocking() && this.target.blockedByShield(EntityDamageSource.explosion(this.creeper))) {
             this.creeper.setFuseSpeed(-1);
         } else {
             this.creeper.setFuseSpeed(1);
