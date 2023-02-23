@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2022 SciRave
+ * Copyright (c) 2023 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -15,6 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.PhantomEntity;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -23,12 +24,14 @@ public abstract class PhantomEntityMixin extends MobEntityMixin {
 
     @Override
     public void nox$onTick(CallbackInfo ci) {
-        this.noClip = true;
+        if (NoxConfig.phantomsPhaseThroughBlocks)
+            this.noClip = true;
     }
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 300), (PhantomEntity) (Object) this);
+        if (NoxConfig.phantomAttacksApplyWeakness)
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, NoxConfig.phantomWeaknessBiteDuration), (PhantomEntity) (Object) this);
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2022 SciRave
+ * Copyright (c) 2023 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -38,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MobEntity.class)
+@Mixin(value = MobEntity.class)
 public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Shadow
@@ -79,7 +79,8 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (this instanceof Monster)
+            this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
     }
 
     @Inject(method = "initEquipment", at = @At("TAIL"))
@@ -101,7 +102,8 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Override
     public void nox$onPushAway(Entity entity, CallbackInfo ci) {
-        if (this instanceof Monster && NoxConfig.monsterAngerOnShove && this.getTarget() == null && entity instanceof PlayerEntity player && this.canTarget(player)) {
+        if (this instanceof Monster && NoxConfig.monsterAngerOnShove && this.getTarget() == null
+                && entity instanceof PlayerEntity player && this.canTarget(player)) {
             nox$maybeAngerOnShove(player);
         }
     }

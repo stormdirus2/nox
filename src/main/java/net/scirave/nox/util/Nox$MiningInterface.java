@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2022 SciRave
+ * Copyright (c) 2023 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -13,8 +13,12 @@ package net.scirave.nox.util;
 
 public interface Nox$MiningInterface {
 
-    boolean isMining();
+    default boolean nox$isAllowedToMine() {
+        return false;
+    }
 
-    void setMining(boolean bool);
+    boolean nox$isMining();
+
+    void nox$setMining(boolean bool);
 
 }

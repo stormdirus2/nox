@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2022 SciRave
+ * Copyright (c) 2023 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -18,6 +18,7 @@ import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.scirave.nox.config.NoxConfig;
+import net.scirave.nox.util.Nox$CreeperBreachInterface;
 
 import java.util.EnumSet;
 
@@ -31,17 +32,20 @@ public class Nox$CreeperBreachGoal extends Goal {
     }
 
     public boolean canStart() {
-        LivingEntity living = this.creeper.getTarget();
-        return NoxConfig.creepersBreachWalls && living != null && living.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && shouldBreach(living);
+        if (((Nox$CreeperBreachInterface) creeper).nox$isAllowedToBreachWalls()) {
+            LivingEntity living = this.creeper.getTarget();
+            return living != null && living.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && shouldBreach(living);
+        }
+        return false;
     }
 
     public boolean withinReach(Vec3d pos, LivingEntity target) {
         double yDiff = Math.abs(pos.y - target.getY());
-        return yDiff <= 7;
+        return yDiff <= NoxConfig.creeperBreachDistance;
     }
 
     private boolean shouldBreach(LivingEntity living) {
-        if (!creeper.isNavigating() && this.creeper.age > 60 && (this.creeper.isOnGround() || this.creeper.isTouchingWater())) {
+        if (!creeper.isNavigating() && this.creeper.age > 60 && (this.creeper.isOnGround() || !this.creeper.isTouchingWater())) {
             Path path = creeper.getNavigation().findPathTo(living, 0);
             if (path == null) {
                 return withinReach(this.creeper.getPos(), living);

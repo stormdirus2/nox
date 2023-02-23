@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2022 SciRave
+ * Copyright (c) 2023 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,8 +12,7 @@
 package net.scirave.nox.goals;
 
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
@@ -26,9 +25,10 @@ import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.Nox$MiningInterface;
 import net.scirave.nox.util.NoxUtil;
 import org.jetbrains.annotations.Nullable;
+import static net.scirave.nox.util.NoxUtil.NOX_ALWAYS_MINE;
+import static net.scirave.nox.util.NoxUtil.NOX_CANT_MINE;
 
 public class Nox$MineBlockGoal extends Goal {
-
 
     protected final MobEntity owner;
     private LivingEntity target;
@@ -51,10 +51,13 @@ public class Nox$MineBlockGoal extends Goal {
     }
 
     public static boolean canMine(BlockState block) {
-        if (block.getBlock().getHardness() >= NoxConfig.blockBreakingHardnessCutoff && block.getMaterial() != Material.WOOD) {
+        if (block.isIn(NOX_ALWAYS_MINE)) {
+            return NoxUtil.isAtWoodLevel(block);
+        } else if (block.getBlock().getHardness() >= NoxConfig.blockBreakingHardnessCutoff || block.isIn(NOX_CANT_MINE)) {
             return false;
+        } else {
+            return NoxUtil.isAtWoodLevel(block);
         }
-        return NoxUtil.isAtWoodLevel(block);
     }
 
     public @Nullable BlockPos findBlock(LivingEntity victim, @Nullable Path path) {
@@ -140,6 +143,8 @@ public class Nox$MineBlockGoal extends Goal {
 
     @Override
     public boolean canStart() {
+        if (!((Nox$MiningInterface) owner).nox$isAllowedToMine())
+            return false;
         if (shouldContinue()) {
             return true;
         } else if (!NoxConfig.mobsBreakBlocks) {
@@ -182,7 +187,7 @@ public class Nox$MineBlockGoal extends Goal {
 
     @Override
     public void start() {
-        ((Nox$MiningInterface) this.owner).setMining(true);
+        ((Nox$MiningInterface) this.owner).nox$setMining(true);
         this.target = this.owner.getTarget();
     }
 
@@ -199,7 +204,7 @@ public class Nox$MineBlockGoal extends Goal {
 
     @Override
     public void stop() {
-        ((Nox$MiningInterface) this.owner).setMining(false);
+        ((Nox$MiningInterface) this.owner).nox$setMining(false);
         this.mineTick = 0;
         if (this.posToMine != null) {
             this.owner.world.setBlockBreakingInfo(this.owner.getId(), this.posToMine, -1);

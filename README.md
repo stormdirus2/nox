@@ -76,7 +76,7 @@ Experimentation is encouraged.
 * Place a cobweb at the victims' location upon successful attack
 
 ### Cave Spiders..
-* Inherent changes from Spiders
+* Inherit changes from Spiders
 * Instead of placing a cobweb, apply 10 seconds of Slowness III
 
 ### Creepers..

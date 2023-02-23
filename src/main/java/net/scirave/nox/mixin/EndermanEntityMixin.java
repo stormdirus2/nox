@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2022 SciRave
+ * Copyright (c) 2023 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -17,6 +17,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,8 +42,8 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "setTarget", at = @At("HEAD"))
     public void nox$endermanBlindOnProvoked(LivingEntity target, CallbackInfo ci) {
-        if (this.getTarget() != target && target != null) {
-            target.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 140), (EndermanEntity) (Object) this);
+        if (NoxConfig.endermanAppliesBlindnessOnAggro && this.getTarget() != target && target != null) {
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, NoxConfig.endermanBlindnessStareDuration), (EndermanEntity) (Object) this);
         }
     }
 
@@ -55,7 +56,7 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;getAttacker()Lnet/minecraft/entity/Entity;"))
     public void nox$endermanTeleportOnDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (this.isAlive() && source.getAttacker() instanceof LivingEntity && !source.getName().equals("onFire") && !source.isMagic()) {
+        if (this.isAlive() && NoxConfig.endermanTeleportsFromMeleeHit && source.getAttacker() instanceof LivingEntity && !source.getName().equals("onFire") && !source.isMagic()) {
             for (int i = 0; i < 64; ++i) {
                 if (this.teleportRandomly()) {
                     break;
@@ -65,7 +66,7 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
     }
 
     @Inject(method = "initGoals", at = @At("HEAD"))
-    public void nox$endermanBreakWalls(CallbackInfo ci) {
+    public void nox$endermanInitGoals(CallbackInfo ci) {
         this.goalSelector.add(1, new Nox$MineBlockGoal((EndermanEntity) (Object) this));
     }
 
@@ -77,7 +78,12 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 140), (EndermanEntity) (Object) this);
+        if (NoxConfig.endermanAppliesBlindnessOnHit)
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, NoxConfig.endermanBlindnessHitDuration), (EndermanEntity) (Object) this);
     }
 
+    @Override
+    public boolean nox$isAllowedToMine() {
+        return NoxConfig.endermenBreakBlocks;
+    }
 }

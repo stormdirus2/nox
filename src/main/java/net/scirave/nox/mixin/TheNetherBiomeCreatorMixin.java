@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2022 SciRave
+ * Copyright (c) 2023 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -46,20 +46,25 @@ public class TheNetherBiomeCreatorMixin {
             instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.BLAZE, 3, 1, 3));
         }
         instance.spawn(spawnGroup, new SpawnSettings.SpawnEntry(EntityType.GHAST, 60, 1, 4));
+        if (NoxConfig.spawnGhastsInMoreBiomes)
+            instance.spawn(spawnGroup, new SpawnSettings.SpawnEntry(EntityType.GHAST, NoxConfig.increaseGhastSpawns ? 60 : 40, 1, 4));
         return instance.spawn(spawnGroup, spawnEntry);
     }
 
     @Redirect(method = "createWarpedForest", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$Builder;spawn(Lnet/minecraft/entity/SpawnGroup;Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;)Lnet/minecraft/world/biome/SpawnSettings$Builder;", ordinal = 0))
     private static SpawnSettings.Builder nox$adjustWarpedForestSpawns(SpawnSettings.Builder instance, SpawnGroup spawnGroup, SpawnSettings.SpawnEntry spawnEntry) {
-        instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.WITHER_SKELETON, 40, 1, 4));
-        instance.spawn(spawnGroup, new SpawnSettings.SpawnEntry(EntityType.GHAST, 30, 1, 4));
+        if (NoxConfig.witherSkeletonsSpawnNaturallyInNether)
+            instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.WITHER_SKELETON, 40, 1, 4));
+        if (NoxConfig.spawnGhastsInMoreBiomes)
+            instance.spawn(spawnGroup, new SpawnSettings.SpawnEntry(EntityType.GHAST, NoxConfig.increaseGhastSpawns ? 30 : 20, 1, 4));
         return instance.spawn(spawnGroup, new SpawnSettings.SpawnEntry(EntityType.ENDERMAN, 100, 4, 4));
     }
 
     @Redirect(method = "createSoulSandValley", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/SpawnSettings$Builder;spawn(Lnet/minecraft/entity/SpawnGroup;Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;)Lnet/minecraft/world/biome/SpawnSettings$Builder;", ordinal = 1))
     private static SpawnSettings.Builder nox$adjustSoulSandValleySpawns(SpawnSettings.Builder instance, SpawnGroup spawnGroup, SpawnSettings.SpawnEntry spawnEntry) {
-        instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.WITHER_SKELETON, 5, 1, 4));
-        return instance.spawn(spawnGroup, new SpawnSettings.SpawnEntry(EntityType.GHAST, MathHelper.ceil(spawnEntry.getWeight().getValue() * 1.5), spawnEntry.minGroupSize, spawnEntry.maxGroupSize));
+        if (NoxConfig.witherSkeletonsSpawnNaturallyInNether)
+            instance.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.WITHER_SKELETON, 5, 1, 4));
+        return instance.spawn(spawnGroup, new SpawnSettings.SpawnEntry(EntityType.GHAST, MathHelper.ceil(spawnEntry.getWeight().getValue() * (NoxConfig.increaseGhastSpawns ? 1.5 : 1)), spawnEntry.minGroupSize, spawnEntry.maxGroupSize));
     }
 
 }

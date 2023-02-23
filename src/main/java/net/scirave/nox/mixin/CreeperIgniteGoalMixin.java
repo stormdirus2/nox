@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2022 SciRave
+ * Copyright (c) 2023 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -16,6 +16,7 @@ import net.minecraft.entity.ai.goal.CreeperIgniteGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.scirave.nox.config.NoxConfig;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -54,7 +55,7 @@ public abstract class CreeperIgniteGoalMixin extends Goal {
             this.creeper.setFuseSpeed(-1);
         } else if (d > 16.0D) {
             this.creeper.setFuseSpeed(-1);
-        } else if (this.target.isBlocking() && this.target.blockedByShield(EntityDamageSource.explosion(this.creeper))) {
+        } else if (!NoxConfig.creepersAttackShields && this.target.isBlocking() && this.target.blockedByShield(EntityDamageSource.explosion(this.creeper))) {
             this.creeper.setFuseSpeed(-1);
         } else {
             this.creeper.setFuseSpeed(1);
@@ -64,7 +65,7 @@ public abstract class CreeperIgniteGoalMixin extends Goal {
     @Inject(method = "canStart", at = @At("RETURN"), cancellable = true)
     public void nox$creeperNoTargetShield(CallbackInfoReturnable<Boolean> cir) {
         LivingEntity victim = this.creeper.getTarget();
-        if (cir.getReturnValue() && victim != null && victim.isBlocking() && victim.blockedByShield(EntityDamageSource.explosion(this.creeper))) {
+        if (!NoxConfig.creepersAttackShields && cir.getReturnValue() && victim != null && victim.isBlocking() && victim.blockedByShield(EntityDamageSource.explosion(this.creeper))) {
             this.creeper.setFuseSpeed(-1);
             cir.setReturnValue(false);
         }

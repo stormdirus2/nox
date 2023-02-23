@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2022 SciRave
+ * Copyright (c) 2023 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -15,6 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.BlazeEntity;
+import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -43,11 +44,13 @@ public abstract class BlazeShootFireballGoalMixin {
     boolean extraTick = false;
     @Inject(method = "tick", at = @At("HEAD"))
     public void nox$blazeLessFireballCooldown(CallbackInfo ci) {
-        if (extraTick) {
-            this.fireballCooldown--;
-            extraTick = false;
-        } else {
-            extraTick = true;
+        if(NoxConfig.lessBlazeFireballCooldown) {
+            if (extraTick) {
+                this.fireballCooldown--;
+                extraTick = false;
+            } else {
+                extraTick = true;
+            }
         }
     }
 
